@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  web:
+    image: ngser/loto-gb-admin:latest
+    container_name: loto-gb-admin
+    build: .
+    depends_on:     
+      - database
+      - redis
+    ports:
+      - "5000:3000"
+    volumes:
+      - .:/app
+      - '/app/db-data'
+    env_file:
+      - .env
+    environment:
+      - DB_USERNAME=$POSTGRES_USER
+      - DB_PASSWORD=$POSTGRES_PASSWORD
+  database:
+    image: postgres:13.2-alpine
+    restart: always
+    ports: 
+      - "5032:5432"
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    environment:
+      # Setting postgresql credentials
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB=loto_gb_admin_dev
+
+  redis:
+    image: redis:6.2.1-alpine
+    restart: always
+
+volumes:
+  db-data:
