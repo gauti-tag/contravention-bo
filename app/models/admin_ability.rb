@@ -1,0 +1,2 @@
+class AdminAbility < ApplicationRecord
+end

@@ -11,8 +11,8 @@ services:
     ports:
       - "5000:3000"
     volumes:
-      - .:/app
-      - '/app/db-data'
+      - .:/home/ngser/app
+      - '/home/ngser/app/db-data'
     env_file:
       - .env
     environment:

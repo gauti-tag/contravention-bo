@@ -8,7 +8,7 @@ migrate: # Run pending migrations
 		docker-compose run web bundle exec rails db:migrate
 	
 rollback: # Rollback DB
-		docker-compose run web rails db:rollback
+		docker-compose run web bundle exec rails db:rollback
 
 logs:
 		docker-compose logs -t --tail 1500 web
