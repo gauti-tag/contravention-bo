@@ -4,10 +4,18 @@
 // that code so it'll be compiled.
 
 require("@rails/ujs").start()
-require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
-
+require('@popperjs/core')
+require('bootstrap')
+require('onscreen')
+require('nouislider')
+const Swal = require('sweetalert2')
+var moment = require('moment')
+require('vanillajs-datepicker')
+require('notyf')
+require('simplebar')
+require('packs/volt')
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
@@ -15,3 +23,5 @@ require("channels")
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+moment.locale('fr');
+window.Swal = Swal;

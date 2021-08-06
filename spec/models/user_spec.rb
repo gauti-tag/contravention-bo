@@ -37,4 +37,11 @@ RSpec.describe User, type: :model do
       expect(user.login).to_not be_nil
     end
   end
+
+  describe '#fullname' do
+    subject(:user) { create(:user) }
+    it "return a value" do
+      expect(user.fullname).to_not be_nil
+    end
+  end
 end

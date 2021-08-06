@@ -12,7 +12,6 @@ services:
       - "5000:3000"
     volumes:
       - .:/home/ngser/app
-      - '/home/ngser/app/db-data'
     env_file:
       - .env
     environment:

@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  extend FriendlyId
+  friendly_id :slug_candidates, use: :slugged
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -10,7 +12,7 @@ class User < ApplicationRecord
   PHONE_NUMBER_REGEX = /^([0-9]*)$/
 
   has_one_attached :avatar
-  belongs_to :admin_profile, optional: true
+  belongs_to :admin_profile, primary_key: 'id', foreign_key: 'profile_id', optional: true
 
   validates :email, presence: true, uniqueness: true
   validates :msisdn, presence: true, uniqueness: true
@@ -22,19 +24,26 @@ class User < ApplicationRecord
   scope :with_preloaded_avatar, -> { preload(avatar_attachment: :blob) }
 
   attr_writer :login
+
+  def slug_candidates
+    [
+      [:lastname, :firstname],
+      [:lastname, :firstname, :msisdn]
+    ]
+  end
    
   def login
     @login || email || msisdn
   end
 
-  def validate_msisdn
-    errors.add(:msisdn, :invalid) if User.where(email: msisdn).exists?
+  def fullname
+    firstname + ' ' + lastname
   end
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
-      where(conditions.to_h).where(["msisdn = :value OR lower(email) = :value", { :value => login.downcase }]).first
+      where(conditions.to_h).where(["lower(msisdn) = :value OR lower(email) = :value", { :value => login.downcase }]).first
     elsif conditions.has_key?(:msisdn) || conditions.has_key?(:email)
 			where(conditions.to_h).first
     end
@@ -42,13 +51,19 @@ class User < ApplicationRecord
 
   def is_admin?
     return false if self.admin_profile.blank?
-    self.admin_profile.slug.eql?('admin')
+    self.admin_profile.slug.eql?('administrateur')
   end
 
   def has_access_to?(controller_label, action_name)
     return true if is_admin?
     return false if (admin_profile.blank? || admin_profile.profile_abilities.empty?)
     admin_profile.profile_abilities.exists?(controller_name: controller_label, action_name: action_name)
+  end
+
+  private
+  
+  def validate_msisdn
+    errors.add(:msisdn, :invalid) if User.where(email: msisdn).exists?
   end
 
 end

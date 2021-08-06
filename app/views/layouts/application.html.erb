@@ -1,15 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
-    <title>LotoGbAdmin</title>
+    <title>BACK-OFFICE LOTO GUINEE-BISSAU</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- Primary Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="title" content="BACK-OFFICE LOTO GUINEE-BISSAU">
+    <meta name="author" content="NGSER">
+    <meta name="description" content="BACK-OFFICE LOTO GUINEE-BISSAU">
+
+    <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="120x120" href='<%= asset_path("favicon/apple-touch-icon") %>' >
+  <link rel="icon" type="image/png" sizes="32x32" href='<%= asset_path("favicon/favicon-32x32") %>' >
+  <link rel="icon" type="image/png" sizes="16x16" href='<%= asset_path("favicon/favicon-16x16") %>'>
+  <link rel="mask-icon" href='<%= asset_path("favicon/safari-pinned-tab.svg") %>' color="#ffffff">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'turbolinks' %>
   </head>
 
   <body>
-    <%= yield %>
+    <!-- Sidebar -->
+    <%= render partial: 'shared/sidebar' %>
+    <!-- Main content wrapper -->
+    <main class="content">
+      <%= render partial: 'shared/header' %>
+      <%= yield %>
+      <!-- Footer -->
+      <%= render partial: 'shared/footer' %>
+    </main>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </body>
 </html>
