@@ -3,18 +3,20 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-require("@rails/ujs").start()
-require("@rails/activestorage").start()
-require("channels")
 require('@popperjs/core')
-require('bootstrap')
+var bootstrap = require('bootstrap')
 require('onscreen')
 require('nouislider')
-const Swal = require('sweetalert2')
+var Swal = require('sweetalert2')
 var moment = require('moment')
 require('vanillajs-datepicker')
 require('notyf')
 require('simplebar')
+var simpleDatatables = require('simple-datatables')
+require('dropzone')
+window.bootstrap = bootstrap;
+window.Swal = Swal;
+window.simpleDatatables = simpleDatatables;
 require('packs/volt')
 
 // Uncomment to copy all static images under ../images to the output folder and reference
@@ -24,4 +26,3 @@ require('packs/volt')
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 moment.locale('fr');
-window.Swal = Swal;

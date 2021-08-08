@@ -54,6 +54,7 @@ group :development, :test do
   gem 'pry-byebug', '~> 3.9'
   gem 'database_cleaner', '~> 2.0', '>= 2.0.1'
   gem 'faker', '~> 2.18'
+  gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
 end
 
 group :development do

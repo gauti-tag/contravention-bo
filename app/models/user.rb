@@ -12,7 +12,7 @@ class User < ApplicationRecord
   PHONE_NUMBER_REGEX = /^([0-9]*)$/
 
   has_one_attached :avatar
-  belongs_to :admin_profile, primary_key: 'id', foreign_key: 'profile_id', optional: true
+  belongs_to :profile, class_name: 'AdminProfile', primary_key: 'id', foreign_key: 'profile_id', optional: true
 
   validates :email, presence: true, uniqueness: true
   validates :msisdn, presence: true, uniqueness: true
@@ -50,14 +50,14 @@ class User < ApplicationRecord
   end
 
   def is_admin?
-    return false if self.admin_profile.blank?
-    self.admin_profile.slug.eql?('administrateur')
+    return false if self.profile.blank?
+    self.profile.slug.eql?('administrateur')
   end
 
   def has_access_to?(controller_label, action_name)
     return true if is_admin?
-    return false if (admin_profile.blank? || admin_profile.profile_abilities.empty?)
-    admin_profile.profile_abilities.exists?(controller_name: controller_label, action_name: action_name)
+    return false if (profile.blank? || profile.profile_abilities.empty?)
+    profile.profile_abilities.exists?(controller_name: controller_label, action_name: action_name)
   end
 
   private

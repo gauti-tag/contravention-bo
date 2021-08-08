@@ -23,7 +23,7 @@ services:
     ports: 
       - "5032:5432"
     volumes:
-      - ./db-data:/var/lib/postgresql/data
+      - ${DB_DATA_LOTOGBADMIN}:/var/lib/postgresql/data
     environment:
       # Setting postgresql credentials
       - POSTGRES_USER
@@ -33,6 +33,3 @@ services:
   redis:
     image: redis:6.2.1-alpine
     restart: always
-
-volumes:
-  db-data:

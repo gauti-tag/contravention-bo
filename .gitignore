@@ -18,8 +18,6 @@
 !/tmp/pids
 !/tmp/pids/.keep
 
-db-data/*
-
 # Ignore uploaded files in development
 /storage/*
 

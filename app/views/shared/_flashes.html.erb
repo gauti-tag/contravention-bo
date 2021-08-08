@@ -1,0 +1,18 @@
+<% if flash[:notice] %>
+  <%= javascript_tag do %>
+    var flashMessage = '<%= "<strong>#{flash[:notice]}</strong>".html_safe %>';
+    window.Swal.fire({title: "Succès!", html: flashMessage, timer: 5000, type: "success", showCloseButton: true, allowOutsideClick: true});
+  <% end %>
+<% end %>
+<% if flash[:alert] %>
+  <%= javascript_tag do %>
+    var flashMessage = '<%= "<strong>#{flash[:alert]}</strong>".html_safe %>';
+    window.Swal.fire({title: "Erreur!", html: flashMessage, timer: 5000, type: "error", showCloseButton: true, allowOutsideClick: true});
+  <% end %>
+<% end %>
+<% if flash[:warning] %>
+  <%= javascript_tag do %>
+    var flashMessage = '<%= "<strong>#{flash[:warning]}</strong>".html_safe %>';
+    window.Swal.fire({title: "Attention!", html: flashMessage, timer: 7000, type: "warning", showCloseButton: true, allowOutsideClick: true});
+  <% end %>
+<% end %>
