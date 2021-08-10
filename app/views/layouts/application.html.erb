@@ -29,11 +29,11 @@
     <!-- Main content wrapper -->
     <main class="content">
       <%= render partial: 'shared/header' %>
-      <%= render partial: 'shared/flashes' %>
       <%= yield %>
       <!-- Footer -->
       <%= render partial: 'shared/footer' %>
     </main>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= render partial: 'shared/flashes' %>
   </body>
 </html>

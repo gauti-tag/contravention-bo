@@ -1,0 +1,34 @@
+{
+  "application.js": "/packs-test/js/application-476e9b4796c6dd6ceea9.js",
+  "application.js.map": "/packs-test/js/application-476e9b4796c6dd6ceea9.js.map",
+  "entrypoints": {
+    "application": {
+      "js": [
+        "/packs-test/js/application-476e9b4796c6dd6ceea9.js"
+      ],
+      "js.map": [
+        "/packs-test/js/application-476e9b4796c6dd6ceea9.js.map"
+      ]
+    },
+    "turbolinks": {
+      "js": [
+        "/packs-test/js/turbolinks-90fd3b2130855c259dbf.js"
+      ],
+      "js.map": [
+        "/packs-test/js/turbolinks-90fd3b2130855c259dbf.js.map"
+      ]
+    },
+    "volt": {
+      "js": [
+        "/packs-test/js/volt-a10881616e9d09ab6f1c.js"
+      ],
+      "js.map": [
+        "/packs-test/js/volt-a10881616e9d09ab6f1c.js.map"
+      ]
+    }
+  },
+  "turbolinks.js": "/packs-test/js/turbolinks-90fd3b2130855c259dbf.js",
+  "turbolinks.js.map": "/packs-test/js/turbolinks-90fd3b2130855c259dbf.js.map",
+  "volt.js": "/packs-test/js/volt-a10881616e9d09ab6f1c.js",
+  "volt.js.map": "/packs-test/js/volt-a10881616e9d09ab6f1c.js.map"
+}

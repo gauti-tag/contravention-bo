@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :admin_profile do
-    title { Faker::Job.position }
+    title { Faker::Job.unique.position }
     slug { title.parameterize }
 
     factory :admin do

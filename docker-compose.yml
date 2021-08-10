@@ -23,7 +23,7 @@ services:
     ports: 
       - "5032:5432"
     volumes:
-      - ${DB_DATA_LOTOGBADMIN}:/var/lib/postgresql/data
+      - "${DB_DATA_LOTOGBADMIN}:/var/lib/postgresql/data"
     environment:
       # Setting postgresql credentials
       - POSTGRES_USER

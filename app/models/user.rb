@@ -3,7 +3,7 @@ class User < ApplicationRecord
   friendly_id :slug_candidates, use: :slugged
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable,
          :recoverable, :rememberable, :validatable, :trackable, :lockable,
          :timeoutable, authentication_keys: [:login]
 
@@ -14,14 +14,22 @@ class User < ApplicationRecord
   has_one_attached :avatar
   belongs_to :profile, class_name: 'AdminProfile', primary_key: 'id', foreign_key: 'profile_id', optional: true
 
+  has_many :users_created, class_name: "User", foreign_key: "author_id"
+  belongs_to :author, class_name: "User", foreign_key: "author_id", optional: true
+
+  enum account_status: [:pending, :active, :suspended]
+
   validates :email, presence: true, uniqueness: true
-  validates :msisdn, presence: true, uniqueness: true
+  validates :msisdn, presence: true, length: { minimum: 8 }, uniqueness: true
+  validates :password, length: { minimum: 8 }, allow_blank: true
   validates_format_of :email, with: EMAIL_REGEX
   validates_format_of :msisdn, with: PHONE_NUMBER_REGEX, :multiline => true
   validate :validate_msisdn
 
   scope :with_eager_loaded_avatar, -> { eager_load(avatar_attachment: :blob) }
   scope :with_preloaded_avatar, -> { preload(avatar_attachment: :blob) }
+
+  after_save :set_user_profile
 
   attr_writer :login
 
@@ -38,6 +46,10 @@ class User < ApplicationRecord
 
   def fullname
     firstname + ' ' + lastname
+  end
+
+  def profile_name
+    profile.try(:title) || ''
   end
 
   def self.find_for_database_authentication(warden_conditions)
@@ -64,6 +76,14 @@ class User < ApplicationRecord
   
   def validate_msisdn
     errors.add(:msisdn, :invalid) if User.where(email: msisdn).exists?
+  end
+
+  def set_user_profile
+    return if profile.present?
+    guest_profile = AdminProfile.friendly.find('guest')
+    update(profile_id: guest_profile)
+  rescue
+    nil
   end
 
 end

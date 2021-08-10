@@ -24,8 +24,8 @@
   </head>
 
   <body>
-    <%= render partial: 'shared/flashes' %>
     <%= yield %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= render partial: 'shared/flashes' %>
   </body>
 </html>

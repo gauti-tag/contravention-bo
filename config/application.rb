@@ -34,6 +34,8 @@ module LotoGbAdmin
     config.log_tags  = %i[subdomain uuid]
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
 
+    config.i18n.default_locale = :fr
+
     #autoloads lib folder during production
     #config.eager_load_paths << Rails.root.join('lib')
 

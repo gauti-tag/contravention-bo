@@ -41,20 +41,22 @@ gem 'rack-cors', '~> 1.1', '>= 1.1.1'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
-gem 'simplecov', '~> 0.21.2', require: false, group: :test
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 5.0', '>= 5.0.1'
-  gem 'guard-rspec', require: false
-  gem 'shoulda-matchers', '~> 5.0'
   gem 'factory_bot_rails', '~> 6.2'
+  gem 'guard-rspec', require: false
   gem 'pry', '~> 0.13.1'
   gem 'pry-byebug', '~> 3.9'
+  gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
+  gem 'shoulda-matchers', '~> 5.0'
+end
+
+group :test do
   gem 'database_cleaner', '~> 2.0', '>= 2.0.1'
   gem 'faker', '~> 2.18'
-  gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
+  gem 'simplecov', '~> 0.21.2', require: false
 end
 
 group :development do
