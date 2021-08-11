@@ -36,10 +36,28 @@ class UsersController < ApplicationController
     end
   end
 
+  def update_account_status
+    user = User.friendly.find(params[:id])
+    status = {
+      'active' => 1,
+      'suspend' => 2
+    }.fetch(params[:status], nil)
+    if status.present?
+      user.update(account_status: status)
+      flash[:notice] = 'Le statut du compte a été modifié.'
+    else
+      flash[:warning] = "Échèc de l'opération"
+    end
+    redirect_to users_url
+  rescue
+    flash[:error] = "Utilisateur inconnu!"
+    redirect_to users_url
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(:email, :msisdn, :firstname, :lastname, :password, :password_confirmation, :profile_id)
+    params.require(:user).permit(:email, :msisdn, :firstname, :lastname, :password, :password_confirmation, :account_status, :profile_id)
   end
 
   def fetch_user

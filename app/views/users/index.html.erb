@@ -63,7 +63,7 @@
               <span class="fw-bold"><%= user.profile_name %></span>
             </td>
             <td>
-              <span class="fw-bold text-warning">Actif</span>
+              <%= display_user_status(user.account_status).html_safe %>
             </td>
             <td>
               <div class="btn-group">
@@ -85,10 +85,9 @@
                     </svg>
                     Voir Détails
                   <% end %>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <svg class="dropdown-icon text-danger me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11 6a3 3 0 11-6 0 3 3 0 016 0zM14 17a6 6 0 00-12 0h12zM13 8a1 1 0 100 2h4a1 1 0 100-2h-4z"></path>
-                    </svg> Suspendre </a>
+                  <%= link_to update_account_status_path(id: user.slug, status: (user.active? ? 'suspend' : 'active')), method: 'patch', class: 'dropdown-item d-flex align-items-center' do %>
+                    <%= display_status_link(user.account_status).html_safe %>
+                  <% end %>
                 </div>
               </div>
             </td>

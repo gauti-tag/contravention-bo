@@ -99,6 +99,24 @@ RSpec.describe "Users management", type: :request do
 
     end
 
+    describe 'PATCH users#update_account_status' do
+
+      context 'with valid parameters' do
+        let(:user) { create(:user) }
+
+        it 'should change user status' do
+          patch update_account_status_path(id: user.id), params: { status: 'suspend' }
+          user.reload
+          expect(user.suspended?).to eq(true)
+        end
+
+        it 'should redirect to users list' do
+          patch update_account_status_path(id: user.id), params: { status: 'suspend' }
+          expect(response).to redirect_to(users_url)
+        end
+      end
+    end
+
   end
 
 end

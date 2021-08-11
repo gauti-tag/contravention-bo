@@ -11,4 +11,7 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'main#index', as: :dashboard
   resources :users
 
+  patch '/users/edit/status/:id', to: 'users#update_account_status', as: :update_account_status
+  
+
 end

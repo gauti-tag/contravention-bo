@@ -72,6 +72,12 @@
           <%= f.select :profile_id, @profiles_for_user, { include_blank: "Sélectionnez un profil" }, class: 'form-select mb-0'%>
         </div>
       </div>
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <%= f.label :account_status, "Statut du compte" %>
+          <%= f.select :account_status, [['Actif', 'active'], ['Suspendu', 'suspended']], { include_blank: "Sélectionnez un statut" }, required: true, class: 'form-select mb-0'%>
+        </div>
+      </div>
     </div>
     <div class="row mt-3 w-50">
       <div class="col">
