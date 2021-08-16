@@ -14,7 +14,7 @@
     <div class="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
       <div class="d-flex align-items-center">
         <div class="avatar-lg me-4">
-          <%= image_tag @current_avatar, alt: "User avatar", class: "card-img-top rounded-circle border-white" %>
+          <%= image_tag user_avatar(current_user), alt: "User avatar", class: "card-img-top rounded-circle border-white" %>
         </div>
         <div class="d-block">
           <h2 class="h5 mb-3">Salut, <%= current_user.firstname %></h2>
@@ -72,7 +72,7 @@
               <% end %>
             </li>
             <li class="nav-item">
-              <%= link_to root_path, class: "nav-link" do %>
+              <%= link_to admin_profiles_path, class: "nav-link" do %>
                 <span class="sidebar-text">Profils</span>
               <% end %>
             </li>

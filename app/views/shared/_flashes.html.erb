@@ -4,6 +4,12 @@
     window.Swal.fire({icon: 'success', title: "Succès!", html: flashMessage, timer: 7000, type: "success", showCloseButton: true, allowOutsideClick: true});
   <% end %>
 <% end %>
+<% if flash[:now] %>
+  <%= javascript_tag do %>
+    var flashMessage = '<%= "<strong>#{flash[:now]}</strong>".html_safe %>';
+    window.Swal.fire({icon: 'info', title: "Info!", html: flashMessage, timer: 7000, type: "info", showCloseButton: true, allowOutsideClick: true});
+  <% end %>
+<% end %>
 <% if flash[:alert] %>
   <%= javascript_tag do %>
     var flashMessage = '<%= "<strong>#{flash[:alert]}</strong>".html_safe %>';

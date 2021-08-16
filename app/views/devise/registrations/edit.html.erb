@@ -1,43 +1,102 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+  <div class="d-block mb-4 mb-md-0">
+    <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+      <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+        <li class="breadcrumb-item">
+          <a href="#">
+            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="#">Profil</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Mon compte</li>
+      </ol>
+    </nav>
+    <h2 class="h4">Mon profil</h2>
+    <p class="mb-0">Back-Office LOTO GUINÉE-BISSAU</p>
   </div>
-
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+</div>
+<div class="row">
+ <div class="col-12 col-xl-8">
+  <div class="card card-body border-0 shadow">
+    <h2 class="h5 mb-4">Détais du compte</h2>
+    <%= form_for(resource, as: resource_name, url: user_registration_path(resource_name), method: :patch) do |f| %>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="form-group">
+            <%= f.label :email, "E-mail" %>
+            <%= f.email_field :email, class: 'form-control', required: true, placeholder: "Ex: nom@compagnie.com" %>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="form-group">
+            <%= f.label :msisdn, "N° Téléphone" %>
+            <%= f.text_field :msisdn, class: 'form-control', required: true, placeholder: "Ex: 2250701010101", pattern: "[0-9]{8,15}", title: "Téléphone avec l'indicatif. Ex: 2250701010101" %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="form-group">
+            <%= f.label :lastname, "Nom" %>
+            <%= f.text_field :lastname, class: 'form-control', placeholder: "Entrez le nom" %>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="form-group">
+            <%= f.label :firstname, "Prenoms" %>
+            <%= f.text_field :firstname, class: 'form-control', placeholder: "Entrez le(s) prenom(s)"%>
+          </div>
+        </div>
+      </div>
+       <div class="row">
+        <div class="col-md-8 mb-3">
+          <div class="form-group">
+            <%= f.label :avatar, "Photo de profil" %>
+            <%= f.file_field :avatar, class: 'form-control', accept: 'image/png,image/jpeg' %>
+          </div>
+        </div>
+      </div>
+      <p class="text-danger mb-1">Laissez les champs mots de passe vides si vous ne voulez pas changer.<p>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="form-group">
+            <%= f.label :password, "Mot de passe" %>
+            <%= f.password_field :password, class: 'form-control', placeholder: "Mot de passe" %>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="form-group">
+            <%= f.label :password_confirmation, "Confirmation Mot de passe" %>
+            <%= f.password_field :password_confirmation, class: 'form-control', placeholder: "Confirmation Mot de passe"%>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3 w-50">
+        <div class="col">
+          <%= f.submit 'Enregistrer', class: 'btn btn-sm btn-primary'%>
+        </div>
+        <div class="col">
+          <%= link_to(url_for(:back), class: 'btn btn-sm btn-white') do %>
+            Retour
+          <%end%>
+        </div>
+      </div>
     <% end %>
   </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+ </div>
+ <div class="col-12 col-xl-4">
+  <div class="card shadow border-0 text-center p-0">
+    <div class="profile-cover rounded-top" data-background='<%= asset_path("profile-cover") %>' style='background: rgba(0, 0, 0, 0) url(<%= asset_path("profile-cover")%>) repeat scroll 0% 0%;'></div>
+    <div class="card-body pb-5">
+      <%= image_tag user_avatar(current_user), alt: "User avatar", class: "avatar-xl rounded-circle mx-auto mt-n7 mb-4" %>
+      <h4 class="h3"><%= current_user.fullname %></h4>
+      <h5 class="fw-normal"><%= current_user.profile_name %></h5>
+      <p class="text-gray mb-4"> <%= current_user.email %> / <%= current_user.msisdn %></p>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
-<%= link_to "Back", :back %>
+ </div>
+</div>

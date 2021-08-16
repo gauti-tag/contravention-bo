@@ -41,7 +41,11 @@
                                         </label>
                                       </div>
                                     <% end %>
-                                    <div><a href="/" class="small text-right">Mot de passe oublié?</a></div>
+                                    <div>
+                                    <%= link_to new_user_password_path, class: 'small text-right' do %>
+                                        Mot de passe oublié?
+                                    <% end %>
+                                    </div>
                                 </div>
                             </div>
                             <div class="d-grid">
