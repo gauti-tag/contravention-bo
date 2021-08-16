@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, skip: [:registrations], :controllers => { :registrations => :registrations }
+  devise_for :users, skip: [:registrations], :controllers => { registrations: :registrations, passwords: :passwords }
 
   as :user do
     get '/users/edit' => 'devise/registrations#edit', as: :edit_user_registration
@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   root 'main#index'
   get '/dashboard', to: 'main#index', as: :dashboard
   resources :users
+  resources :admin_profiles
 
   patch '/users/edit/status/:id', to: 'users#update_account_status', as: :update_account_status
   

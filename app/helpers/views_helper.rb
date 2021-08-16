@@ -1,4 +1,8 @@
 module ViewsHelper
+
+  def user_avatar(user)
+    (user.avatar.variant(resize: "100x100") rescue '/assets/user.png')
+  end
   
   def display_status_link(user_status)
     label = 'Suspendre'
@@ -13,6 +17,14 @@ module ViewsHelper
 
     return %Q[<svg class="dropdown-icon #{svg_class} me-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="#{svg_path}"></path></svg> #{label}]
 
+  end
+
+  def ability_checkbox(abilities, id)
+    if abilities.include?(id)
+      %Q[<input checked="checked" id="admin_ability_ids[]" name="admin_ability_ids[]" type="checkbox" value="#{id}" class="form-check-input" />].html_safe
+    else
+      %Q[<input id="admin_ability_ids[]" name="admin_ability_ids[]" type="checkbox" value="#{id}" class="form-check-input" />].html_safe
+    end
   end
 
   def display_user_status(user_status)

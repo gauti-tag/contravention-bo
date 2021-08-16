@@ -1,6 +1,9 @@
 build:
 		docker-compose build
 
+run-dev:
+		docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+
 run:
 		docker-compose up -d
 

@@ -14,7 +14,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '43a92fb1fa91504ea5de9afd69956b7d6ae07050181bfa9e7694519d95d79fc8b9d1af7cfcb37ca71c513d2c6b24eb7eb0968147405b02dd5516d5e25dfa2b17'
+  config.secret_key = '43a92fb1fa91504ea5de9afd69956b7d6ae07050181bfa9e7694519d95d79fc8b9d1af7cfcb37ca71c513d2c6b24eb7eb0968147405b02dd5516d5e25dfa2b17'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -24,7 +24,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = 'supports.maintenances@ngser.com'
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -126,7 +126,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '15c11e862c6a7e6ceb7149a1306a8a8c9aed8bf2656fcf89bf2c38bc069c11d03b1d81ba30056b098b462704a8ff9e79a691644fe925371ee54a2ba88f2fbb3f'
+  config.pepper = '15c11e862c6a7e6ceb7149a1306a8a8c9aed8bf2656fcf89bf2c38bc069c11d03b1d81ba30056b098b462704a8ff9e79a691644fe925371ee54a2ba88f2fbb3f'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -228,7 +228,7 @@ Devise.setup do |config|
 
   # When set to false, does not sign a user in automatically after their password is
   # reset. Defaults to true, so a user is signed in automatically after a reset.
-  # config.sign_in_after_reset_password = true
+  config.sign_in_after_reset_password = true
 
   # ==> Configuration for :encryptable
   # Allow you to use another hashing or encryption algorithm besides bcrypt (default).

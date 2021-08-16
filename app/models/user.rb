@@ -24,7 +24,6 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 8 }, allow_blank: true
   validates_format_of :email, with: EMAIL_REGEX
   validates_format_of :msisdn, with: PHONE_NUMBER_REGEX, :multiline => true
-  validate :validate_msisdn
 
   scope :with_eager_loaded_avatar, -> { eager_load(avatar_attachment: :blob) }
   scope :with_preloaded_avatar, -> { preload(avatar_attachment: :blob) }
@@ -55,15 +54,34 @@ class User < ApplicationRecord
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
-      where(conditions.to_h).where(["lower(msisdn) = :value OR lower(email) = :value", { :value => login.downcase }]).first
-    elsif conditions.has_key?(:msisdn) || conditions.has_key?(:email)
-			where(conditions.to_h).first
+      where(conditions.to_h).where(["lower(email) = :value OR lower(msisdn) = :value", { :value => login.downcase }]).first
+    elsif conditions.has_key?(:email) || conditions.has_key?(:msisdn)
+      where(conditions.to_h).first
     end
+  end
+
+  # Override update_with_password method from Devise DatabaseAuthenticatable module
+  # Allow current user to update his data without fill in current password
+  def update_with_password(params, *options)
+    
+    if params[:password].blank?
+      params.delete(:password)
+      params.delete(:password_confirmation) if params[:password_confirmation].blank?
+    end
+
+    result = update(params, *options)
+    clean_up_passwords
+    result
   end
 
   def is_admin?
     return false if self.profile.blank?
     self.profile.slug.eql?('administrateur')
+  end
+
+  def is_guest?
+    return false if self.profile.blank?
+    self.profile.slug.eql?('guest')
   end
 
   def has_access_to?(controller_label, action_name)
@@ -72,16 +90,17 @@ class User < ApplicationRecord
     profile.profile_abilities.exists?(controller_name: controller_label, action_name: action_name)
   end
 
-  private
-  
-  def validate_msisdn
-    errors.add(:msisdn, :invalid) if User.where(email: msisdn).exists?
+  def home_path
+    return '/' if has_access_to?('main', 'index')
+    '/users/edit'
   end
+
+  private
 
   def set_user_profile
     return if profile.present?
     guest_profile = AdminProfile.friendly.find('guest')
-    update(profile_id: guest_profile)
+    update(profile_id: guest_profile.id)
   rescue
     nil
   end
