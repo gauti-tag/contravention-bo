@@ -32,6 +32,19 @@ module ViewsHelper
     %Q[<span class="fw-bold #{status_class}">#{user_status_label(user_status)}</span>]
   end
 
+  def display_log_tag(tag)
+    tag_class ="badge bg-primary"
+    case tag
+    when "INFO"
+      tag_class ="badge bg-info"
+    when "WARN"
+      tag_class ="badge bg-warning"
+    when "ERROR"
+      tag_class ="badge bg-danger"
+    end
+    %Q[<span class="#{tag_class}">#{tag}</span>]
+  end
+
   def user_status_label(status)
     {
       'suspended' => 'Suspendu',

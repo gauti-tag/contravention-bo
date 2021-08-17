@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  @@log_title= "Utilisateurs"
+
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
   # Include default devise modules. Others available are:

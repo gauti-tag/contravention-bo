@@ -1,4 +1,6 @@
 class AdminProfile < ApplicationRecord
+  @@log_title= "Profils"
+
   extend FriendlyId
   friendly_id :title, use: :history
   
