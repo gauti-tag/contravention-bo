@@ -96,12 +96,14 @@ d.addEventListener("DOMContentLoaded", function (event) {
 
 
     // Datepicker
+    var Datepicker = window.vanillajsDatepicker.Datepicker;
+    /*
     var datepickers = [].slice.call(d.querySelectorAll('[data-datepicker]'))
     var datepickersList = datepickers.map(function (el) {
         return new Datepicker(el, {
             buttonClass: 'btn'
         });
-    })
+    })*/
 
     // DataTables
     var simpleDatatables = window.simpleDatatables;
@@ -555,9 +557,10 @@ d.addEventListener("DOMContentLoaded", function (event) {
     }
 
     // Choices.js
-    var selectStateInputEl = d.querySelector('#state');
-    if (selectStateInputEl) {
-        const choices = new Choices(selectStateInputEl);
+    var Choices = window.Choices;
+    var selectStateInput = d.querySelector('.choices-select');
+    if (selectStateInput) {
+        const choices = new Choices(selectStateInput);
     }
 
     // Sortable Js
@@ -592,10 +595,11 @@ d.addEventListener("DOMContentLoaded", function (event) {
     }
 
     // multiple
-    var selectStatesInputEl = d.querySelector('#states');
-    if (selectStatesInputEl) {
-        const choices = new Choices(selectStatesInputEl);
-    }
+    /*
+    var selectStatesInputMult = d.querySelector('.choices-multiple');
+    if (selectStatesInputMult) {
+        const choices = new Choices(selectStatesInputMult);
+    }*/
 
     // Pricing countup
     var billingSwitchEl = d.getElementById('billingSwitch');

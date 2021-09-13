@@ -29,7 +29,15 @@ module ViewsHelper
 
   def display_user_status(user_status)
     status_class = user_status.eql?('active') ? "text-success" : "text-danger"
-    %Q[<span class="fw-bold #{status_class}">#{user_status_label(user_status)}</span>]
+    %Q(<span class="fw-bold #{status_class}">#{user_status_label(user_status)}</span>)
+  end
+
+  def select_mulitple_tag(name, values)
+    options = ''
+    values.each do |value|
+      options << %Q(<option value="#{value.first}">#{value.last}</option>)
+    end
+    %Q(<select id='choices-multiple' class='choices-multiple w-100 mb-0' name="#{name}" multiple='multiple'>#{options}</select>)
   end
 
   def display_log_tag(tag)

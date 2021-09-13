@@ -16,3 +16,9 @@
  *= require_tree .
  *= require_self
  */
+ 
+ .dt-rows-id {
+  font-weight: 500 !important;
+  color: #1f2937;
+  transition: all .2s ease;
+ }
