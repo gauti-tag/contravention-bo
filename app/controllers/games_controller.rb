@@ -44,6 +44,7 @@ class GamesController < ApplicationController
   def create_draw
     @draw = GameDraw.new(draw_params)
     if @draw.save
+      SaveDraw.call(@draw.as_json(root: 'request', only: [:published_at, :drawn_at, :identifier, :game_id, :balls]))
       flash[:notice] = 'Le tirage a été ajouté.'
       redirect_to games_draws_url
     else
