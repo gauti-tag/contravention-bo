@@ -10,8 +10,9 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.author = current_user
+    @user.account_status = 1
     if @user.save
-      @user.update(author_id: current_user.id, account_status: 1)
       flash[:notice] = 'Le compte a été créé.'
       redirect_to users_url
     else
@@ -27,6 +28,7 @@ class UsersController < ApplicationController
   def update
     user_attributes = user_params.reject { |_k, v| v.blank? }
     @user.assign_attributes(user_attributes)
+    @user.author = current_user
     if @user.save
       flash[:notice] = 'Le compte a été modifié.'
       redirect_to user_url(@user)

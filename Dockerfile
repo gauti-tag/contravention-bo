@@ -3,8 +3,8 @@ FROM ruby:2.6.0-alpine3.8
 # Author's information
 LABEL maintainer="jean.toure@ngser.com"
 
-ARG HOST_UID=1000
-ARG HOST_GID=1000
+ARG HOST_UID=1024
+ARG HOST_GID=1028
 
 # Install dependances
 ENV BUNDLER_VERSION=2.0.2

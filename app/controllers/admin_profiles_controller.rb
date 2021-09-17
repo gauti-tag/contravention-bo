@@ -10,8 +10,8 @@ class AdminProfilesController < ApplicationController
 
   def create
     @profile = AdminProfile.new(profile_params)
+    @profile.author = current_user
     if @profile.save
-      @profile.update(author_id: current_user.id)
       flash[:notice] = 'Le profil a été créé.'
       redirect_to admin_profiles_url
     else
@@ -31,12 +31,24 @@ class AdminProfilesController < ApplicationController
   end
 
   def update
-    user_attributes = user_params.reject { |_k, v| v.blank? }
-    @user.assign_attributes(user_attributes)
-    if @user.save
-      flash[:notice] = 'Le compte a été modifié.'
-      redirect_to user_url(@user)
+    new_abilities = profile_params[:admin_ability_ids]
+    new_abilities = new_abilities.collect { |id| id.to_i } if new_abilities.present?
+    @profile.title = profile_params[:title]
+    @profile.author = current_user
+    if @profile.save
+      flash[:notice] = 'Le profil a été modifié.'
+      unless new_abilities.blank?
+        @profile.admin_abilities.delete_all
+        @profile.admin_ability_ids = new_abilities
+      end
+      redirect_to admin_profile_url(@profile)
     else
+      @abilities = {
+        'ADMIN' => @abilities.where(tag: :admin),
+        'MÉTIER' => @abilities.where(tag: :business),
+        'AUTRES' => @abilities.where(tag: :other)
+      }
+      @profile_abilities = @profile.admin_abilities.pluck(:id)
       flash[:alert] = @user.errors.full_messages.join(', ')
       render :show
     end

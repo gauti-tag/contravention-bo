@@ -19,6 +19,8 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="theme-color" content="#ffffff">
 
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'turbolinks', 'data-turbolinks-track': 'reload' %>
   </head>
@@ -33,7 +35,39 @@
       <!-- Footer -->
       <%= render partial: 'shared/footer' %>
     </main>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application' %>
     <%= render partial: 'shared/flashes' %>
+    <%= yield :page_javascript %>
+    <script type="text/javascript">
+      (function() {
+        var selectStatesInputMult = document.querySelector('.choices-multiple');
+        if (selectStatesInputMult) {
+          var Choices = window.Choices;
+          var choicesElt = new Choices('.choices-multiple');
+        }
+
+        var Datepicker = window.vanillajsDatepicker.Datepicker;
+        Datepicker.locales.fr = {
+          days: ["Dimanche", "Lundi", "mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+          daysShort: ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."],
+          daysMin: ["D", "L", "Ma", "Me", "J", "V", "S"],
+          months: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+          monthsShort: ["Jan.", "Févr.", "Mars", "Avril", "Mai", "Juin", "Juil.", "Août", "Sept.", "Oct.", "Nov.", "Déc."],
+          today: "Aujourd'hui",
+          monthsTitle: "Mois",
+          clear: "Effacer",
+          weekStart: 1,
+          format: "dd/mm/yyyy"
+        };
+        var datepickers = [].slice.call(document.querySelectorAll('[data-datepicker]'))
+        var datepickersList = datepickers.map(function (el) {
+            return new Datepicker(el, {
+                buttonClass: 'btn',
+                format: 'dd/mm/yyyy',
+                language: 'fr'
+            });
+        });
+      })();
+    </script>
   </body>
 </html>

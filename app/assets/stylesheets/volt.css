@@ -308,7 +308,7 @@
 }
 body {
  margin:0;
- font-family:var(--bs-font-sans-serif);
+ font-family:var(--bs-font-sans-serif) !important;
  font-size:1rem;
  font-weight:400;
  line-height:1.5;
@@ -7324,7 +7324,7 @@ fieldset:disabled .btn {
  z-index:1070;
  display:block;
  margin:2rem;
- font-family:var(--bs-font-sans-serif);
+ font-family:var(--bs-font-sans-serif) !important;
  font-style:normal;
  font-weight:400;
  line-height:1.5;
@@ -7432,7 +7432,7 @@ fieldset:disabled .btn {
  z-index:1060;
  display:block;
  max-width:276px;
- font-family:var(--bs-font-sans-serif);
+ font-family:var(--bs-font-sans-serif) !important;
  font-style:normal;
  font-weight:400;
  line-height:1.5;
@@ -22269,7 +22269,7 @@ h6 {
 ol li,
 p,
 ul li {
- font-family:var(--bs-font-sans-serif);
+ font-family:var(--bs-font-sans-serif) !important;
  font-size:1rem;
  font-weight:400;
  line-height:1.6
@@ -22356,7 +22356,7 @@ a:hover {
 code[class*=language-],
 pre[class*=language-] {
  text-shadow:none;
- font-family:var(--bs-font-sans-serif);
+ font-family:var(--bs-font-sans-serif) !important;
  font-weight:500
 }
 .text-primary,
