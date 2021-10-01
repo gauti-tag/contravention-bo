@@ -12,4 +12,14 @@ class DatatablesController < ApplicationController
     render json: result.data.to_h
   end
 
+  def day_draw_types
+    week_day = params[:day].to_i
+    records = DrawType.where(week_day: week_day).order(name: :asc)
+    result = []
+    records.each do |record|
+      result << record.serializable_hash(methods: :title)
+    end
+    render json: result
+  end
+
 end

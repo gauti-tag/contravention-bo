@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_23_104024) do
+ActiveRecord::Schema.define(version: 2021_09_29_100020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,28 @@ ActiveRecord::Schema.define(version: 2021_08_23_104024) do
     t.index ["user_id"], name: "index_audit_logs_on_user_id"
   end
 
+  create_table "draw_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "week_day", null: false
+    t.time "bets_end_at"
+    t.time "drawn_at"
+    t.boolean "status", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "draws", force: :cascade do |t|
+    t.string "identifier", null: false
+    t.text "draw_numbers", default: [], array: true
+    t.date "published_at", null: false
+    t.bigint "draw_type_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "author_id"
+    t.index ["draw_type_id"], name: "index_draws_on_draw_type_id"
+    t.index ["identifier"], name: "index_draws_on_identifier", unique: true
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -80,21 +102,9 @@ ActiveRecord::Schema.define(version: 2021_08_23_104024) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
-  create_table "game_draws", force: :cascade do |t|
-    t.text "balls", default: [], array: true
-    t.date "published_at", null: false
-    t.time "drawn_at", null: false
-    t.string "identifier", null: false
-    t.bigint "game_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.integer "author_id"
-    t.index ["game_id"], name: "index_game_draws_on_game_id"
-    t.index ["identifier"], name: "index_game_draws_on_identifier", unique: true
-  end
-
   create_table "games", force: :cascade do |t|
     t.string "name", limit: 100, null: false
+    t.integer "numbers_limit", default: 1, null: false
     t.float "probability", default: 0.0
     t.float "rating", default: 1.0
     t.float "payout_rating"
@@ -153,8 +163,8 @@ ActiveRecord::Schema.define(version: 2021_08_23_104024) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_profiles", "users", column: "author_id"
   add_foreign_key "audit_logs", "users"
-  add_foreign_key "game_draws", "games"
-  add_foreign_key "game_draws", "users", column: "author_id"
+  add_foreign_key "draws", "draw_types"
+  add_foreign_key "draws", "users", column: "author_id"
   add_foreign_key "profile_abilities", "admin_abilities"
   add_foreign_key "profile_abilities", "admin_profiles"
   add_foreign_key "users", "admin_profiles", column: "profile_id"

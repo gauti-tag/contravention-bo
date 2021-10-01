@@ -15,15 +15,15 @@
         <li class="breadcrumb-item active" aria-current="page">Paramétrage LOTO</li>
       </ol>
     </nav>
-    <h2 class="h4">Liste des tirages</h2>
+    <h2 class="h4">Liste des types de tirages</h2>
     <p class="mb-0">Back-Office LOTO GUINÉE-BISSAU</p>
   </div>
   <div class="btn-toolbar mb-2 mb-md-0">
-    <%= link_to new_draw_path, class: 'btn btn-sm btn-gray-800 d-inline-flex align-items-center' do %>
+    <%= link_to new_draw_type_path, class: 'btn btn-sm btn-gray-800 d-inline-flex align-items-center' do %>
       <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
       </svg> 
-      Nouveau Tirage 
+      Nouveau Type de tirage 
     <% end %>
     <div class="btn-group ms-2 ms-lg-3">
       <button type="button" class="btn btn-sm btn-outline-gray-600">Exporter</button>
@@ -34,38 +34,32 @@
   <table class="table table-hover" id="datatable">
     <thead class="thead-light">
       <tr>
-        <th class="border-gray-200">N°</th>
-        <th class="border-gray-200">Numéros</th>
-        <th class="border-gray-200">Type</th>
-        <th class="border-gray-200">Date</th>
+        <th class="border-gray-200">Nom</th>
+        <th class="border-gray-200">Jour de la semaine</th>
         <th class="border-gray-200">Heure</th>
+        <th class="border-gray-200">Heure fin paris</th>
         <th class="border-gray-200">Détails</th>
       </tr>
     </thead>
     <tbody>
-      <% @draws.each do |draw| %>
+      <% @draw_types.each do |draw_type| %>
         <!-- Item -->
           <tr>
             <td>
-              <span class="fw-bold"><%= draw.identifier %></span>
+              <span class="fw-bold"><%= draw_type.name.upcase %></span>
             </td>
             <td>
-              <% draw.draw_numbers.each do |item| %>
-                <span class="badge bg-primary"> <%= item %> </span>
-              <% end %>
+              <span class="fw-normal"><%= draw_type.week_day.capitalize %></span>
             </td>
             <td>
-              <span class="fw-bold"><%= draw.draw_type.name %></span>
+              <span class="fw-normal"><%= draw_type.draw_hour %></span>
             </td>
-            <td>
-              <span class="fw-normal"><%= draw.published_at.strftime("%d/%m/%Y") %></span>
-            </td>
-            <td>
-              <span class="fw-normal"><%= draw.draw_type.draw_hour %></span>
+             <td>
+              <span class="fw-normal"><%= draw_type.bets_end_at.strftime('%R') %></span>
             </td>
             <td>
               <div class="d-block" style="margin-top: -1rem">
-                <%= link_to draws_path, class: "d-flex align-items-center" do %>
+                <%= link_to draw_type_path(id: draw_type.id), class: "d-flex align-items-center" do %>
                     <div class="icon-shape icon-sm">
                       <svg class="text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
