@@ -130,7 +130,7 @@ class GamesController < ApplicationController
     draw = Draw.find_by(identifier: draw_params[:identifier])
     draw.update(draw_numbers: draw_params[:draw_numbers])
     flash[:notice] = 'Opération réussie.'
-    redirect_to draws_url
+    redirect_to draws_results_url
   end
 
   private
