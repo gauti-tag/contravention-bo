@@ -29,6 +29,9 @@ Rails.application.routes.draw do
   get '/loto/draw_type/:id', to: 'games#show_draw_type', as: :draw_type
   match '/loto/draw_type', to: 'games#update_draw_type', via: [:post, :patch], as: :update_draw_type
   post '/loto/draw_types/create', to: 'games#create_draw_type', as: :add_draw_type
+  get '/loto/draws/results', to: 'games#draws_results', as: :draws_results
+  get '/loto/draw/result', to: 'games#draw_result', as: :draw_result
+  match '/loto/draw/result', to: 'games#set_draw_result', via: [:post, :patch], as: :set_draw_result
   # Bets
   get '/loto/placed_bets', to: 'loto#placed_bets', as: :placed_bets
   get '/loto/winning_bets', to: 'loto#winning_bets', as: :winning_bets

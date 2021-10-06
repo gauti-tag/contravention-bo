@@ -15,15 +15,15 @@
         <li class="breadcrumb-item active" aria-current="page">Paramétrage LOTO</li>
       </ol>
     </nav>
-    <h2 class="h4">Liste des tirages</h2>
+    <h2 class="h4">Résultats Tirages</h2>
     <p class="mb-0">Back-Office LOTO GUINÉE-BISSAU</p>
   </div>
   <div class="btn-toolbar mb-2 mb-md-0">
-    <%= link_to new_draw_path, class: 'btn btn-sm btn-gray-800 d-inline-flex align-items-center' do %>
+    <%= link_to draw_result_path, class: 'btn btn-sm btn-gray-800 d-inline-flex align-items-center' do %>
       <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
       </svg> 
-      Nouveau Tirage 
+      Ajouter Résultat
     <% end %>
     <div class="btn-group ms-2 ms-lg-3">
       <button type="button" class="btn btn-sm btn-outline-gray-600">Exporter</button>
@@ -35,10 +35,10 @@
     <thead class="thead-light">
       <tr>
         <th class="border-gray-200">#</th>
+        <th class="border-gray-200">Résultat</th>
         <th class="border-gray-200">Type</th>
         <th class="border-gray-200">Date</th>
         <th class="border-gray-200">Heure</th>
-        <th class="border-gray-200">Heure fin paris</th>
       </tr>
     </thead>
     <tbody>
@@ -49,6 +49,11 @@
               <span class="fw-bold"><%= draw.identifier %></span>
             </td>
             <td>
+              <% draw.draw_numbers.each do |item| %>
+                <span class="badge bg-primary"> <%= item %> </span>
+              <% end %>
+            </td>
+            <td>
               <span class="fw-bold"><%= draw.draw_type.name %></span>
             </td>
             <td>
@@ -56,9 +61,6 @@
             </td>
             <td>
               <span class="fw-normal"><%= draw.draw_type.draw_hour %></span>
-            </td>
-            <td>
-              <span class="fw-normal"><%= draw.draw_type.bets_end_at.strftime("%R") %></span>
             </td>
           </tr>
           <!-- Item -->

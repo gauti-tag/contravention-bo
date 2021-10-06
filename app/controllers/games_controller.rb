@@ -75,16 +75,15 @@ class GamesController < ApplicationController
 
   def new_draw
     @draw = Draw.new
-    today = Time.now.wday
-    @week_day = days_labels.fetch(today.to_s, '')
-    @draw_types = DrawType.includes(:draws).where('draw_types.week_day = ?', today).collect { |dt| [dt.title, dt.id, dt.draw_hour, dt.draws.count + 1] }
+    wday = Time.now.wday
+    @week_day = days_labels.fetch(wday.to_s, '')
+    @draw_types = DrawType.includes(:draws).where('draw_types.week_day = ?', wday).collect { |dt| [dt.title, dt.id, dt.draw_hour] }
     @balls = (1..90).to_a.map { |num| [num, num] }
   end
 
   def create_draw
     @draw = Draw.new(draw_params)
-    identifier = @draw.published_at.to_time.to_i.to_s + '-' + @draw.draw_type_id.to_s + '-' + draw_params[:identifier].to_s
-    @draw.identifier = identifier
+    @draw.identifier = "#{@draw.published_at.to_time.to_i}-#{@draw.draw_type_id}-#{@draw.identifier}"
     if @draw.save
       SaveDraw.call(@draw.as_json(root: 'request', only: [:published_at, :draw_type_id, :identifier, :draw_numbers]))
       flash[:notice] = 'Le tirage a été ajouté.'
@@ -92,10 +91,10 @@ class GamesController < ApplicationController
     else
       today = Time.now.wday
       @week_day = days_labels.fetch(today.to_s, '')
-      @draw_types = DrawType.includes(:draws).where('draw_types.week_day = ?', today).collect { |dt| [dt.title, dt.id, dt.draw_hour, dt.draws.count + 1] }
+      @draw_types = DrawType.includes(:draws).where('draw_types.week_day = ?', today).collect { |dt| [dt.title, dt.id, dt.draw_hour] }
       @balls = (1..90).to_a.map { |num| [num, num] }
       if @draw.errors.include?(:identifier)
-        flash[:warning] = "Un tirage existe déjà à cette date!"
+        flash[:warning] = 'Un tirage existe déjà à cette période!'
       else
         flash[:alert] = @draw.errors.full_messages.join(', ')
       end
@@ -113,6 +112,25 @@ class GamesController < ApplicationController
       flash[:alert] = @draw.errors.full_messages.join(', ')
       render :show_draw
     end
+  end
+
+  def draws_results
+    @draws = Draw.includes(:draw_type).where("draws.draw_numbers != '{}'").order('draws.published_at DESC')
+  end
+
+  def draw_result
+    today = Date.today
+    wday = today.wday
+    @week_day = days_labels.fetch(wday.to_s, '')
+    @draw_types = DrawType.joins(:draws).where('draw_types.week_day = :wday AND draws.id IS NOT NULL AND draws.published_at = :date', {wday: wday, date: today}).collect { |dt| [dt.title, dt.id, dt.draw_hour, dt.last_identifier] }
+    @balls = (1..90).to_a.map { |num| [num, num] }
+  end
+
+  def set_draw_result
+    draw = Draw.find_by(identifier: draw_params[:identifier])
+    draw.update(draw_numbers: draw_params[:draw_numbers])
+    flash[:notice] = 'Opération réussie.'
+    redirect_to draws_url
   end
 
   private

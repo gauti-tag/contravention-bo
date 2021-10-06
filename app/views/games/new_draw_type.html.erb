@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6 mb-3">
+      <div class="col-md-4 mb-3">
         <div class="form-group">
           <%= f.label :drawn_at, "Heure du tirage" %>
           <div class="input-group">
@@ -48,7 +48,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6 mb-3">
+      <div class="col-md-4 mb-3">
         <div class="form-group">
           <%= f.label :bets_end_at, "Heure de fin paris" %>
           <div class="input-group">
@@ -57,6 +57,12 @@
             </span>
             <%= f.time_field :bets_end_at, class: 'form-control', required: true %>
           </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="form-group">
+          <%= f.label :status, "Statut" %>
+          <%= f.select :status, [['Actif', true], ['Inactif', false]], { }, class: 'form-select mb-0'%>
         </div>
       </div>
     </div>

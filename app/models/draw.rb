@@ -4,7 +4,7 @@ class Draw < ApplicationRecord
   belongs_to :draw_type
   belongs_to :author, class_name: 'User', foreign_key: 'author_id', optional: true
 
-  validates :draw_numbers, :published_at, presence: true
+  validates :published_at, presence: true
   validates :identifier, presence: true, uniqueness: true
 
   def title

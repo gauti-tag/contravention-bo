@@ -30,7 +30,7 @@ WORKDIR $RAILS_ROOT
 # Copy the gemfile and gemfile.lock so we can run bundle on it
 # Install and run bundle to get the app ready
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler \
+RUN gem install bundler -v $BUNDLER_VERSION \
   && bundle config build.nokogiri --use-system-libraries
 RUN bundle config set without 'test' \
   && bundle check || bundle install --jobs=3 --retry=3 \

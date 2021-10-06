@@ -10,6 +10,7 @@ class DrawType < ApplicationRecord
   def attributes
     {
       'id' => nil,
+      'name' => nil,
       'bets_end_at' => nil,
       'week_day' => nil,
       'drawn_at' => nil
@@ -21,8 +22,13 @@ class DrawType < ApplicationRecord
   end
   
   def draw_hour
-    self.drawn_at.strftime('%R')
+    drawn_at.strftime('%R')
   end
+
+  def last_identifier
+    draws.where(published_at: Date.today).first.identifier
+  end
+
 
   def day_and_hour_must_be_uniq
     record = DrawType.find_by(drawn_at: drawn_at, week_day: week_day)
