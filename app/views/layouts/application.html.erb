@@ -37,7 +37,6 @@
     </main>
     <%= javascript_pack_tag 'application' %>
     <%= render partial: 'shared/flashes' %>
-    <%= yield :page_javascript %>
     <script type="text/javascript">
       (function() {
         var selectStatesInputMult = document.querySelector('.choices-multiple');
@@ -64,10 +63,14 @@
             return new Datepicker(el, {
                 buttonClass: 'btn',
                 format: 'dd/mm/yyyy',
-                language: 'fr'
+                language: 'fr',
+                minDate: new Date()
             });
         });
+        window.datepickersList = datepickersList;
       })();
+
     </script>
+    <%= yield :page_javascript %>
   </body>
 </html>

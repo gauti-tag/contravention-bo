@@ -37,16 +37,22 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6 mb-3">
+      <div class="col-md-4 mb-3">
         <div class="form-group">
           <%= f.label :probability, "Probabilité" %>
           <%= f.text_field :probability, class: 'form-control', placeholder: "Probabilité" %>
         </div>
       </div>
-      <div class="col-md-6 mb-3">
+      <div class="col-md-4 mb-3">
         <div class="form-group">
           <%= f.label :payout_rating, "Côte Payout" %>
           <%= f.text_field :payout_rating, class: 'form-control', placeholder: "Côte Payout" %>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="form-group">
+          <%= f.label :numbers_limit, "Nombre de numéros" %>
+          <%= f.number_field :numbers_limit, class: 'form-control', min: 1, max: 10, placeholder: "Nombre de numéros" %>
         </div>
       </div>
     </div> 

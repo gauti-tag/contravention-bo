@@ -23,35 +23,32 @@
   <h2 class="h4 mb-4">Ajouter un tirage</h2>
   <%= form_with model: @draw, url: add_draw_path, local: true do |f| %>
      <div class="row">
-      <div class="col-md-6 mb-3">
-        <div class="form-group">
-          <%= f.label :week_day, "Jour de la semaine" %>
-          <%= f.text_field :week_day, value: @week_day, disabled: true, class: 'form-control'%>
-        </div>
-      </div>
-      <div class="col-md-6 mb-3">
-        <div class="form-group">
-          <%= f.label :draw_type_id, "Type Tirage" %>
-          <select id="draw_draw_type_id" name="draw[draw_type_id]" required class="form-select mb-0">
-            <option value="">Sélectionnez un tirage</option>
-            <% @draw_types.each do |item| %>
-              <option value='<%= item[1] %>' data-hour='<%= item[2] %>'><%= item[0] %> </option>
-            <% end %>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4 mb-3">
+     <div class="col-md-6 mb-3">
         <div class="form-group">
           <%= f.label :published_at, "Date du tirage" %>
           <div class="input-group">
             <span class="input-group-text">
                 <svg class="icon icon-xs" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
             </span>
-            <%= f.text_field :published_at_label, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', disabled: true%>
-             <%= f.hidden_field :published_at, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control'%>
+            <%= f.date_field :published_at, class: 'form-control', min: Time.now.strftime("%Y-%m-%d"), required: true %>
           </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <%= f.label :week_day, "Jour de la semaine" %>
+          <%= f.text_field :week_day_label, disabled: true, class: 'form-control'%>
+          <%= f.hidden_field :week_day, class: 'form-control'%>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <div class="form-group">
+          <%= f.label :draw_type_id, "Type Tirage" %>
+          <select id="draw_draw_type_id" name="draw[draw_type_id]" required class="form-select mb-0">
+            <option value="">Sélectionnez un tirage</option>
+          </select>
         </div>
       </div>
       <div class="col-md-4 mb-3">
@@ -96,6 +93,42 @@
         if (draw_type !== "") {
           const option = e.target.options[e.target.selectedIndex];
           document.getElementById('draw_drawn_at').value = option.dataset.hour;
+        }
+      });
+      const weekDays = {
+        '0': 'Dimanche',
+        '1': 'Lundi',
+        '2': 'Mardi',
+        '3': 'Mercredi',
+        '4': 'Jeudi',
+        '5': 'Vendredi',
+        '6': 'Samedi'
+      };
+      var drawDate = document.getElementById('draw_published_at');
+      drawDate.addEventListener('change', e => {
+        const input = e.target.value;
+        if (input) {
+          const date = new Date(input);
+          const weekDay = date.getDay();
+          document.getElementById('draw_week_day').value = weekDay;
+          document.getElementById('draw_week_day_label').value = weekDays[weekDay.toString()];
+          fetch(`/datatables/day-draw-types/?day=${weekDay}`)
+          .then(response => response.json())
+          .then(data => {
+            drawTypeList.innerHTML = "";
+            let option = document.createElement("option");
+            option.value = "";
+            option.text = "Sélectionnez un tirage"
+            drawTypeList.appendChild(option);
+            for (const val of data)
+            {
+              option = document.createElement("option");
+              option.value = val.id;
+              option.text = val.title;
+              option.dataset.hour = val.draw_hour;
+              drawTypeList.appendChild(option);
+            }
+          });
         }
       });
     </script>

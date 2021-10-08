@@ -18,7 +18,7 @@ class DrawType < ApplicationRecord
   end
 
   def title
-    name + ' - ' + drawn_at.strftime('%R')
+    name + ' - ' + draw_hour
   end
   
   def draw_hour

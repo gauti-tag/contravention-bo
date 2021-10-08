@@ -89,7 +89,7 @@
         <%= f.submit 'Enregistrer', class: 'btn btn-sm btn-primary'%>
       </div>
       <div class="col">
-        <%= link_to(url_for(draws_path), class: 'btn btn-sm btn-white') do %>
+        <%= link_to(url_for(draws_results_path), class: 'btn btn-sm btn-white') do %>
                     Retour
                   <%end%>
       </div>
@@ -99,7 +99,7 @@
 
 <% content_for :page_javascript do %>
     <script type="text/javascript">
-      const drawTypeList = document.getElementById('draw_draw_type_id');
+      var drawTypeList = document.getElementById('draw_draw_type_id');
       drawTypeList.addEventListener('change', e => {
         const draw_type = e.target.value;
         if (draw_type !== "") {

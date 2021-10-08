@@ -75,30 +75,23 @@ class GamesController < ApplicationController
 
   def new_draw
     @draw = Draw.new
-    wday = Time.now.wday
-    @week_day = days_labels.fetch(wday.to_s, '')
-    @draw_types = DrawType.includes(:draws).where('draw_types.week_day = ?', wday).collect { |dt| [dt.title, dt.id, dt.draw_hour] }
-    @balls = (1..90).to_a.map { |num| [num, num] }
   end
 
   def create_draw
     @draw = Draw.new(draw_params)
-    @draw.identifier = "#{@draw.published_at.to_time.to_i}-#{@draw.draw_type_id}-#{@draw.identifier}"
+    identifier = "#{@draw.published_at.to_time.to_i}-#{draw_params[:draw_type_id]}-#{draw_params[:identifier]}"
+    @draw.identifier = identifier
     if @draw.save
       SaveDraw.call(@draw.as_json(root: 'request', only: [:published_at, :draw_type_id, :identifier, :draw_numbers]))
       flash[:notice] = 'Le tirage a été ajouté.'
       redirect_to draws_url
     else
-      today = Time.now.wday
-      @week_day = days_labels.fetch(today.to_s, '')
-      @draw_types = DrawType.includes(:draws).where('draw_types.week_day = ?', today).collect { |dt| [dt.title, dt.id, dt.draw_hour] }
-      @balls = (1..90).to_a.map { |num| [num, num] }
-      if @draw.errors.include?(:identifier)
+      if @draw.errors.include?(:identifier) || @draw.errors.include?(:duplicated_time)
         flash[:warning] = 'Un tirage existe déjà à cette période!'
       else
         flash[:alert] = @draw.errors.full_messages.join(', ')
       end
-      render :new_draw
+      redirect_to new_draw_url
     end
   end
 
@@ -130,7 +123,7 @@ class GamesController < ApplicationController
     draw = Draw.find_by(identifier: draw_params[:identifier])
     draw.update(draw_numbers: draw_params[:draw_numbers])
     flash[:notice] = 'Opération réussie.'
-    redirect_to draws_url
+    redirect_to draws_results_url
   end
 
   private

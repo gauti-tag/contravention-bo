@@ -17,7 +17,7 @@ class DatatablesController < ApplicationController
     records = DrawType.where(week_day: week_day).order(name: :asc)
     result = []
     records.each do |record|
-      result << record.serializable_hash(methods: :title)
+      result << record.serializable_hash(methods: [:title, :draw_hour])
     end
     render json: result
   end
