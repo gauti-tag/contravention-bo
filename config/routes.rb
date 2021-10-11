@@ -37,7 +37,6 @@ Rails.application.routes.draw do
   get '/loto/winning_bets', to: 'loto#winning_bets', as: :winning_bets
   
   # API
-  get '/datatables/placed-bets', to: 'datatables#placed_bets'
-  get '/datatables/winning-bets', to: 'datatables#winning_bets'
-  get '/datatables/day-draw-types', to: 'datatables#day_draw_types'
+  get '/api/datatables', to: 'datatables#index'
+  get '/api/day-draw-types', to: 'datatables#day_draw_types'
 end

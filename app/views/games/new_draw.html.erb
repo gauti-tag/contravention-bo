@@ -112,7 +112,7 @@
           const weekDay = date.getDay();
           document.getElementById('draw_week_day').value = weekDay;
           document.getElementById('draw_week_day_label').value = weekDays[weekDay.toString()];
-          fetch(`/datatables/day-draw-types/?day=${weekDay}`)
+          fetch(`/api/day-draw-types/?day=${weekDay}`)
           .then(response => response.json())
           .then(data => {
             drawTypeList.innerHTML = "";
