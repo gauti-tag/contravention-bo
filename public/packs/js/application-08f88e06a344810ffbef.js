@@ -212,6 +212,18 @@
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(jQuery, global, Rails) {/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -271,7 +283,6 @@ global.$ = jQuery;
 window.Rails = Rails;
 
 window.fetchDatatable = function fetchDatatable(dtId, data) {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(dtId).DataTable().destroy();
   jquery__WEBPACK_IMPORTED_MODULE_0___default()(dtId).DataTable({
     responsivePriority: -1,
     language: {
@@ -298,6 +309,7 @@ window.fetchDatatable = function fetchDatatable(dtId, data) {
         sortDescending: ": activer pour trier la colonne par ordre d&eacute;croissant"
       }
     },
+    destroy: true,
     paginate: true,
     pageLength: 10,
     lengthMenu: [10, 20, 50, 100],
@@ -338,7 +350,50 @@ function getDatatableColumns(modelName) {
           });
         }
       }, {
-        data: "bet_date",
+        data: "record_date",
+        className: "all",
+        orderable: true,
+        searchable: false,
+        width: "5%"
+      }, {
+        data: null,
+        orderable: true,
+        searchable: false,
+        className: "all",
+        width: "5%",
+        render: function render(data, type, row, meta) {
+          return new Intl.NumberFormat().format(row.bet_amount);
+        }
+      }, {
+        data: null,
+        orderable: true,
+        searchable: false,
+        className: "all",
+        width: "5%",
+        render: function render(data, type, row, meta) {
+          return showStatus(row.placed_bet_status);
+        }
+      }];
+      break;
+
+    case 'winning-bets':
+      columns = [{
+        data: "sender_cb",
+        className: "all",
+        width: "10%"
+      }, {
+        data: null,
+        orderable: false,
+        searchable: false,
+        className: "all",
+        width: "10%",
+        render: function render(data, type, row, meta) {
+          return row.draws.map(function (num) {
+            return "<span class=\"badge bg-primary\"> ".concat(num, " </span>");
+          });
+        }
+      }, {
+        data: "record_date",
         className: "all",
         orderable: true,
         searchable: false,
@@ -361,10 +416,19 @@ function getDatatableColumns(modelName) {
         render: function render(data, type, row, meta) {
           return new Intl.NumberFormat().format(row.winning_amount);
         }
+      }, {
+        data: null,
+        orderable: true,
+        searchable: false,
+        className: "all",
+        width: "5%",
+        render: function render(data, type, row, meta) {
+          return showStatus(row.paid_bet_status);
+        }
       }];
       break;
 
-    case 'winning-bets':
+    case 'bet-payments':
       columns = [{
         data: "transaction_id",
         className: "all",
@@ -422,6 +486,26 @@ function getDatatableColumns(modelName) {
 function showDetailsColumn() {
   var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
   return "<div class=\"d-block\" style=\"margin-top: -1rem\"> <a href=\"#\" class=\"d-flex align-items-center\">\n    <div class=\"icon-shape icon-sm\">\n      <svg class=\"text-gray-400\" fill=\"currentColor\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M10 12a2 2 0 100-4 2 2 0 000 4z\"></path>\n        <path fill-rule=\"evenodd\" d=\"M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z\" clip-rule=\"evenodd\"></path>\n      </svg>\n      \n    </div>\n    <span> Voir D\xE9tails<span>\n  </a></div>";
+}
+
+var statusMap = {
+  pending: ["En attente", 'text-primary'],
+  success: ["Validé", 'text-success'],
+  failure: ["Échèc", 'text-danger'],
+  winning: ["Gagnant", 'text-secondary'],
+  losing: ["Perdant", 'text-danger'],
+  unpaid: ["En attente de paiement", 'text-info'],
+  paid: ["Payé", 'text-success']
+};
+
+function showStatus(status) {
+  if (!status) return "<span class=\"fw-bold text-primary\">En attente</span>";
+
+  var _statusMap$status = _slicedToArray(statusMap[status], 2),
+      label = _statusMap$status[0],
+      style = _statusMap$status[1];
+
+  return "<span class=\"fw-bold ".concat(style, "\">").concat(label, "</span>");
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! @rails/ujs */ "./node_modules/@rails/ujs/lib/assets/compiled/rails-ujs.js")))
 
@@ -94926,4 +95010,4 @@ module.exports = function (module) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=application-3a1f383ba1d84c7ecfe7.js.map
+//# sourceMappingURL=application-08f88e06a344810ffbef.js.map

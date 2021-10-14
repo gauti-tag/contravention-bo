@@ -25,7 +25,7 @@
   </div>
 </div>
 <div class="card card-body border-0 shadow w-100 mb-3">
-  <%= render 'shared/date-range' %>
+  <%= render 'shared/filters-row', filter_list: [['1', 'Validé'], ['2', 'Échèc'], ['3', 'Gagnant'], ['4', 'Perdant']] %>
 </div>
 
 <div class="card card-body border-0 shadow table-wrapper table-responsive w-100">
@@ -37,7 +37,7 @@
         <th class="border-gray-200">Numéros</th>
         <th class="border-gray-200">Date</th>
         <th class="border-gray-200">Mise</th>
-        <th class="border-gray-200">Gain</th>
+        <th class="border-gray-200">Statut</th>
         <th class="border-gray-200">Détails</th>
       </tr>
     </thead>
@@ -49,17 +49,26 @@
 <% content_for :page_javascript do %>
   <script type="text/javascript">
     $(document).ready(function() {
-      var data = { "model": 'placed-bets', "date_search": "no", "from": '', "to": '' };
+      var datesFilter = {"date_search": "no", "from": '', "to": ''};
+      var filterData = {};
+      var data = { "model": 'placed-bets', ...datesFilter};
+      data["filter_data"] = filterData;
       window.fetchDatatable("#placed-bets-datatable", data);
   
-      $('#date-search').click(function(){
+      $('#filter-search').click(function(){
+        var statusFilter = document.getElementById('status-filter').value;
         var minDate = document.getElementById('date-field-start').value;
         var maxDate = document.getElementById('date-field-end').value;
+
         if(minDate !== "" && maxDate !== "")
         {
-          data = {"model": 'placed-bets', "date_search": "yes", "from": minDate, "to": maxDate};
-          window.fetchDatatable("#placed-bets-datatable", data);
+          datesFilter = {"date_search": "yes", "from": minDate, "to": maxDate};
+          data = { ...data, ...datesFilter};
         }
+
+        filterData = statusFilter !== "" ? {"placed_bet_status": statusFilter} : {};
+        data["filter_data"] = filterData;
+        window.fetchDatatable("#placed-bets-datatable", data);
       });
     });
   </script>

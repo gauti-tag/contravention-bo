@@ -111,7 +111,7 @@ function getDatatableColumns(modelName) {
               },
             },
             {
-              data: "bet_date",
+              data: "record_date",
               className: "all",
               orderable: true,
               searchable: false,
@@ -134,11 +134,66 @@ function getDatatableColumns(modelName) {
               className: "all",
               width: "5%",
               render(data, type, row, meta) {
-                return new Intl.NumberFormat().format(row.winning_amount);
+                return showStatus(row.placed_bet_status);
               },
             }];
           break;
       case 'winning-bets':
+        columns = [
+          {
+            data: "sender_cb",
+            className: "all",
+            width: "10%",
+          },
+          {
+            data: null,
+            orderable: false,
+            searchable: false,
+            className: "all",
+            width: "10%",
+            render(data, type, row, meta) {
+              return row.draws.map(num => `<span class="badge bg-primary"> ${num} </span>`);
+            },
+          },
+          {
+            data: "record_date",
+            className: "all",
+            orderable: true,
+            searchable: false,
+            width: "5%",
+          },
+          {
+            data: null,
+            orderable: true,
+            searchable: false,
+            className: "all",
+            width: "5%",
+            render(data, type, row, meta) {
+              return new Intl.NumberFormat().format(row.bet_amount);
+            },
+          },
+          {
+            data: null,
+            orderable: true,
+            searchable: false,
+            className: "all",
+            width: "5%",
+            render(data, type, row, meta) {
+              return new Intl.NumberFormat().format(row.winning_amount);
+            },
+          },
+          {
+            data: null,
+            orderable: true,
+            searchable: false,
+            className: "all",
+            width: "5%",
+            render(data, type, row, meta) {
+              return showStatus(row.paid_bet_status);
+            },
+          }];
+        break;
+      case 'bet-payments':
           columns = [
             {
               data: "transaction_id",
@@ -188,14 +243,15 @@ function getDatatableColumns(modelName) {
     className: "all",
     width: "5%",
     render(data, type, row, meta) {
-      return showDetailsColumn(row.sender_cb);
+      const link = `/loto/show/${modelName}/${row.sender_cb}`;
+      return showDetailsColumn(link);
     },
   });
   return columns;
 };
 
-function showDetailsColumn(id= "") {
-  return `<div class="d-block" style="margin-top: -1rem"> <a href="#" class="d-flex align-items-center">
+function showDetailsColumn(link = "#") {
+  return `<div class="d-block" style="margin-top: -1rem"> <a href="${link}" class="d-flex align-items-center">
     <div class="icon-shape icon-sm">
       <svg class="text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
@@ -205,4 +261,20 @@ function showDetailsColumn(id= "") {
     </div>
     <span> Voir Détails<span>
   </a></div>`;
+}
+
+const statusMap = {
+  pending: ["En attente", 'text-primary'],
+  success: ["Validé", 'text-success'],
+  failure: ["Échèc", 'text-danger'],
+  winning: ["Gagnant", 'text-secondary'],
+  losing: ["Perdant", 'text-danger'],
+  unpaid: ["En attente de paiement", 'text-info'],
+  paid: ["Payé", 'text-success']
+}
+
+function showStatus(status) {
+  if (!status) return `<span class="fw-bold text-primary">En attente</span>`;
+  const [label, style] = statusMap[status];
+  return `<span class="fw-bold ${style}">${label}</span>`;
 }

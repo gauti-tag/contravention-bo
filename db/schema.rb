@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_29_100020) do
+ActiveRecord::Schema.define(version: 2021_10_13_153012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,8 @@ ActiveRecord::Schema.define(version: 2021_09_29_100020) do
     t.boolean "status", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "slug", limit: 50
+    t.index ["slug"], name: "index_draw_types_on_slug", unique: true
   end
 
   create_table "draws", force: :cascade do |t|

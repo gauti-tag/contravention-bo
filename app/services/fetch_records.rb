@@ -30,7 +30,7 @@ class FetchRecords
   end
 
   def dataset_endpoint
-    "#{ENV['CORE_API_ENDPOINT']}/api/dataset/#{params[:model_name]}"
+    "#{ENV['CORE_API_ENDPOINT']}/api/dataset"
   end
 
   # Authentication

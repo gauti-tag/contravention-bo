@@ -3,7 +3,8 @@ class DatatablesController < ApplicationController
   skip_before_action :authenticate_user!
   
   def index
-    result = FetchRecords.call(params.merge(model_name: get_model_name, filter_data: {})).result
+    filter_data = params[:filter_data] || {}
+    result = FetchRecords.call(params.merge(model_name: get_model_name, filter_data: filter_data)).result
     render json: result.data.to_h
   end
 
@@ -22,7 +23,8 @@ class DatatablesController < ApplicationController
   def get_model_name
     {
       'placed-bets' => 'placed_bets',
-      'winning-bets' => 'winning_bets'
+      'winning-bets' => 'winning_bets',
+      'bet-payments' => 'bet_payments'
     }.fetch(params[:model], '')
   end
 

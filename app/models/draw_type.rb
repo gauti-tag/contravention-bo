@@ -1,4 +1,7 @@
 class DrawType < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :history
+
   include ActiveModel::Serialization
 
   has_many :draws
@@ -13,7 +16,8 @@ class DrawType < ApplicationRecord
       'name' => nil,
       'bets_end_at' => nil,
       'week_day' => nil,
-      'drawn_at' => nil
+      'drawn_at' => nil,
+      'slug' => nil
     }
   end
 

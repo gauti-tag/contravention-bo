@@ -53,11 +53,32 @@ module ViewsHelper
     %Q[<span class="#{tag_class}">#{tag}</span>]
   end
 
+
+  def display_bet_status(status)
+    status_class ="badge bg-primary"
+    case status
+    when "pending"
+      status_class ="badge bg-info"
+    when "winning"
+      status_class ="badge bg-warning"
+    when 'success'
+      status_class ="badge bg-success"
+    when 'failure', 'losing'
+      status_class ="badge bg-danger"
+    end
+    %Q[<span class="#{status_class}">#{user_status_label(status)}</span>]
+  end
+
   def user_status_label(status)
     {
       'suspended' => 'Suspendu',
       'active' => 'Actif',
-      'pending' => 'En atente'
+      'pending' => 'En atente',
+      'winning' => 'Gagnant',
+      'losing' => 'Perdant',
+      'success' => 'Validé',
+      'failure' => 'Échèc'
     }.fetch(status, '')
   end
+  
 end

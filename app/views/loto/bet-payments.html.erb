@@ -25,15 +25,15 @@
   </div>
 </div>
 <div class="card card-body border-0 shadow w-100 mb-3">
-  <%= render 'shared/date-range' %>
+  <%= render 'shared/filters-row', filter_list: [] %>
 </div>
 <div class="card card-body border-0 shadow table-wrapper table-responsive w-100">
-  <table class="table table-hover" id="winning-bets-datatable">
+  <table class="table table-hover" id="bet-payments-datatable">
     <thead class="thead-light">
       <tr>
         <th class="border-gray-200">Identifiant</th>
         <th class="border-gray-200">N° Pari</th>
-        <th class="border-gray-200">Montant Gain</th>
+        <th class="border-gray-200">Montant</th>
         <th class="border-gray-200">N° Téléphone</th>
         <th class="border-gray-200">Date</th>
         <th class="border-gray-200">Reférence de paiement</th>
@@ -47,18 +47,24 @@
 
 <% content_for :page_javascript do %>
   <script type="text/javascript">
-     $(document).ready(function() {
-      var data = { "model": 'winning-bets', "date_search": "no", "from": '', "to": '' };
-      window.fetchDatatable("#winning-bets-datatable", data);
+    $(document).ready(function() {
+      var datesFilter = {"date_search": "no", "from": '', "to": ''};
+      var filterData = {};
+      var data = { "model": 'bet-payments', ...datesFilter};
+      data["filter_data"] = filterData;
+      window.fetchDatatable("#bet-payments-datatable", data);
   
-      $('#date-search').click(function(){
+      $('#filter-search').click(function(){
         var minDate = document.getElementById('date-field-start').value;
         var maxDate = document.getElementById('date-field-end').value;
+
         if(minDate !== "" && maxDate !== "")
         {
-          data = {"model": 'winning-bets', "date_search": "yes", "from": minDate, "to": maxDate};
-          window.fetchDatatable("#winning-bets-datatable", data);
+          datesFilter = {"date_search": "yes", "from": minDate, "to": maxDate};
+          data = { ...data, ...datesFilter};
         }
+
+        window.fetchDatatable("#bet-payments-datatable", data);
       });
     });
   </script>

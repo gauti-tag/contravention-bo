@@ -47,12 +47,14 @@ class GamesController < ApplicationController
     params[:draw_type][:week_day] = params[:draw_type][:week_day].to_i
     @draw_type = DrawType.new(draw_type_params)
     if @draw_type.save
-      SaveDrawType.call(@draw_type.as_json(root: 'request', only: [:name, :drawn_at, :week_day, :bets_end_at]))
+      api_data = @draw_type.as_json(root: 'request', only: [:name, :drawn_at, :week_day, :bets_end_at, :slug])
+      api_data['request']['model'] = 'DrawType'
+      SaveRecord.call(api_data)
       flash[:notice] = 'Le type de tirage a été créé.'
       redirect_to draw_types_url
     else
       flash[:alert] = @draw_type.errors.full_messages.join(', ')
-      render :new
+      render :new_draw_type
     end
   end
 
@@ -65,6 +67,9 @@ class GamesController < ApplicationController
     @draw_type = DrawType.find(params[:draw_type][:id])
     @draw_type.assign_attributes(draw_type_params)
     if @draw_type.save
+      api_data = @draw_type.as_json(root: 'request', only: [:slug, :name, :drawn_at, :week_day, :bets_end_at])
+      api_data['request']['model'] = 'DrawType'
+      UpdateRecord.call(api_data)
       flash[:notice] = 'Le type de tirage a été modifié.'
       redirect_to draw_types_url
     else
@@ -79,10 +84,13 @@ class GamesController < ApplicationController
 
   def create_draw
     @draw = Draw.new(draw_params)
-    identifier = "#{@draw.published_at.to_time.to_i}-#{draw_params[:draw_type_id]}-#{draw_params[:identifier]}"
+    identifier = "#{@draw.draw_type.slug}-#{@draw.published_at.to_time.to_i}-#{draw_params[:identifier]}"
     @draw.identifier = identifier
     if @draw.save
-      SaveDraw.call(@draw.as_json(root: 'request', only: [:published_at, :draw_type_id, :identifier, :draw_numbers]))
+      api_data = @draw.as_json(root: 'request', only: [:published_at, :identifier, :draw_numbers])
+      api_data['request']['model'] = 'Draw'
+      api_data['request']['slug'] = @draw.draw_type.slug
+      SaveRecord.call(api_data)
       flash[:notice] = 'Le tirage a été ajouté.'
       redirect_to draws_url
     else
@@ -99,6 +107,10 @@ class GamesController < ApplicationController
     @draw = Draw.find(params[:draw][:id])
     @draw.assign_attributes(draw_params)
     if @draw.save
+      api_data = @draw.as_json(root: 'request', only: [:published_at, :identifier, :draw_numbers])
+      api_data['request']['model'] = 'Draw'
+      api_data['request']['slug'] = @draw.draw_type.slug
+      UpdateRecord.call(api_data)
       flash[:notice] = 'Le tirage a été modifié.'
       redirect_to draws_url
     else
@@ -122,6 +134,10 @@ class GamesController < ApplicationController
   def set_draw_result
     draw = Draw.find_by(identifier: draw_params[:identifier])
     draw.update(draw_numbers: draw_params[:draw_numbers])
+    api_data = draw.as_json(root: 'request', only: [:published_at, :identifier, :draw_numbers])
+    api_data['request']['model'] = 'Draw'
+    api_data['request']['slug'] = draw.draw_type.slug
+    UpdateRecord.call(api_data)
     flash[:notice] = 'Opération réussie.'
     redirect_to draws_results_url
   end

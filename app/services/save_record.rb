@@ -1,4 +1,4 @@
-class SaveDraw
+class SaveRecord
   prepend SimpleCommand
   include ActiveModel::Validations
 
@@ -28,7 +28,7 @@ class SaveDraw
   end
 
   def endpoint
-    "#{ENV['CORE_API_ENDPOINT']}/api/loto/draw"
+    "#{ENV['CORE_API_ENDPOINT']}/api/admin/save"
   end
 
   # Authentication

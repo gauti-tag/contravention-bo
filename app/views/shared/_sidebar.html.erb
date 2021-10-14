@@ -142,12 +142,17 @@
           role="list" id="submenu-app" aria-expanded="false">
           <ul class="flex-column nav">
             <li class="nav-item ">
-              <%= link_to placed_bets_path, class: "nav-link" do %>
+              <%= link_to loto_transactions_path(model_name: 'placed-bets'), class: "nav-link" do %>
                 <span class="sidebar-text">Prises de pari</span>
               <% end %>
             </li>
             <li class="nav-item ">
-              <%= link_to winning_bets_path, class: "nav-link" do %>
+              <%= link_to loto_transactions_path(model_name: 'winning-bets'), class: "nav-link" do %>
+                <span class="sidebar-text">Tickets gagnants</span>
+              <% end %>
+            </li>
+            <li class="nav-item ">
+              <%= link_to loto_transactions_path(model_name: 'bet-payments'), class: "nav-link" do %>
                 <span class="sidebar-text">Paiements de gains</span>
               <% end %>
             </li>
