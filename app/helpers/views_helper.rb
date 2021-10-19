@@ -1,5 +1,9 @@
 module ViewsHelper
 
+  def format_number(value)
+    number_to_human(value, units: {thousand: "k", million: "m", billion: "M"})
+  end
+
   def user_avatar(user)
     (user.avatar.variant(resize: "100x100") rescue '/assets/user.png')
   end
