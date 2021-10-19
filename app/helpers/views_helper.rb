@@ -1,5 +1,9 @@
 module ViewsHelper
 
+  def format_number(value)
+    number_to_human(value, units: {thousand: "k", million: "m", billion: "M"})
+  end
+
   def user_avatar(user)
     (user.avatar.variant(resize: "100x100") rescue '/assets/user.png')
   end
@@ -28,7 +32,7 @@ module ViewsHelper
   end
 
   def display_user_status(user_status)
-    status_class = user_status.eql?('active') ? "text-success" : "text-danger"
+    status_class = user_status.eql?('active') ? 'text-success' : 'text-danger'
     %Q(<span class="fw-bold #{status_class}">#{user_status_label(user_status)}</span>)
   end
 
@@ -37,7 +41,7 @@ module ViewsHelper
     values.each do |value|
       options << %Q(<option value="#{value.first}">#{value.last}</option>)
     end
-    %Q(<select id='choices-multiple' class='choices-multiple w-100 mb-0' name="#{name}" multiple='multiple'>#{options}</select>)
+    %Q(<select id='choices-multiple' required class='choices-multiple w-100 mb-0' name="#{name}" multiple='multiple'>#{options}</select>)
   end
 
   def display_log_tag(tag)
@@ -53,11 +57,32 @@ module ViewsHelper
     %Q[<span class="#{tag_class}">#{tag}</span>]
   end
 
+
+  def display_bet_status(status)
+    status_class ="badge bg-primary"
+    case status
+    when "pending"
+      status_class ="badge bg-info"
+    when "winning"
+      status_class ="badge bg-warning"
+    when 'success'
+      status_class ="badge bg-success"
+    when 'failure', 'losing'
+      status_class ="badge bg-danger"
+    end
+    %Q[<span class="#{status_class}">#{user_status_label(status)}</span>]
+  end
+
   def user_status_label(status)
     {
       'suspended' => 'Suspendu',
       'active' => 'Actif',
-      'pending' => 'En atente'
+      'pending' => 'En atente',
+      'winning' => 'Gagnant',
+      'losing' => 'Perdant',
+      'success' => 'Validé',
+      'failure' => 'Échèc'
     }.fetch(status, '')
   end
+  
 end

@@ -1,0 +1,76 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+  <div class="d-block mb-4 mb-md-0">
+    <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+      <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+        <li class="breadcrumb-item">
+          <a href="#">
+            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="#">Admin</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Paramétrage LOTO</li>
+      </ol>
+    </nav>
+    <h2 class="h4">Modification - Type de tirage</h2>
+    <p class="mb-0">Back-Office LOTO GUINÉE-BISSAU</p>
+  </div>
+</div>
+<div class="card card-body border-0 shadow w-100">
+  <h2 class="h4 mb-4">Modification - Type de tirage</h2>
+  <%= form_with model: @draw_type, url: update_draw_type_path, local: true do |f| %>
+     <%= f.hidden_field :id, value: @draw_type.id %>
+     <div class="row">
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <%= f.label :name, "Nom" %>
+          <%= f.text_field :name, class: 'form-control', required: true, placeholder: "Nom", autofocus: true %>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <%= f.label :week_day, "Jour de la semaine" %>
+          <%= f.select :week_day, [['Lundi', 1], ['Mardi', 2], ['Mercredi', 3], ['Jeudi', 4], ['Vendredi', 5], ['Samedi', 6], ['Dimanche', 0]], { include_blank: "Jour de la semaine", selected: @draw_type.week_day_before_type_cast }, required: true, class: 'form-select mb-0'%>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <%= f.label :drawn_at, "Heure du tirage" %>
+          <div class="input-group">
+            <span class="input-group-text">
+                <svg class="icon icon-xs" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.848 12.459c.202.038.202.333.001.372-1.907.361-6.045 1.111-6.547 1.111-.719 0-1.301-.582-1.301-1.301 0-.512.77-5.447 1.125-7.445.034-.192.312-.181.343.014l.985 6.238 5.394 1.011z" clip-rule="evenodd"></path></svg>
+            </span>
+            <%= f.time_field :drawn_at, class: 'form-control', required: true %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <%= f.label :bets_end_at, "Heure de fin paris" %>
+          <div class="input-group">
+            <span class="input-group-text">
+                <svg class="icon icon-xs" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.848 12.459c.202.038.202.333.001.372-1.907.361-6.045 1.111-6.547 1.111-.719 0-1.301-.582-1.301-1.301 0-.512.77-5.447 1.125-7.445.034-.192.312-.181.343.014l.985 6.238 5.394 1.011z" clip-rule="evenodd"></path></svg>
+            </span>
+            <%= f.time_field :bets_end_at, class: 'form-control', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    <div class="row mt-3 mx-auto w-50">
+      <div class="col">
+        <%= f.submit 'Enregistrer', class: 'btn btn-sm btn-primary'%>
+      </div>
+      <div class="col">
+        <%= link_to(url_for(draw_types_path), class: 'btn btn-sm btn-white') do %>
+                    Retour
+                  <%end%>
+      </div>
+    </div>
+  <% end %>
+</div>

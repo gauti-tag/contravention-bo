@@ -1,6 +1,7 @@
 class MainController < ApplicationController
   
   def index
+    @data = FetchStats.call(request: {target: 'dashboard'}).result.data
   end
 
   def audit
