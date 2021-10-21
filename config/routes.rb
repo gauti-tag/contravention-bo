@@ -39,4 +39,5 @@ Rails.application.routes.draw do
   # API
   get '/api/datatables', to: 'datatables#index'
   get '/api/day-draw-types', to: 'datatables#day_draw_types'
+  match '/api/dataset/export', to: 'datatables#export_data', via: [:get, :post]
 end

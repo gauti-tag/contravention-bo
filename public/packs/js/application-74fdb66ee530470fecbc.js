@@ -282,7 +282,21 @@ moment.locale('fr');
 global.$ = jQuery;
 window.Rails = Rails;
 
-window.fetchDatatable = function fetchDatatable(dtId, data) {
+window.downloadData = function (data) {
+  var headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  fetch('/api/dataset/export', {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(data)
+  }).then(function (response) {
+    return response.json();
+  }).then(function (json) {
+    window.open(json.data, '_blank').focus();
+  });
+};
+
+window.fetchDatatable = function (dtId, data) {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()(dtId).DataTable({
     responsivePriority: -1,
     language: {
@@ -486,14 +500,14 @@ function getDatatableColumns(modelName) {
 
 function showDetailsColumn() {
   var link = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "#";
-  return "<div class=\"d-block\" style=\"margin-top: -1rem\"> <a href=\"".concat(link, "\" class=\"d-flex align-items-center\">\n    <div class=\"icon-shape icon-sm\">\n      <svg class=\"text-gray-400\" fill=\"currentColor\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M10 12a2 2 0 100-4 2 2 0 000 4z\"></path>\n        <path fill-rule=\"evenodd\" d=\"M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z\" clip-rule=\"evenodd\"></path>\n      </svg>\n      \n    </div>\n    <span> Voir D\xE9tails<span>\n  </a></div>");
+  return "<div class=\"d-block\" style=\"margin-top: -1rem\"> <a href=\"".concat(link, "\" class=\"d-flex align-items-center\">\n    <div class=\"icon-shape icon-sm\">\n      <svg class=\"text-gray-400\" fill=\"currentColor\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M10 12a2 2 0 100-4 2 2 0 000 4z\"></path>\n        <path fill-rule=\"evenodd\" d=\"M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z\" clip-rule=\"evenodd\"></path>\n      </svg>\n      \n    </div>\n    <span> Voir<span>\n  </a></div>");
 }
 
 var statusMap = {
-  pending: ["En attente", 'text-primary'],
-  success: ["Validé", 'text-success'],
+  pending: ["En attente", 'text-dark'],
+  success: ["Validé", 'text-primary'],
   failure: ["Échèc", 'text-danger'],
-  winning: ["Gagnant", 'text-secondary'],
+  winning: ["Gagnant", 'text-success'],
   losing: ["Perdant", 'text-danger'],
   unpaid: ["En attente de paiement", 'text-info'],
   paid: ["Payé", 'text-success']
@@ -95011,4 +95025,4 @@ module.exports = function (module) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=application-297bcafc68cf0c94e7ed.js.map
+//# sourceMappingURL=application-74fdb66ee530470fecbc.js.map

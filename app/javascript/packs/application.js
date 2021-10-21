@@ -38,7 +38,20 @@ moment.locale('fr');
 global.$ = jQuery;
 window.Rails = Rails;
 
-window.fetchDatatable = function fetchDatatable(dtId, data) {
+window.downloadData = function (data) {
+  const headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  fetch('/api/dataset/export', {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(data),
+  }).then(response => response.json())
+  .then(json => {
+    window.open(json.url, '_blank').focus();
+  })
+}
+
+window.fetchDatatable = function (dtId, data) {
   $(dtId).DataTable({
     responsivePriority: -1,
     language: {
@@ -259,15 +272,15 @@ function showDetailsColumn(link = "#") {
       </svg>
       
     </div>
-    <span> Voir Détails<span>
+    <span> Voir<span>
   </a></div>`;
 }
 
 const statusMap = {
-  pending: ["En attente", 'text-primary'],
-  success: ["Validé", 'text-success'],
+  pending: ["En attente", 'text-dark'],
+  success: ["Validé", 'text-primary'],
   failure: ["Échèc", 'text-danger'],
-  winning: ["Gagnant", 'text-secondary'],
+  winning: ["Gagnant", 'text-success'],
   losing: ["Perdant", 'text-danger'],
   unpaid: ["En attente de paiement", 'text-info'],
   paid: ["Payé", 'text-success']
