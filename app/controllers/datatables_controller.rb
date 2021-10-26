@@ -18,6 +18,12 @@ class DatatablesController < ApplicationController
     render json: result
   end
 
+  def export_data
+    filter_data = params[:filter_data] || {}
+    result = FetchExportData.call(params.merge(model_name: get_model_name, filter_data: filter_data)).result
+    render json: {url: result.data}
+  end
+
   private
 
   def get_model_name
