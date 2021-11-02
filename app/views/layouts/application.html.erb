@@ -69,15 +69,21 @@
         });
         window.datepickersList = datepickersList;
 
-        document.getElementById('date-field-start').addEventListener('change', event => {
-          const endDate = document.getElementById('date-field-end');
-          endDate.min = event.target.value;
-        });
+        var dateFieldStart = document.getElementById('date-field-start');
+        var dateFieldEnd = document.getElementById('date-field-end');
+        if (dateFieldStart && dateFieldEnd) {
+          dateFieldStart.addEventListener('change', event => {
+            dateFieldEnd.min = event.target.value;
+          });
 
-        document.getElementById('date-field-end').addEventListener('change', event => {
-          const startDate = document.getElementById('date-field-start');
-          startDate.max = event.target.value;
-        });
+          dateFieldEnd.addEventListener('change', event => {
+            dateFieldStart.max = event.target.value;
+          });
+        }
+        
+
+
+        
       })();
 
     </script>

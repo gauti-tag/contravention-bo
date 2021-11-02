@@ -32,12 +32,16 @@ Rails.application.routes.draw do
   get '/loto/draws/results', to: 'games#draws_results', as: :draws_results
   get '/loto/draw/result', to: 'games#draw_result', as: :draw_result
   match '/loto/draw/result', to: 'games#set_draw_result', via: [:post, :patch], as: :set_draw_result
+
   # Bets
   get '/loto/transactions/:model_name', to: 'loto#transactions', as: :loto_transactions
   get '/loto/show/:model_name/:id', to: 'loto#show_transaction', as: :show_loto_transaction
+  get '/loto/reports', to: 'loto#reports', as: :reports
   
   # API
   get '/api/datatables', to: 'datatables#index'
   get '/api/day-draw-types', to: 'datatables#day_draw_types'
+  get '/api/draws', to: 'datatables#draws'
+  match '/api/reports', to: 'datatables#reports', via: [:get, :post]
   match '/api/dataset/export', to: 'datatables#export_data', via: [:get, :post]
 end

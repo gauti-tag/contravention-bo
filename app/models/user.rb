@@ -55,9 +55,10 @@ class User < ApplicationRecord
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
-    if login = conditions.delete(:login)
-      where(conditions.to_h).where(["lower(email) = :value OR lower(msisdn) = :value", { :value => login.downcase }]).first
-    elsif conditions.has_key?(:email) || conditions.has_key?(:msisdn)
+    login_param = conditions.delete(:login)
+    if login_param
+      where(conditions.to_h).where(['lower(email) = :value OR lower(msisdn) = :value', { value: login_param.downcase }]).first
+    elsif conditions.key?(:email) || conditions.key?(:msisdn)
       where(conditions.to_h).first
     end
   end
@@ -76,24 +77,28 @@ class User < ApplicationRecord
     result
   end
 
-  def is_admin?
-    return false if self.profile.blank?
-    self.profile.slug.eql?('administrateur')
+  def admin?
+    return false if profile.blank?
+
+    profile.slug.eql?('administrateur')
   end
 
-  def is_guest?
-    return false if self.profile.blank?
-    self.profile.slug.eql?('guest')
+  def guest?
+    return false if profile.blank?
+
+    profile.slug.eql?('guest')
   end
 
-  def has_access_to?(controller_label, action_name)
-    return true if is_admin?
-    return false if (profile.blank? || profile.profile_abilities.empty?)
-    profile.profile_abilities.exists?(controller_name: controller_label, action_name: action_name)
+  def access_to?(controller_label, action_name)
+    return true if admin?
+    return false if profile.blank? || profile.profile_abilities.empty?
+
+    profile.admin_abilities.exists?(controller_name: controller_label, action_name: action_name)
   end
 
   def home_path
-    return '/' if has_access_to?('main', 'index')
+    return '/' if access_to?('main', 'index')
+
     '/users/edit'
   end
 
@@ -101,9 +106,10 @@ class User < ApplicationRecord
 
   def set_user_profile
     return if profile.present?
+
     guest_profile = AdminProfile.friendly.find('guest')
     update(profile_id: guest_profile.id)
-  rescue
+  rescue StandardError
     nil
   end
 

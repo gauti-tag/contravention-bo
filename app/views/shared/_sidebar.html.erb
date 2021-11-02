@@ -158,7 +158,15 @@
             </li>
           </ul>
         </div>
-      </li> 
+      </li>
+      <li class="nav-item">
+        <%= link_to reports_path, class: "nav-link" do %>
+          <span class="sidebar-icon">
+            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 19h-4v-8h4v8zm6 0h-4v-18h4v18zm6 0h-4v-12h4v12zm6 0h-4v-4h4v4zm1 2h-24v2h24v-2z"></path></svg>
+          </span> 
+          <span class="sidebar-text">Rapport de gains</span>
+        <% end %>
+      </li>
       <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
       <li class="nav-item">
          <%= link_to destroy_user_session_path, class: "nav-link d-flex align-items-center", method: :delete do %>
