@@ -5,28 +5,41 @@ class LotoController < ApplicationController
   end
 
   def show_transaction
-    result = FetchRecord.call(request: {model: get_model_name(params[:model_name]), id: params[:id]}).result
+    name_param = params[:model_name]
+    result = FetchRecord.call(request: {model: model_name(name_param), id: params[:id]}).result
     redirect_back(fallback_location: root_path) if result.status != 200
-   
+
     @record = result.data
-    @back_url = "/loto/transactions/#{params[:model_name]}"
-    render transaction_view(params[:model_name])
+    @back_url = back_url(name_param)
+    render transaction_view(name_param)
   end
 
-  def transaction_view(model_name)
-    case model_name
-    when 'placed-bets', 'winning-bets'
+  def reports; end
+
+  private
+
+  def transaction_view(name)
+    case name
+    when 'placed-bets', 'winning-bets', 'report-bets'
       'show_bet'
     when 'bet-payments'
       'show_payment'
     end
   end
 
-  def get_model_name(model_name)
+  def model_name(name)
     {
       'placed-bets' => 'LotoBet',
       'winning-bets' => 'LotoBet',
+      'report-bets' => 'LotoBet',
       'bet-payments' => 'BetPayment'
-    }.fetch(model_name, '')
+    }.fetch(name, '')
   end
+
+  def back_url(name)
+    return '/loto/reports' if name == 'report-bets'
+
+    "/loto/transactions/#{name}"
+  end
+  
 end

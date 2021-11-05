@@ -6,7 +6,6 @@ class FetchRecords
 
   def call
     response = process
-    Rails.logger.debug(response)
     if response['status'] == 200
       @data = response['data']
       OpenStruct.new(status: 200, message: 'Success', data: data)

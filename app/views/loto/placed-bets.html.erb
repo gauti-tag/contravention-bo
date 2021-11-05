@@ -64,7 +64,7 @@
         filterData = statusFilter !== "" ? {"placed_bet_status": statusFilter} : {};
         exportData['filter_data'] = filterData;
         window.downloadData(exportData);
-      })
+      });
     });
   </script>
 <% end %>

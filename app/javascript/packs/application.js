@@ -17,6 +17,7 @@ require('datatables.net')
 require('datatables.net-responsive')
 var simpleDatatables = require('simple-datatables')
 require('dropzone')
+require('block-ui')
 var Choices = require('choices.js')
 
 window.bootstrap = bootstrap;
@@ -152,6 +153,7 @@ function getDatatableColumns(modelName) {
             }];
           break;
       case 'winning-bets':
+      case 'report-bets':
         columns = [
           {
             data: "sender_cb",

@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
-  before_action :has_access_to_page?, unless: :devise_controller?
+  before_action :access_to_page?, unless: :devise_controller?
 
   def configure_permitted_parameters
     added_attrs = [:email, :password, :password_confirmation, :msisdn, :firstname, :lastname, :avatar]
@@ -13,10 +13,11 @@ class ApplicationController < ActionController::Base
  
   layout :layout_by_resource
 
-  def has_access_to_page?
+  def access_to_page?
     action_label = params[:action]
     controller_label = params[:controller]
-    unless current_user.has_access_to?(controller_label, action_label) == true
+    action_label = params[:model_name] if controller_label == 'loto' && action_label == 'transactions'
+    unless current_user.access_to?(controller_label, action_label) == true
       flash[:warning] = 'Accès refusé!'
       redirect_to edit_user_registration_url, status: 301
     end

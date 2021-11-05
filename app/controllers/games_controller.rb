@@ -2,7 +2,7 @@ class GamesController < ApplicationController
   before_action :fetch_game, only: [:new, :show, :update]
 
   def index
-    @games = Game.all
+    @games = Game.order(created_at: :asc)
   end
 
   def new; end

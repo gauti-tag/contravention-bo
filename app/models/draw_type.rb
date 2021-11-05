@@ -2,8 +2,6 @@ class DrawType < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :history
 
-  include ActiveModel::Serialization
-
   has_many :draws
   validates :name, :week_day, :drawn_at, presence: true
   validate :day_and_hour_must_be_uniq, on: :create
@@ -22,7 +20,7 @@ class DrawType < ApplicationRecord
   end
 
   def title
-    name + ' - ' + draw_hour
+    "#{name}-#{draw_hour}"
   end
   
   def draw_hour
@@ -36,7 +34,7 @@ class DrawType < ApplicationRecord
 
   def day_and_hour_must_be_uniq
     record = DrawType.find_by(drawn_at: drawn_at, week_day: week_day)
-    if record.present?
+    if record.present? && (record.id != id)
       errors.add(:duplicated_time, "Un enregistrement existe déjà à cette période!")
     end
   end

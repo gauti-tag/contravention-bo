@@ -1,5 +1,5 @@
 class Draw < ApplicationRecord
-  @@log_title= "Tirage de jeux"
+  @@log_title= 'Tirage de jeux'
 
   belongs_to :draw_type
   belongs_to :author, class_name: 'User', foreign_key: 'author_id', optional: true
@@ -7,6 +7,15 @@ class Draw < ApplicationRecord
   validates :published_at, presence: true
   validates :identifier, presence: true, uniqueness: true
   validate :date_and_hour_must_be_uniq, on: :create
+
+  def attributes
+    {
+      'id' => nil,
+      'published_at' => nil,
+      'draw_numbers' => nil,
+      'identifier' => nil
+    }
+  end
 
   def title
     draw_type.try(:title)
