@@ -152,7 +152,8 @@ function getDatatableColumns(modelName) {
               },
             }];
           break;
-      case 'winning-bets', 'report-bets':
+      case 'winning-bets':
+      case 'report-bets':
         columns = [
           {
             data: "sender_cb",
