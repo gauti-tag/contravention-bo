@@ -392,7 +392,8 @@ function getDatatableColumns(modelName) {
       }];
       break;
 
-    case ('winning-bets', 'report-bets'):
+    case 'winning-bets':
+    case 'report-bets':
       columns = [{
         data: "sender_cb",
         className: "all",
@@ -95580,4 +95581,4 @@ module.exports = function (module) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=application-6a1398506cc70ca01dc2.js.map
+//# sourceMappingURL=application-a1e052b077b9830da67e.js.map
