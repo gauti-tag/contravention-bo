@@ -1,4 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'from@example.com'
+  require 'open-uri'
+  default from: 'supports.maintenances@ngser.com', content_transfer_encoding: "quoted-printable"
   layout 'mailer'
 end
