@@ -28,7 +28,7 @@ class Draw < ApplicationRecord
   def date_and_hour_must_be_uniq
     record = Draw.find_by(published_at: published_at, draw_type_id: draw_type_id)
     if record.present?
-      errors.add(:duplicated_time, "Un enregistrement existe déjà à cette période!")
+      errors.add(:duplicated_time, 'Un enregistrement existe déjà à cette période!')
     end
   end
 

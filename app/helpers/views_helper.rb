@@ -25,9 +25,9 @@ module ViewsHelper
 
   def ability_checkbox(abilities, id)
     if abilities.include?(id)
-      %Q[<input checked="checked" id="admin_ability_ids[]" name="admin_ability_ids[]" type="checkbox" value="#{id}" class="form-check-input" />].html_safe
+      %Q[<input checked="checked" id="admin_profile_admin_ability_ids_#{id}" name="admin_profile[admin_ability_ids][]" type="checkbox" value="#{id}" class="form-check-input" />].html_safe
     else
-      %Q[<input id="admin_ability_ids[]" name="admin_ability_ids[]" type="checkbox" value="#{id}" class="form-check-input" />].html_safe
+      %Q[<input id="admin_profile_admin_ability_ids_#{id}" name="admin_profile[admin_ability_ids][]" type="checkbox" value="#{id}" class="form-check-input" />].html_safe
     end
   end
 

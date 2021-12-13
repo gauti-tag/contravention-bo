@@ -127,7 +127,7 @@ class GamesController < ApplicationController
     today = Date.today
     wday = today.wday
     @week_day = days_labels.fetch(wday.to_s, '')
-    @draw_types = DrawType.joins(:draws).where('draw_types.week_day = :wday AND draws.id IS NOT NULL AND draws.draw_numbers IS NULL AND draws.published_at = :date', {wday: wday, date: today}).collect { |dt| [dt.title, dt.id, dt.draw_hour, dt.last_identifier] }
+    @draw_types = DrawType.joins(:draws).where("draw_types.week_day = :wday AND draws.id IS NOT NULL AND draws.draw_numbers = '{}' AND draws.published_at = :date", {wday: wday, date: today}).collect { |dt| [dt.title, dt.id, dt.draw_hour, dt.last_identifier] }
     @balls = (1..90).to_a.map { |num| [num, num] }
   end
 

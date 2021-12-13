@@ -20,7 +20,7 @@
   </div>
 </div>
 <div class="card card-body border-0 shadow table-wrapper table-responsive">
-  <table class="table table-hover" id="datatable">
+  <table class="table table-hover" id="local-datatable">
     <thead class="thead-light">
       <tr>
         <th class="border-gray-200">Module</th>
@@ -38,7 +38,7 @@
               <a href="#" class="fw-bold"> <%= log.module_title %> </a>
             </td>
             <td>
-              <span class="fw-normal text-truncate"><%= log.description %></span>
+              <span class="fw-normal"><%= log.truncate_description %></span>
             </td>
             <td>
               <span class="fw-normal"><%= log.created_at.strftime("%d/%m/%Y - %R") %></span>
