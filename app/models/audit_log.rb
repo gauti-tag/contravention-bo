@@ -16,7 +16,15 @@ class AuditLog < ApplicationRecord
       'info_log' => "INFO",
       'warning_log' => "WARN",
       'error_log' => "ERROR"
-    }.fetch(self.tag, '')
+    }.fetch(tag, '')
+  end
+
+  def truncate_description
+    text = description.to_s.split(' ')
+    return text.first if text.size == 1
+
+    text = text.first(7).join(' ')
+    "#{text}..."
   end
 
   private

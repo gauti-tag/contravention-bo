@@ -32,7 +32,7 @@ class AdminProfilesController < ApplicationController
 
   def update
     new_abilities = profile_params[:admin_ability_ids]
-    new_abilities = new_abilities.collect { |id| id.to_i } if new_abilities.present?
+    new_abilities = new_abilities.collect(&:to_i) if new_abilities.present?
     @profile.title = profile_params[:title]
     @profile.author = current_user
     if @profile.save
@@ -40,6 +40,7 @@ class AdminProfilesController < ApplicationController
       unless new_abilities.blank?
         @profile.admin_abilities.delete_all
         @profile.admin_ability_ids = new_abilities
+        @profile.save
       end
       redirect_to admin_profile_url(@profile)
     else
