@@ -1,0 +1,2 @@
+class ContraventionGroup < ApplicationRecord
+end

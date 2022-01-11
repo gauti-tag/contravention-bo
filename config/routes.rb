@@ -18,30 +18,30 @@ Rails.application.routes.draw do
   patch '/users/edit/status/:id', to: 'users#update_account_status', as: :update_account_status
 
   # Games 
-  resources :games
-  get '/loto/draws', to: 'games#draws', as: :draws
-  get '/loto/draws/new', to: 'games#new_draw', as: :new_draw
-  post '/loto/draws/create', to: 'games#create_draw', as: :add_draw
+  #resources :games
+  #get '/loto/draws', to: 'games#draws', as: :draws
+  #get '/loto/draws/new', to: 'games#new_draw', as: :new_draw
+  #post '/loto/draws/create', to: 'games#create_draw', as: :add_draw
 
   # Draw Types
-  get '/loto/draw_types', to: 'games#draw_types', as: :draw_types
-  get '/loto/draw_types/new', to: 'games#new_draw_type', as: :new_draw_type
-  get '/loto/draw_type/:id', to: 'games#show_draw_type', as: :draw_type
-  match '/loto/draw_type', to: 'games#update_draw_type', via: [:post, :patch], as: :update_draw_type
-  post '/loto/draw_types/create', to: 'games#create_draw_type', as: :add_draw_type
-  get '/loto/draws/results', to: 'games#draws_results', as: :draws_results
-  get '/loto/draw/result', to: 'games#draw_result', as: :draw_result
-  match '/loto/draw/result', to: 'games#set_draw_result', via: [:post, :patch], as: :set_draw_result
+  #get '/loto/draw_types', to: 'games#draw_types', as: :draw_types
+  #get '/loto/draw_types/new', to: 'games#new_draw_type', as: :new_draw_type
+  #get '/loto/draw_type/:id', to: 'games#show_draw_type', as: :draw_type
+  #match '/loto/draw_type', to: 'games#update_draw_type', via: [:post, :patch], as: :update_draw_type
+  #post '/loto/draw_types/create', to: 'games#create_draw_type', as: :add_draw_type
+  #get '/loto/draws/results', to: 'games#draws_results', as: :draws_results
+  #get '/loto/draw/result', to: 'games#draw_result', as: :draw_result
+  #match '/loto/draw/result', to: 'games#set_draw_result', via: [:post, :patch], as: :set_draw_result
 
   # Bets
-  get '/loto/transactions/:model_name', to: 'loto#transactions', as: :loto_transactions
-  get '/loto/show/:model_name/:id', to: 'loto#show_transaction', as: :show_loto_transaction
-  get '/loto/reports', to: 'loto#reports', as: :reports
+  #get '/loto/transactions/:model_name', to: 'loto#transactions', as: :loto_transactions
+  #get '/loto/show/:model_name/:id', to: 'loto#show_transaction', as: :show_loto_transaction
+  #get '/loto/reports', to: 'loto#reports', as: :reports
   
   # API
-  get '/api/datatables', to: 'datatables#index'
-  get '/api/day-draw-types', to: 'datatables#day_draw_types'
-  get '/api/draws', to: 'datatables#draws'
-  match '/api/reports', to: 'datatables#reports', via: [:get, :post]
-  match '/api/dataset/export', to: 'datatables#export_data', via: [:get, :post]
+  #get '/api/datatables', to: 'datatables#index'
+  #get '/api/day-draw-types', to: 'datatables#day_draw_types'
+  #get '/api/draws', to: 'datatables#draws'
+  #match '/api/reports', to: 'datatables#reports', via: [:get, :post]
+  #match '/api/dataset/export', to: 'datatables#export_data', via: [:get, :post]
 end

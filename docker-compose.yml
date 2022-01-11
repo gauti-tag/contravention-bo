@@ -2,14 +2,14 @@ version: '3.4'
 
 services:
   web:
-    image: ngser/loto-gb-admin:latest
-    container_name: loto-gb-admin
+    image: ngser/contravention-guinee-admin:latest
+    container_name: contravention-guinee-admin
     build: .
     depends_on:     
       - database
       - redis
     ports:
-      - "5081:3000"
+      - "5091:3000"
     volumes:
       - .:/home/ngser/app
     env_file:
@@ -23,12 +23,12 @@ services:
     ports: 
       - "5482:5432"
     volumes:
-      - "${DB_DATA_LOTOGBADMIN}:/var/lib/postgresql/data"
+      - "${DB_DATA_CONTRAVENTIONADMIN}:/var/lib/postgresql/data"
     environment:
       # Setting postgresql credentials
       - POSTGRES_USER
       - POSTGRES_PASSWORD
-      - POSTGRES_DB=loto_gb_admin_dev
+      - POSTGRES_DB=contravention_admin_dev
 
   redis:
     image: redis:6.2.1-alpine

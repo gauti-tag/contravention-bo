@@ -9,19 +9,19 @@
                         </div>
                         <div class="d-sm-none">
                             <h2 class="h5">Total Tickets</h2>
-                            <h4 class="fw-extrabold mb-1"><%=  @data['today']['count']['all']%></h4>
+                            <h4 class="fw-extrabold mb-1"></h4>
                         </div>
                     </div>
                     <div class="col-12 col-xl-7 px-xl-0">
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0">Total Tickets</h2>
-                            <h4 class="fw-extrabold mb-2"><%= format_number(@data['today']['count']['all'].to_i) %></h4>
+                            <h4 class="fw-extrabold mb-2"></h4>
                         </div>
                         <small class="d-flex align-items-center text-gray-500">
                             Aujourd'hui
                         </small> 
                         <div class="small d-flex mt-1">                               
-                            <div>Cumul 2021:&nbsp;&nbsp;<span class="text-primary fw-bolder"><%= format_number(@data['global']['count']['all'].to_i)%></span></div>
+                            <div>Cumul 2021:&nbsp;&nbsp;<span class="text-primary fw-bolder"></span></div>
                         </div>
                     </div>
                 </div>
@@ -38,19 +38,19 @@
                         </div>
                         <div class="d-sm-none">
                             <h2 class="fw-extrabold h5">Montant paris</h2>
-                            <h4 class="mb-1"><%= @data['today']['amount']['all']%> XOF</h4>
+                            <h4 class="mb-1"> XOF</h4>
                         </div>
                     </div>
                     <div class="col-12 col-xl-7 px-xl-0">
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0">Montant paris</h2>
-                            <h4 class="fw-extrabold mb-2"><%= format_number(@data['today']['amount']['all'].to_i) %>&nbsp; XOF</h4>
+                            <h4 class="fw-extrabold mb-2">&nbsp; XOF</h4>
                         </div>
                         <small class="d-flex align-items-center text-gray-500">
                             Aujourd'hui,  
                         </small> 
                         <div class="small d-flex mt-1">                               
-                            <div>Cumul 2021:&nbsp;&nbsp;<span class="text-success fw-bolder"><%= format_number(@data['global']['amount']['all'].to_i)%>&nbsp; XOF</span></div>
+                            <div>Cumul 2021:&nbsp;&nbsp;<span class="text-success fw-bolder">&nbsp; XOF</span></div>
                         </div>
                     </div>
                 </div>
@@ -67,19 +67,19 @@
                         </div>
                         <div class="d-sm-none">
                             <h2 class="h5">Tickets gagnants</h2>
-                            <h4 class="fw-extrabold mb-1"><%= @data['today']['count']['winning']%></h4>
+                            <h4 class="fw-extrabold mb-1"></h4>
                         </div>
                     </div>
                     <div class="col-12 col-xl-7 px-xl-0">
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0">Tickets gagnants</h2>
-                            <h4 class="fw-extrabold mb-2"><%= format_number(@data['today']['count']['winning'].to_i)%></h4>
+                            <h4 class="fw-extrabold mb-2"></h4>
                         </div>
                         <small class="d-flex align-items-center text-gray-500">
                             Aujourd'hui
                         </small> 
                         <div class="small d-flex mt-1">                               
-                            <div>Cumul 2021:&nbsp;&nbsp;<span class="text-primary fw-bolder"><%= format_number(@data['global']['count']['winning'].to_i)%></span></div>
+                            <div>Cumul 2021:&nbsp;&nbsp;<span class="text-primary fw-bolder"></span></div>
                         </div>
                     </div>
                 </div>
@@ -99,19 +99,19 @@
                         </div>
                         <div class="d-sm-none">
                             <h2 class="fw-extrabold h5"> Montant gains</h2>
-                            <h4 class="mb-1"><%= @data['today']['winning_amount']%>&nbsp; XOF</h4>
+                            <h4 class="mb-1">&nbsp; XOF</h4>
                         </div>
                     </div>
                     <div class="col-12 col-xl-7 px-xl-0">
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0"> Montant gains</h2>
-                            <h4 class="fw-extrabold mb-2"><%= format_number(@data['today']['winning_amount'].to_i)%>&nbsp; XOF</h4>
+                            <h4 class="fw-extrabold mb-2">&nbsp; XOF</h4>
                         </div>
                         <small class="text-gray-500">
                             Aujourd'hui
                         </small> 
                         <div class="small d-flex mt-1">                               
-                            <div>Cumul 2021:&nbsp; <span class="text-success fw-bolder"><%= format_number(@data['global']['winning_amount'].to_i) %>&nbsp; XOF</span></div>
+                            <div>Cumul 2021:&nbsp; <span class="text-success fw-bolder">&nbsp; XOF</span></div>
                         </div>
                     </div>
                 </div>
@@ -128,19 +128,19 @@
                         </div>
                         <div class="d-sm-none">
                             <h2 class="fw-extrabold h5">Tickets perdants</h2>
-                            <h4 class="mb-1"><%= @data['today']['count']['losing']%></h4>
+                            <h4 class="mb-1"></h4>
                         </div>
                     </div>
                     <div class="col-12 col-xl-7 px-xl-0">
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0">Tickets perdants</h2>
-                            <h4 class="fw-extrabold mb-2"><%= format_number(@data['today']['count']['losing'].to_i)%></h4>
+                            <h4 class="fw-extrabold mb-2"></h4>
                         </div>
                         <small class="d-flex align-items-center text-gray-500">
                             Aujourd'hui,  
                         </small> 
                         <div class="small d-flex mt-1">                               
-                            <div>Cumul 2021:&nbsp;&nbsp;<span class="text-danger fw-bolder"><%= format_number(@data['global']['count']['losing'].to_i)%></span></div>
+                            <div>Cumul 2021:&nbsp;&nbsp;<span class="text-danger fw-bolder"></span></div>
                         </div>
                     </div>
                 </div>
@@ -157,19 +157,19 @@
                         </div>
                         <div class="d-sm-none">
                             <h2 class="fw-extrabold h5"> Montant perdants</h2>
-                            <h4 class="mb-1"><%= @data['today']['amount']['losing']%>XOF</h4>
+                            <h4 class="mb-1">XOF</h4>
                         </div>
                     </div>
                     <div class="col-12 col-xl-7 px-xl-0">
                         <div class="d-none d-sm-block">
                             <h2 class="h6 text-gray-400 mb-0"> Montant perdants</h2>
-                            <h4 class="fw-extrabold mb-2"><%= format_number(@data['today']['amount']['losing'].to_i)%>&nbsp; XOF</h4>
+                            <h4 class="fw-extrabold mb-2">&nbsp; XOF</h4>
                         </div>
                         <small class="text-gray-500">
                             Aujourd'hui
                         </small> 
                         <div class="small d-flex mt-1">                               
-                            <div>Cumul 2021:&nbsp; <span class="text-danger fw-bolder"><%= format_number(@data['global']['amount']['losing'].to_i) %>&nbsp; XOF</span></div>
+                            <div>Cumul 2021:&nbsp; <span class="text-danger fw-bolder">&nbsp; XOF</span></div>
                         </div>
                     </div>
                 </div>

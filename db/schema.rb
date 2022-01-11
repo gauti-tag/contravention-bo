@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_13_153012) do
+ActiveRecord::Schema.define(version: 2022_01_10_170738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,28 +69,38 @@ ActiveRecord::Schema.define(version: 2021_10_13_153012) do
     t.index ["user_id"], name: "index_audit_logs_on_user_id"
   end
 
-  create_table "draw_types", force: :cascade do |t|
-    t.string "name", null: false
-    t.integer "week_day", null: false
-    t.time "bets_end_at"
-    t.time "drawn_at"
-    t.boolean "status", default: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "slug", limit: 50
-    t.index ["slug"], name: "index_draw_types_on_slug", unique: true
-  end
-
-  create_table "draws", force: :cascade do |t|
-    t.string "identifier", null: false
-    t.text "draw_numbers", default: [], array: true
-    t.date "published_at", null: false
-    t.bigint "draw_type_id", null: false
+  create_table "contravention_groups", force: :cascade do |t|
+    t.string "code", limit: 120, null: false
+    t.string "label"
+    t.float "amount", default: 0.0
+    t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "author_id"
-    t.index ["draw_type_id"], name: "index_draws_on_draw_type_id"
-    t.index ["identifier"], name: "index_draws_on_identifier", unique: true
+    t.index ["code"], name: "index_contravention_groups_on_code", unique: true
+  end
+
+  create_table "contravention_notebooks", force: :cascade do |t|
+    t.string "number", limit: 120, null: false
+    t.string "label"
+    t.integer "sheets", default: 1
+    t.bigint "contravention_group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "author_id"
+    t.index ["contravention_group_id"], name: "index_contravention_notebooks_on_contravention_group_id"
+    t.index ["number"], name: "index_contravention_notebooks_on_number", unique: true
+  end
+
+  create_table "contravention_types", force: :cascade do |t|
+    t.string "code", limit: 120, null: false
+    t.string "label"
+    t.bigint "contravention_group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "author_id"
+    t.index ["code"], name: "index_contravention_types_on_code", unique: true
+    t.index ["contravention_group_id"], name: "index_contravention_types_on_contravention_group_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -102,18 +112,6 @@ ActiveRecord::Schema.define(version: 2021_10_13_153012) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
-  end
-
-  create_table "games", force: :cascade do |t|
-    t.string "name", limit: 100, null: false
-    t.integer "numbers_limit", default: 1, null: false
-    t.float "probability", default: 0.0
-    t.float "rating", default: 1.0
-    t.float "payout_rating"
-    t.string "slug"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["slug"], name: "index_games_on_slug", unique: true
   end
 
   create_table "parameters", force: :cascade do |t|
@@ -165,8 +163,11 @@ ActiveRecord::Schema.define(version: 2021_10_13_153012) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_profiles", "users", column: "author_id"
   add_foreign_key "audit_logs", "users"
-  add_foreign_key "draws", "draw_types"
-  add_foreign_key "draws", "users", column: "author_id"
+  add_foreign_key "contravention_groups", "users", column: "author_id"
+  add_foreign_key "contravention_notebooks", "contravention_groups"
+  add_foreign_key "contravention_notebooks", "users", column: "author_id"
+  add_foreign_key "contravention_types", "contravention_groups"
+  add_foreign_key "contravention_types", "users", column: "author_id"
   add_foreign_key "profile_abilities", "admin_abilities"
   add_foreign_key "profile_abilities", "admin_profiles"
   add_foreign_key "users", "admin_profiles", column: "profile_id"
