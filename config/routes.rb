@@ -16,6 +16,30 @@ Rails.application.routes.draw do
   get '/piste-audit/log/:id', to: 'main#show_log', as: :audit_log
 
   patch '/users/edit/status/:id', to: 'users#update_account_status', as: :update_account_status
+  
+  # Notebooks
+  get '/contravention/notbooks', to: 'notebooks#index', as: :notebooks
+  post '/contravention/notbooks', to: 'notebooks#create', as: :create_notebooks
+  get '/contravention/notbook/new', to: 'notebooks#new', as: :new_notebook
+  get '/contravention/notebooks/:id', to: 'notebooks#edit', as: :edit_notebooks
+  patch '/contravention/notebook/:id', to: 'notebooks#update', as: :update_notebook
+  
+
+  # Groups
+  get '/contravention/classes', to: 'groups#index', as: :groups
+  post '/contravention/classes', to: 'groups#create', as: :create_groups
+  get '/contravention/classe/new', to: 'groups#new', as: :new_group
+  get '/contravention/classes/:id', to: 'groups#edit', as: :edit_groups
+  patch '/contravention/classe/:id', to: 'groups#update', as: :update_group
+
+  #Types
+
+  get '/contravention/types', to: 'types#index', as: :types
+  post '/contravention/types', to: 'types#create', as: :create_types
+  get '/contravention/type/new', to: 'types#new', as: :new_type
+  get '/contravention/types/:id', to: 'types#edit', as: :edit_types
+  patch '/contravention/type/:id', to: 'types#update', as: :update_type
+
 
   # Games 
   #resources :games

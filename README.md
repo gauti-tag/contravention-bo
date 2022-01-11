@@ -1,12 +1,9 @@
-# BACK-OFFICE LOTO GUINEE-BISSAU
-
-Cette application est le back-office de la plateforme **_LOTO GUINEE-BISSAU_**.
+# BACK-OFFICE CONTRAVENTION GUINÉE
+Cette application est le back-office de la plateforme **_CONTRAVENTION GUINEE_**.
 Ces fonctionnalités éssentielles sont:
 
-* Voir l'historique des transactions (prises de pari, paiements de gains, etc.).
-* Les paramétrages fonctionnels applicatif du jeu LOTO.
-* La gestion des tirages.
-* La gestion des rapports de gain.
+* Voir l'historique des transactions (paiements de contraventions, etc.).
+* Les paramétrages fonctionnels MENU USSD
 * La gestion des utilisateurs back office.
 * Piste d’audit.
 

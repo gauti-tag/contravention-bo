@@ -1,0 +1,81 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+  <div class="d-block mb-4 mb-md-0">
+    <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+      <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+        <li class="breadcrumb-item">
+          <a href="#">
+            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="#">Admin</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Contravention</li>
+        <li class="breadcrumb-item active" aria-current="page">Classe</li>
+      </ol>
+    </nav>
+    <h2 class="h4">Classe</h2>
+    <p class="mb-0">Back-Office CONTRAVENTION GUINÉE</p>
+  </div>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <%= link_to new_group_path, class: 'btn btn-sm btn-gray-800 d-inline-flex align-items-center' do %>
+      <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+      </svg> 
+        Nouvelle Classe 
+    <% end %>
+  </div>
+</div>
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+  <table class="table table-hover" id="local-datatable">
+    <thead class="thead-light">
+      <tr>
+        <th class="border-gray-200">Code</th>
+        <th class="border-gray-200">Libellé</th>
+        <th class="border-gray-200">Montant</th>
+        <th class="border-gray-200">Description</th>
+        <th class="border-gray-200">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <% @goups.each do |group| %>
+        <!-- Item -->
+          <tr>
+            <td>
+              <a href="#" class="fw-bold"> <%= group.code %> </a>
+            </td>
+            <td>
+              <span class="fw-normal"><%= group.label %></span>
+            </td>
+            <td>
+              <span class="fw-normal"><%= group.amount %></span>
+            </td>
+             <td>
+              <span class="fw-normal"><%= group.description %></span>
+            </td>
+            
+            <td>
+              <div class="d-block" style="margin-top: -1rem">
+                <%= link_to edit_groups_path(group.id) , class: "d-flex align-items-center" do %>
+                    <div class="icon-shape icon-sm">
+                      <svg class="text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                      </svg>
+                     
+                    </div>
+                    <span> Voir Détails<span>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+          <!-- Item -->
+      <% end %>
+      <!-- Item -->
+    </tbody>
+    </tbody>
+  </table>
+</div>
