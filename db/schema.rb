@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_10_170738) do
+ActiveRecord::Schema.define(version: 2022_01_12_135101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,17 @@ ActiveRecord::Schema.define(version: 2022_01_10_170738) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "author_id"
     t.index ["slug"], name: "index_admin_profiles_on_slug", unique: true
+  end
+
+  create_table "agents", force: :cascade do |t|
+    t.string "last_name"
+    t.string "first_name"
+    t.string "grade"
+    t.string "identifier"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "author_id"
+    t.index ["identifier"], name: "index_agents_on_identifier", unique: true
   end
 
   create_table "audit_logs", force: :cascade do |t|
@@ -162,6 +173,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_170738) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_profiles", "users", column: "author_id"
+  add_foreign_key "agents", "users", column: "author_id"
   add_foreign_key "audit_logs", "users"
   add_foreign_key "contravention_groups", "users", column: "author_id"
   add_foreign_key "contravention_notebooks", "contravention_groups"

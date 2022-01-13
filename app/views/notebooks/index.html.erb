@@ -9,14 +9,11 @@
             </svg>
           </a>
         </li>
-        <li class="breadcrumb-item">
-          <a href="#">Admin</a>
-        </li>
         <li class="breadcrumb-item active" aria-current="page">Contravention</li>
-        <li class="breadcrumb-item active" aria-current="page">Carnet</li>
+        <li class="breadcrumb-item active" aria-current="page">Carnets</li>
       </ol>
     </nav>
-    <h2 class="h4">Carnet</h2>
+    <h2 class="h4">Carnets</h2>
     <p class="mb-0">Back-Office CONTRAVENTION GUINÉE</p>
   </div>
   <div class="btn-toolbar mb-2 mb-md-0">
@@ -26,6 +23,14 @@
       </svg> 
       Nouveau Carnet 
     <% end %>
+    <!-- <div class="btn-group ms-2 ms-lg-3">
+        <%= link_to '#',  class:'btn btn-outline-gray-600 d-inline-flex align-items-center' do %>
+          <svg class="icon icon-xs me-2" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-file-arrow-down-fill" viewBox="0 0 16 16">
+            <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM8 5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5A.5.5 0 0 1 8 5z"/>
+          </svg>
+            Import
+        <% end %>
+     </div> -->
   </div>
 </div>
 <div class="card card-body border-0 shadow table-wrapper table-responsive">
@@ -36,7 +41,8 @@
         <th class="border-gray-200">Libellé</th>
         <th class="border-gray-200">Feuillets</th>
         <th class="border-gray-200">Classe</th>
-        <th class="border-gray-200">Action</th>
+        <th class="border-gray-200" style="text-align:right">Action</th>
+        <th class="border-gray-200"></th>
       </tr>
     </thead>
     <tbody>
@@ -58,7 +64,7 @@
             </td>
             <td>
               <div class="d-block" style="margin-top: -1rem">
-                <%= link_to edit_notebooks_path(notebook.id) , class: "d-flex align-items-center" do %>
+                <%= link_to edit_notebooks_path(notebook) , class: "d-flex align-items-center" do %>
                     <div class="icon-shape icon-sm">
                       <svg class="text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
@@ -67,6 +73,18 @@
                      
                     </div>
                     <span> Voir Détails<span>
+                <% end %>
+              </div>
+            </td>
+             <td>
+                <div class="d-block" style="margin-top: -1rem">
+                <%= link_to notebook_path(notebook) , method: :delete, data: {confirm: "Voulez-vous supprimer le carnet '#{notebook.label}' ?"}, class: "d-flex align-items-center" do %>
+                    <div class="icon-shape icon-sm">
+                      <svg class="text-gray-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                      </svg>
+                    </div>
+                    <span>Suprimer<span>
                 <% end %>
               </div>
             </td>

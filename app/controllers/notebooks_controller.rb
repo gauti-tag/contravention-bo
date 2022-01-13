@@ -1,6 +1,6 @@
 class NotebooksController < ApplicationController 
 
-  before_action :set_notebook, only: [:edit, :update]
+  before_action :set_notebook, only: [:edit, :update, :destroy]
   def index
     @notebooks = ContraventionNotebook.all
     #@profiles_for_user = AdminProfile.order(title: :asc).collect { |p| [p.title, p.id] }
@@ -38,8 +38,16 @@ class NotebooksController < ApplicationController
       flash[:alert] = @notebook.errors.full_messages.joint(', ')
       render :edit
     end
+  end
 
-
+  def destroy 
+    if @notebook.destroy
+       flash[:notice] = "Carnet supprimé avec succès"
+       redirect_to notebooks_url
+    else
+       flash[:alert] = "Impossible de supprimer le carnet"
+       redirect_to notebooks_url
+    end
   end
 
 

@@ -1,6 +1,7 @@
 class AuditLog < ApplicationRecord
   attr_readonly :identifier
 
+  
   @@log_title= "Logs"
 
   belongs_to :user

@@ -1,6 +1,6 @@
 class TypesController < ApplicationController 
 
-  before_action :set_type, only: [:edit, :update]
+  before_action :set_type, only: [:edit, :update, :destroy]
 
   def index 
     @types = ContraventionType.all
@@ -32,7 +32,6 @@ class TypesController < ApplicationController
   end
 
   def update
-
     if @type.update(type_params)
       flash[:notice] = "Le type a été modifié."
       redirect_to types_url 
@@ -40,8 +39,16 @@ class TypesController < ApplicationController
       flash[:alert] = @type.errors.full_messages.joint(', ')
       render :edit
     end
+  end
 
-
+  def destroy 
+    if @type.destroy
+       flash[:notice] = "Type supprimé avec succès"
+       redirect_to types_url
+    else
+       flash[:alert] = "Impossible de supprimer le type"
+       redirect_to types_url
+    end
   end
   
 

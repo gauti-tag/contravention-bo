@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController 
   
-  before_action :set_group, only: [:edit, :update]
+  before_action :set_group, only: [:edit, :update, :destroy]
 
   def index 
     @goups = ContraventionGroup.all
@@ -37,7 +37,16 @@ class GroupsController < ApplicationController
       flash[:alert] = @group.errors.full_messages.joint(', ')
       render :edit
     end
+  end 
 
+  def destroy 
+    if @group.destroy
+       flash[:notice] = "Classe supprimé avec succès"
+       redirect_to groups_url
+    else
+       flash[:alert] = "Impossible de supprimer la Classe"
+       redirect_to groups_url
+    end
   end
 
   private 
