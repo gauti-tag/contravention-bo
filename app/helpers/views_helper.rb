@@ -83,6 +83,8 @@ module ViewsHelper
       'success' => 'Validé',
       'failure' => 'Échèc'
     }.fetch(status, '')
-  end
+  end 
+
+  
   
 end

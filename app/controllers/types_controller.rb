@@ -50,7 +50,77 @@ class TypesController < ApplicationController
        redirect_to types_url
     end
   end
-  
+
+  def import
+
+    data = ContraventionType.open_spreadsheet(params[:file])
+
+      if data == "nok"
+        flash[:alert] = "Format de fichier incorrect"
+        redirect_to types_path
+      else
+
+        headers = data.row(1)
+
+        header_for_type_table = []
+
+        if headers.length == 3
+
+          headers.each_with_index do |header, idx|
+            if  header == "CODE"
+              header_for_type_table[0] = 'code'
+            elsif  header == "LIBELLE"
+              header_for_type_table[1] = 'label'
+            elsif  header == "CLASSE"
+              header_for_type_table[2] = 'contravention_group_id'
+            else
+              flash[:alert] = "colonnes non conforme"
+            end
+          end
+
+        else
+          flash[:alert] = "fichier non conforme"
+        end
+
+        if header_for_type_table.empty?
+          flash[:alert] = "Format de colonne non conforme"
+        else
+            data.each_with_index do |row, idx|
+              next if idx == 0 #skip header
+
+              #create Hash from headers and cells
+              type_data = Hash[[header_for_type_table, row].transpose]
+
+              # fetch the corresponding id from the spécifique classe name
+              group = ContraventionGroup.where(label: type_data['contravention_group_id']).take
+              if group
+                #flash[:alert] = "#{group.id}"
+                group_id = group.id
+                type_data['contravention_group_id'] = group_id
+                #flash[:alert] = "#{type_data}"
+              end
+
+              # if the code type exists update the row
+              checking_code = ContraventionType.exists?(code: type_data['code'])
+              if checking_code
+                  code = ContraventionType.find_by(code: type_data['code'])
+                  code.label = type_data['label']
+                  code.contravention_group_id = type_data['contravention_group_id']
+                  code.author_id = current_user
+                  code.save
+              else
+
+                type = ContraventionType.new(type_data)
+                type.save!
+              end
+              flash[:notice] = "Importation effectuée avec succès"
+            end
+        end
+       redirect_to types_url
+      end
+
+  end
+
 
   private 
   def set_type 

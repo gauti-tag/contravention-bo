@@ -23,7 +23,9 @@ Rails.application.routes.draw do
   get '/contravention/carnet/new', to: 'notebooks#new', as: :new_notebook
   get '/contravention/carnets/:id', to: 'notebooks#edit', as: :edit_notebooks
   patch '/contravention/carnet/:id', to: 'notebooks#update', as: :update_notebook
-  resources :notebooks, only: [:destroy]
+  resources :notebooks, only: [:destroy] do 
+    collection {post :import}
+  end
   
 
   # Groups
@@ -32,7 +34,9 @@ Rails.application.routes.draw do
   get '/contravention/classe/new', to: 'groups#new', as: :new_group
   get '/contravention/classes/:id', to: 'groups#edit', as: :edit_groups
   patch '/contravention/classe/:id', to: 'groups#update', as: :update_group
-  resources :groups, only: [:destroy]
+  resources :groups, only: [:destroy] do 
+    collection {post :import}
+  end
 
   #Types
 
@@ -41,10 +45,14 @@ Rails.application.routes.draw do
   get '/contravention/type/new', to: 'types#new', as: :new_type
   get '/contravention/types/:id', to: 'types#edit', as: :edit_types
   patch '/contravention/type/:id', to: 'types#update', as: :update_type
-  resources :types, only: [:destroy] 
+  resources :types, only: [:destroy] do 
+    collection {post :import}
+  end
 
   # Agents
-  resources :agents, except: [:show]
+  resources :agents, except: [:show] do 
+    collection {post :import}
+  end
 
 
   # Games 

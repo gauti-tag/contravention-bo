@@ -38,6 +38,9 @@ gem 'simple_command', '~> 0.1.0'
 # CORS Handler
 gem 'rack-cors', '~> 1.1', '>= 1.1.1'
 
+#Excel import
+gem "roo", "~> 2.8.0"
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
