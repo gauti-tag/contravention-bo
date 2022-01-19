@@ -11,15 +11,20 @@ class AgentsController < ApplicationController
   end 
 
   def create
+
     @agent = Agent.new(agent_params)
     @agent.author_id = current_user
 
     if @agent.save
-       flash[:notice] = "L'agent a été cré"
-       redirect_to agents_url
+
+      flash[:notice] = "Agent crée avec succès"
+      redirect_to agents_url
+
     else
+
       flash[:alert] = @agent.errors.full_messages.join(', ')
       render :new
+
     end
   end
 
@@ -28,23 +33,30 @@ class AgentsController < ApplicationController
   end
 
   def update 
+
     if @agent.update(agent_params)
-      flash[:notice] = "L'agent a été modifié"
+      
+      flash[:notice] = "Agent modifié avec succès"
       redirect_to agents_url
+
     else
+
       flash[:alert] = @agent.errors.full_messages.join(', ')
       render :edit
+
     end
   end
 
   def destroy 
     if @agent.destroy 
-        #flash[:notice] = "L'agent a été suprimé"
-        flash[:notice] = "L'agent a été suprimé"
+       
+        flash[:notice] = "Agent suprimé avec succès"
         redirect_to agents_url
     else
+
        flash[:alert] = @agent.errors.full_message.join(', ')
        redirect_to agents_url
+
     end  
   end
 

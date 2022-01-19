@@ -2,7 +2,7 @@ class Agent < ApplicationRecord
 
 validates :last_name, :first_name, :grade, presence: :true
 
-validates_uniqueness_of :grade, on: [:create, :update], message: "doit être unique"
+validates_uniqueness_of :grade, message: "doit être unique"
 
 =begin  def self.import(file)
     spreadsheet = open_spreadsheet(file)
