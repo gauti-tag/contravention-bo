@@ -31,10 +31,12 @@ class UsersController < ApplicationController
     @user.author = current_user
     if @user.save
       flash[:notice] = 'Le compte a été modifié.'
-      redirect_to user_url(@user)
+      #redirect_to user_url(@user)
+       redirect_to users_path
     else
       flash[:alert] = @user.errors.full_messages.join(', ')
       render :show
+      
     end
   end
 
@@ -69,5 +71,5 @@ class UsersController < ApplicationController
   ensure
     @profiles_for_user = AdminProfile.order(title: :asc).collect { |p| [p.title, p.id] }
   end
-  
+
 end
