@@ -95,12 +95,14 @@ class NotebooksController < ApplicationController
             type_data = Hash[[header_for_notebook_table, row].transpose]
 
               # fetch the corresponding id from the spécifique classe name
-              group = ContraventionGroup.where(label: type_data['contravention_group_id']).take
-              if group
-                #flash[:alert] = "#{group.id}"
-                group_id = group.id
-                type_data['contravention_group_id'] = group_id
-                #flash[:alert] = "#{type_data}"
+              notebook_record = ContraventionGroup.where(label: type_data['contravention_group_id']).take
+              if notebook_record
+
+                notebook_record_id = notebook_record.id
+                type_data['contravention_group_id'] = notebook_record_id
+              else
+                flash[:alert] = "la classe << #{type_data['contravention_group_id']} >> est inconnue"
+                break
               end
 
               # if the code type exists update the row

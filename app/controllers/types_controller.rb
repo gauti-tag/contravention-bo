@@ -92,12 +92,14 @@ class TypesController < ApplicationController
               type_data = Hash[[header_for_type_table, row].transpose]
 
               # fetch the corresponding id from the spécifique classe name
-              group = ContraventionGroup.where(label: type_data['contravention_group_id']).take
-              if group
-                #flash[:alert] = "#{group.id}"
-                group_id = group.id
-                type_data['contravention_group_id'] = group_id
-                #flash[:alert] = "#{type_data}"
+              type_record = ContraventionGroup.where(label: type_data['contravention_group_id']).take
+
+              if type_record
+                type_record_id = type_record.id
+                type_data['contravention_group_id'] = type_record_id
+              else 
+                flash[:alert] = "la classe << #{type_data['contravention_group_id']} >> est inconnue"
+                break
               end
 
               # if the code type exists update the row
