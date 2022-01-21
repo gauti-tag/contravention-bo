@@ -101,7 +101,7 @@ class NotebooksController < ApplicationController
                 notebook_record_id = notebook_record.id
                 type_data['contravention_group_id'] = notebook_record_id
               else
-                flash[:alert] = "la classe << #{type_data['contravention_group_id']} >> est inconnue"
+                flash[:alert] = "la classe << #{type_data['contravention_group_id']} >> à la ligne << #{idx.to_i + 1} >> est inconnue"
                 break
               end
 
