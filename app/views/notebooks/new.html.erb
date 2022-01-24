@@ -55,6 +55,14 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+         <%= f.label :agent_id, "Agent" %>
+          <%= f.select :agent_id, @agents_for_notebook, { include_blank: "Sélectionnez une classe" }, class: 'form-select mb-0'%>
+        </div>
+      </div>
+    </div>
     <div class="row mt-3 w-50">
       <div class="col">
         <%= f.submit 'Enregistrer', class: 'btn btn-sm btn-primary'%>

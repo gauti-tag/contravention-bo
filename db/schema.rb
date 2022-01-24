@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_12_135101) do
+ActiveRecord::Schema.define(version: 2022_01_21_130405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,8 @@ ActiveRecord::Schema.define(version: 2022_01_12_135101) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "author_id"
+    t.bigint "agent_id", null: false
+    t.index ["agent_id"], name: "index_contravention_notebooks_on_agent_id"
     t.index ["contravention_group_id"], name: "index_contravention_notebooks_on_contravention_group_id"
     t.index ["number"], name: "index_contravention_notebooks_on_number", unique: true
   end
@@ -176,6 +178,7 @@ ActiveRecord::Schema.define(version: 2022_01_12_135101) do
   add_foreign_key "agents", "users", column: "author_id"
   add_foreign_key "audit_logs", "users"
   add_foreign_key "contravention_groups", "users", column: "author_id"
+  add_foreign_key "contravention_notebooks", "agents"
   add_foreign_key "contravention_notebooks", "contravention_groups"
   add_foreign_key "contravention_notebooks", "users", column: "author_id"
   add_foreign_key "contravention_types", "contravention_groups"

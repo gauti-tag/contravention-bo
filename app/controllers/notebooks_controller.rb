@@ -8,6 +8,7 @@ class NotebooksController < ApplicationController
   def new 
     @notebook = ContraventionNotebook.new
     @groups_for_notebook = ContraventionGroup.order(label: :asc).collect { |g| [g.label, g.id] }
+    @agents_for_notebook = Agent.order(last_name: :asc).collect { |a| ["#{a.last_name} #{a.first_name}", a.id] }
   end 
 
   def create 
@@ -27,6 +28,7 @@ class NotebooksController < ApplicationController
 
   def edit 
     @groups = ContraventionGroup.order(label: :asc).collect { |p| [p.label, p.id] }
+    @agents = Agent.order(last_name: :asc).collect { |a| ["#{a.last_name} #{a.first_name}", a.id] }
   end
 
   def update

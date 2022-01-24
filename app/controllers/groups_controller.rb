@@ -30,12 +30,18 @@ class GroupsController < ApplicationController
   end
 
   def update 
-    if @group.update(group_params)
-      flash[:notice] = "La classe a été modifiée."
-      redirect_to groups_url 
+    if @group.contravention_notebooks.exists? 
+      flash[:alert] = "Classe affectée à un carnet"
+    elsif  @group.contravention_types.exists?
+      flash[:alert] = "Classe affectée à un type"
     else
-      flash[:alert] = @group.errors.full_messages.joint(', ')
-      render :edit
+      if @group.update(group_params)
+        flash[:notice] = "La classe a été modifiée."
+        redirect_to groups_url 
+      else
+        flash[:alert] = @group.errors.full_messages.joint(', ')
+        render :edit
+      end
     end
   end 
 

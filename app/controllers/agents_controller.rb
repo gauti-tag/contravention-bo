@@ -35,7 +35,6 @@ class AgentsController < ApplicationController
   def update 
 
     if @agent.update(agent_params)
-      
       flash[:notice] = "Agent modifié avec succès"
       redirect_to agents_url
 
@@ -47,17 +46,17 @@ class AgentsController < ApplicationController
     end
   end
 
-  def destroy 
-    if @agent.destroy 
-       
-        flash[:notice] = "Agent suprimé avec succès"
+  def destroy
+      if @agent.destroy
+
+          flash[:notice] = "Agent suprimé avec succès"
+          redirect_to agents_url
+      else
+
+        flash[:alert] = @agent.errors.full_message.join(', ')
         redirect_to agents_url
-    else
 
-       flash[:alert] = @agent.errors.full_message.join(', ')
-       redirect_to agents_url
-
-    end  
+      end
   end
 
 

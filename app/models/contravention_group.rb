@@ -1,8 +1,10 @@
 class ContraventionGroup < ApplicationRecord
 
-  validates :code, :label, :amount, :description, presence: :true
-  validates_uniqueness_of :code 
-  #validates_uniqueness_of :label
+  validates :code, presence: true
+  validates_uniqueness_of :code, on: [:create, :import], message: "doit être unique"
+  validates :label, presence: true
+  validates :amount, presence: true
+  validates :description, presence: true
 
   has_many :contravention_notebooks, dependent: :destroy
   has_many :contravention_types, dependent: :destroy

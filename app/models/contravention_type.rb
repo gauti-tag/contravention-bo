@@ -1,7 +1,8 @@
 class ContraventionType < ApplicationRecord
 
   belongs_to :contravention_group
-  validates :code, :label,  presence: true
+  validates :code,  presence: true
+  validates :label, presence: true
   validates_uniqueness_of :code, on: :create, message: "doit être unique"
 
 
