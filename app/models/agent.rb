@@ -1,9 +1,9 @@
 class Agent < ApplicationRecord
 
-validates :last_name, presence: true
-validates :first_name, presence: true
-validates :grade, presence: true
-validates :identifier, presence: true
+#validates :last_name, presence: true
+#validates :first_name, presence: true
+#validates :grade, presence: true
+#validates :identifier, presence: true
 validates_uniqueness_of :identifier, on: [:create,:import], message: "<< le N° de grade doit être unique >>"
 has_many :contravention_notebooks, dependent: :destroy
 

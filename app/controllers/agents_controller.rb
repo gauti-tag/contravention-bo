@@ -72,17 +72,20 @@ class AgentsController < ApplicationController
           headers = data.row(1)
           header_for_table = []
 
-          if headers.length == 4
+          if headers.length == 2
 
               headers.each_with_index do |header, idx|
-                if  header == "NOM"
-                  header_for_table[0] = 'last_name'
-                elsif  header == "PRENOMS"
-                  header_for_table[1] = 'first_name'
-                elsif  header == "GRADE"
-                  header_for_table[2] = 'grade'
-                elsif  header == "NUMERO_GRADE"
-                  header_for_table[3] = 'identifier'
+                if  header == "REGION"
+                  #header_for_table[0] = 'last_name'
+                  header_for_table[0] = 'region'
+                elsif  header == "MATRICULE"
+                  #header_for_table[1] = 'first_name'
+                  header_for_table[1] = 'identifier'
+                #elsif  header == "AGENTS"
+                #  header_for_table[2] = 'last_name'
+                #  header_for_table[3] = 'first_name'
+                #elsif  header == "NUMERO_GRADE"
+                #  header_for_table[3] = 'identifier'
                 else
                   flash[:alert] = "colonnes non conforme"
                 end
@@ -106,13 +109,12 @@ class AgentsController < ApplicationController
                 #flash[:alert] = "#{agent_data.inspect}"
 
                 #if the agent exists update the row
-                if Agent.exists?(grade: agent_data['grade'])
-                    agent_data["author_id"] = current_user
-                    Agent.update(agent_data)
+                if Agent.exists?(identifier: agent_data['identifier'])
+
+                    Agent.where(identifier: agent_data['identifier']).limit(1).update_all(agent_data)
                 else
 
                     agent = Agent.new(agent_data)
-                    agent["author_id"] = current_user
                     agent.save!
 
                 end
@@ -134,7 +136,7 @@ class AgentsController < ApplicationController
   end
 
   def agent_params 
-    params.require(:agent).permit(:last_name, :first_name, :grade, :identifier)
+    params.require(:agent).permit(:last_name, :first_name, :grade, :identifier, :region)
   end
 
 end

@@ -1,13 +1,13 @@
 {
-  "application.js": "/packs/js/application-a1e052b077b9830da67e.js",
-  "application.js.map": "/packs/js/application-a1e052b077b9830da67e.js.map",
+  "application.js": "/packs/js/application-db4b83a1cfbda6a47837.js",
+  "application.js.map": "/packs/js/application-db4b83a1cfbda6a47837.js.map",
   "entrypoints": {
     "application": {
       "js": [
-        "/packs/js/application-a1e052b077b9830da67e.js"
+        "/packs/js/application-db4b83a1cfbda6a47837.js"
       ],
       "js.map": [
-        "/packs/js/application-a1e052b077b9830da67e.js.map"
+        "/packs/js/application-db4b83a1cfbda6a47837.js.map"
       ]
     },
     "turbolinks": {
@@ -16,6 +16,14 @@
       ],
       "js.map": [
         "/packs/js/turbolinks-364c662702ac4a893fc9.js.map"
+      ]
+    },
+    "typed": {
+      "js": [
+        "/packs/js/typed-85e1c536a01dcd2ff0b6.js"
+      ],
+      "js.map": [
+        "/packs/js/typed-85e1c536a01dcd2ff0b6.js.map"
       ]
     },
     "volt": {
@@ -29,6 +37,8 @@
   },
   "turbolinks.js": "/packs/js/turbolinks-364c662702ac4a893fc9.js",
   "turbolinks.js.map": "/packs/js/turbolinks-364c662702ac4a893fc9.js.map",
+  "typed.js": "/packs/js/typed-85e1c536a01dcd2ff0b6.js",
+  "typed.js.map": "/packs/js/typed-85e1c536a01dcd2ff0b6.js.map",
   "volt.js": "/packs/js/volt-5f89d92f146761248079.js",
   "volt.js.map": "/packs/js/volt-5f89d92f146761248079.js.map"
 }

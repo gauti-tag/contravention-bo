@@ -26,7 +26,7 @@
     <div class="btn-group ms-2 ms-lg-3">
         <%= form_tag  import_notebooks_path, multipart: true do %>
           <%= file_field_tag :file, class:'btn btn-outline-gray-600 d-inline-flex align-items-center', required: true %>
-          <%= submit_tag 'Import', class:'btn btn-outline-gray-600 d-inline-flex align-items-center' do %>
+          <%= submit_tag 'Importer', class:'btn btn-outline-gray-600 d-inline-flex align-items-center' do %>
          
      
           <%  end %>
@@ -43,7 +43,6 @@
         <th class="border-gray-200">Libellé</th>
         <th class="border-gray-200">Feuillets</th>
         <th class="border-gray-200">Classe</th>
-        <th class="border-gray-200">Agent</th>
         <th class="border-gray-200" style="text-align:right">Action</th>
         <th class="border-gray-200"></th>
       </tr>
@@ -64,9 +63,6 @@
             </td>
               <td>
               <span class="fw-normal"><%= notebook.contravention_group.label %></span>
-            </td>
-             <td>
-              <span class="fw-normal"><%= "#{notebook.agent.last_name} #{notebook.agent.first_name}" %></span>
             </td>
             <td>
               <div class="d-block" style="margin-top: -1rem">

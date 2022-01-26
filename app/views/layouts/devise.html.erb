@@ -21,11 +21,32 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'turbolinks' %>
+
+
   </head>
 
   <body>
     <%= yield %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= render partial: 'shared/flashes' %>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+    <script>
+
+        $(function() {
+            new Typed('#typed',{
+
+              strings : ['DE LA GENDARMERIE', 'NATIONALE DE GUINEE ^1700'],
+              typeSpeed : 50,
+              delaySpeed : 180,
+              loop : true
+
+            });
+
+        })
+
+    </script>
+
+
   </body>
 </html>

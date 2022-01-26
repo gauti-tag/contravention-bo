@@ -43,7 +43,7 @@
       <div class="col-md-6 mb-3">
         <div class="form-group">
           <%= f.label :sheets, "Feuillets" %>
-          <%= f.number_field :sheets, class: 'form-control', placeholder: "Entrez le nombre de feuillets" %>
+          <%= f.number_field :sheets, class: 'form-control', placeholder: "Entrez le nombre de feuillets", required: true %>
         </div>
       </div>
     </div>
@@ -51,15 +51,7 @@
       <div class="col-md-6 mb-3">
         <div class="form-group">
          <%= f.label :contravention_group_id, "Classe" %>
-          <%= f.select :contravention_group_id, @groups_for_notebook, { include_blank: "Sélectionnez une classe" }, class: 'form-select mb-0'%>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <div class="form-group">
-         <%= f.label :agent_id, "Agent" %>
-          <%= f.select :agent_id, @agents_for_notebook, { include_blank: "Sélectionnez une classe" }, class: 'form-select mb-0'%>
+          <%= f.select :contravention_group_id, @groups_for_notebook, { include_blank: "Sélectionnez une classe" }, class: 'form-select mb-0', required: true%>
         </div>
       </div>
     </div>

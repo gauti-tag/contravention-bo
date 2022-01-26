@@ -1,8 +1,8 @@
 class GroupsController < ApplicationController 
-  
+  skip_before_action :verify_authenticity_token
   before_action :set_group, only: [:edit, :update, :destroy]
 
-  def index 
+  def index
     @goups = ContraventionGroup.all
   end
 
@@ -102,12 +102,13 @@ class GroupsController < ApplicationController
             # if the agent exists update the row
             if ContraventionGroup.exists?(code: group_data['code'])
 
-              ContraventionGroup.update(group_data)
+              #ContraventionGroup.update(group_data)
+              group_data = {author_id: 1}
+              ContraventionGroup.where(code: group_data['code']).limit(1).update_all(group_data)
 
             else
-
+              group_data = {author_id: current_user}
               group = ContraventionGroup.new(group_data)
-              group['author_id'] = current_user
               group.save!
             end
 

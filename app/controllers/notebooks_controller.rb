@@ -72,10 +72,12 @@ class NotebooksController < ApplicationController
               header_for_notebook_table[0] = 'number'
             elsif  header == "LIBELLE_CARNET"
               header_for_notebook_table[1] = 'label'
-            elsif  header == "FEUILLETS"
+            elsif  header == "NOMBRE_FEUILLETS"
               header_for_notebook_table[2] = 'sheets'
             elsif  header == "CLASSE"
               header_for_notebook_table[3] = 'contravention_group_id'
+           # elsif  header == "AGENT"
+           #   header_for_notebook_table[4] = 'agent_id'
             else
               flash[:alert] = "colonnes non conforme"
             end
@@ -106,6 +108,17 @@ class NotebooksController < ApplicationController
                 flash[:alert] = "la classe << #{type_data['contravention_group_id']} >> à la ligne << #{idx.to_i + 1} >> est inconnue"
                 break
               end
+
+            #  notebook_record_agent = Agent.where(identifier: type_data['agent_id']).take
+
+            # if notebook_record_agent
+
+            #    notebook_record_agent_id = notebook_record_agent.id
+            #    type_data['agent_id'] = notebook_record_agent_id
+            #  else
+            #    flash[:alert] = "Agent au matricule << #{type_data['agent_id']} >> à la ligne << #{idx.to_i + 1} >> est inconnu"
+            #    break
+            #  end
 
               # if the code type exists update the row
               checking_code = ContraventionNotebook.exists?(number: type_data['number'])
