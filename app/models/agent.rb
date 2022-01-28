@@ -5,7 +5,7 @@ class Agent < ApplicationRecord
 #validates :grade, presence: true
 #validates :identifier, presence: true
 validates_uniqueness_of :identifier, on: [:create,:import], message: "<< le N° de grade doit être unique >>"
-has_many :contravention_notebooks, dependent: :destroy
+#has_many :contravention_notebooks, dependent: :destroy
 
 =begin  def self.import(file)
     spreadsheet = open_spreadsheet(file)
