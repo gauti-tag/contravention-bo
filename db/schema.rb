@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_26_155939) do
+ActiveRecord::Schema.define(version: 2022_02_01_101908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,7 +84,6 @@ ActiveRecord::Schema.define(version: 2022_01_26_155939) do
   create_table "contravention_groups", force: :cascade do |t|
     t.string "code", limit: 120, null: false
     t.string "label"
-    t.float "amount", default: 0.0
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -111,6 +110,7 @@ ActiveRecord::Schema.define(version: 2022_01_26_155939) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "author_id"
+    t.float "amount", default: 0.0
     t.index ["code"], name: "index_contravention_types_on_code", unique: true
     t.index ["contravention_group_id"], name: "index_contravention_types_on_contravention_group_id"
   end

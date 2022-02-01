@@ -64,7 +64,7 @@ class TypesController < ApplicationController
 
         header_for_type_table = []
 
-        if headers.length == 3
+        if headers.length == 4
 
           headers.each_with_index do |header, idx|
             if  header == "CODE"
@@ -73,6 +73,8 @@ class TypesController < ApplicationController
               header_for_type_table[1] = 'label'
             elsif  header == "CLASSE"
               header_for_type_table[2] = 'contravention_group_id'
+            elsif  header == "MONTANT"
+              header_for_type_table[3] = 'amount'
             else
               flash[:alert] = "colonnes non conforme"
             end
@@ -130,7 +132,7 @@ class TypesController < ApplicationController
   end
 
   def type_params 
-    params.require(:contravention_type).permit(:code, :label, :contravention_group_id)
+    params.require(:contravention_type).permit(:code, :label, :amount, :contravention_group_id)
   end
 
 end

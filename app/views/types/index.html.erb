@@ -48,6 +48,7 @@
         <th class="border-gray-200">Code</th>
         <th class="border-gray-200">Libellé</th>
         <th class="border-gray-200">Classe</th> 
+        <th class="border-gray-200">Montant</th> 
         <th class="border-gray-200" style="text-align:right">Action</th>
         <th class="border-gray-200"></th>
       </tr>
@@ -65,6 +66,9 @@
             </td>
              <td>
               <span class="fw-normal"><%= type.contravention_group.label %></span>
+            </td>
+             <td>
+              <span class="fw-normal"><%= type.amount %></span>
             </td>
             <td>
               <div class="d-block" style="margin-top: -1rem">

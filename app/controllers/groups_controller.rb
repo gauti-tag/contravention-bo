@@ -1,19 +1,19 @@
-class GroupsController < ApplicationController 
-  skip_before_action :verify_authenticity_token
+class GroupsController < ApplicationController
+
   before_action :set_group, only: [:edit, :update, :destroy]
 
   def index
     @goups = ContraventionGroup.all
   end
 
-  def new 
+  def new
     @group = ContraventionGroup.new
   end
 
 
-  def create 
+  def create
    @group = ContraventionGroup.new(group_params)
-   @group.author_id = current_user 
+   @group.author_id = current_user
 
    if @group.save
      flash[:notice] = "La classe a été créée"
@@ -68,17 +68,15 @@ class GroupsController < ApplicationController
         headers = data.row(1)
         header_for_group_table = []
 
-        if headers.length == 4
+        if headers.length == 3
 
           headers.each_with_index do |header, idx|
             if  header == "CODE"
               header_for_group_table[0] = 'code'
             elsif  header == "LIBELLE"
               header_for_group_table[1] = 'label'
-            elsif  header == "MONTANT"
-              header_for_group_table[2] = 'amount'
             elsif  header == "DESCRIPTION"
-              header_for_group_table[3] = 'description'
+              header_for_group_table[2] = 'description'
             else
               flash[:alert] = "colonnes non conforme"
             end
@@ -130,7 +128,7 @@ class GroupsController < ApplicationController
   end
 
   def group_params
-    params.require(:contravention_group).permit(:code, :label, :amount, :description)
+    params.require(:contravention_group).permit(:code, :label, :description)
   end
 
 end
