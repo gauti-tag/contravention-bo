@@ -126,7 +126,6 @@ class NotebooksController < ApplicationController
                   code = ContraventionNotebook.find_by(number: type_data['number'])
                   code.label = type_data['label']
                   code.contravention_group_id = type_data['contravention_group_id']
-                  #code.author_id = current_user
                   code.save
               else
 

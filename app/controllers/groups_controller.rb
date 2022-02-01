@@ -101,11 +101,9 @@ class GroupsController < ApplicationController
             if ContraventionGroup.exists?(code: group_data['code'])
 
               #ContraventionGroup.update(group_data)
-              group_data = {author_id: 1}
               ContraventionGroup.where(code: group_data['code']).limit(1).update_all(group_data)
 
             else
-              group_data = {author_id: current_user}
               group = ContraventionGroup.new(group_data)
               group.save!
             end
