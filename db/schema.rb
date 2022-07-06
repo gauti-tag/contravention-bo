@@ -99,6 +99,8 @@ ActiveRecord::Schema.define(version: 2022_02_01_101908) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "author_id"
+    t.bigint "agent_id", null: false
+    t.index ["agent_id"], name: "index_contravention_notebooks_on_agent_id"
     t.index ["contravention_group_id"], name: "index_contravention_notebooks_on_contravention_group_id"
     t.index ["number"], name: "index_contravention_notebooks_on_number", unique: true
   end
@@ -110,7 +112,7 @@ ActiveRecord::Schema.define(version: 2022_02_01_101908) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "author_id"
-    t.float "amount", default: 0.0
+    t.float "amount"
     t.index ["code"], name: "index_contravention_types_on_code", unique: true
     t.index ["contravention_group_id"], name: "index_contravention_types_on_contravention_group_id"
   end
@@ -177,6 +179,7 @@ ActiveRecord::Schema.define(version: 2022_02_01_101908) do
   add_foreign_key "agents", "users", column: "author_id"
   add_foreign_key "audit_logs", "users"
   add_foreign_key "contravention_groups", "users", column: "author_id"
+  add_foreign_key "contravention_notebooks", "agents"
   add_foreign_key "contravention_notebooks", "contravention_groups"
   add_foreign_key "contravention_notebooks", "users", column: "author_id"
   add_foreign_key "contravention_types", "contravention_groups"

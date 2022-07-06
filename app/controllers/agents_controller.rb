@@ -11,52 +11,40 @@ class AgentsController < ApplicationController
   end 
 
   def create
-
     @agent = Agent.new(agent_params)
     @agent.author_id = current_user
-
     if @agent.save
-
+      api_data = @agent.as_json(root: 'request', only: [:identifier, :last_name, :first_name, :grade])
+      api_data['request']['model'] = 'Agent'
+      CrudApiManager::InsertData.call(api_data)
       flash[:notice] = "Agent crée avec succès"
       redirect_to agents_url
-
     else
-
       flash[:alert] = @agent.errors.full_messages.join(', ')
       render :new
-
     end
   end
 
-  def edit
-
-  end
+  def edit; end
 
   def update 
-
     if @agent.update(agent_params)
       flash[:notice] = "Agent modifié avec succès"
       redirect_to agents_url
-
     else
-
       flash[:alert] = @agent.errors.full_messages.join(', ')
       render :edit
-
     end
   end
 
   def destroy
-      if @agent.destroy
-
-          flash[:notice] = "Agent suprimé avec succès"
-          redirect_to agents_url
-      else
-
-        flash[:alert] = @agent.errors.full_message.join(', ')
-        redirect_to agents_url
-
-      end
+    if @agent.destroy
+      flash[:notice] = "Agent suprimé avec succès"
+      redirect_to agents_url
+    else
+      flash[:alert] = @agent.errors.full_message.join(', ')
+      redirect_to agents_url
+    end
   end
 
 
@@ -110,13 +98,15 @@ class AgentsController < ApplicationController
 
                 #if the agent exists update the row
                 if Agent.exists?(identifier: agent_data['identifier'])
-
                     Agent.where(identifier: agent_data['identifier']).limit(1).update_all(agent_data)
                 else
-
                     agent = Agent.new(agent_data)
                     agent.save!
-
+                     
+                    # Api to save Agent to Core By mass
+                    api_data = agent.as_json(root: 'request', only: [:identifier, :last_name, :first_name, :grade])
+                    api_data['request']['model'] = 'Agent'
+                    CrudApiManager::InsertData.call(api_data)
                 end
 
 
@@ -131,6 +121,7 @@ class AgentsController < ApplicationController
 
 
   private
+
   def set_agent 
    @agent = Agent.find(params[:id])
   end
