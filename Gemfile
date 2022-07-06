@@ -41,6 +41,10 @@ gem 'rack-cors', '~> 1.1', '>= 1.1.1'
 #Excel import
 gem "roo", "~> 2.8.0"
 
+# Well Display Console
+gem 'awesome_print'
+gem 'table_print'
+
 #Typed js for animation
 #gem 'typedjq-rails'
 
