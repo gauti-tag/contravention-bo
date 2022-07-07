@@ -30,7 +30,7 @@ module CrudApiManager
            if response['status'] == 200
                 OpenStruct.new(status: :no_content, message: "data successfully deleted !")
            else
-               errors.add(:operation, 'Operation failed !')
+               OpenStruct.new(status: 400, message: 'Operation failed')
            end
         end
 
