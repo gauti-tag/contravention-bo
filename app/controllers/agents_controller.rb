@@ -3,7 +3,7 @@ class AgentsController < ApplicationController
   before_action :set_agent, only: [:edit, :update, :destroy]
 
   def index 
-    @agents = Agent.all
+    @agents = Agent.all.order(created_at: :desc)
   end 
 
   def new 
@@ -29,6 +29,9 @@ class AgentsController < ApplicationController
 
   def update 
     if @agent.update(agent_params)
+      api_data = @agent.as_json(root: 'request', only: [:identifier, :last_name, :first_name, :grade])
+      api_data['request']['model'] = 'Agent'
+      CrudApiManager::UpdateData.call(api_data)
       flash[:notice] = "Agent modifié avec succès"
       redirect_to agents_url
     else
@@ -38,6 +41,9 @@ class AgentsController < ApplicationController
   end
 
   def destroy
+    api_data = @agent.as_json(root: 'request', only: [:identifier])
+    api_data['request']['model'] = 'Agent'
+    CrudApiManager::DeleteData.call(api_data) 
     if @agent.destroy
       flash[:notice] = "Agent suprimé avec succès"
       redirect_to agents_url
@@ -97,8 +103,18 @@ class AgentsController < ApplicationController
                 #flash[:alert] = "#{agent_data.inspect}"
 
                 #if the agent exists update the row
-                if Agent.exists?(identifier: agent_data['identifier'])
-                    Agent.where(identifier: agent_data['identifier']).limit(1).update_all(agent_data)
+                #  Agent.exists?(identifier: agent_data['identifier'])
+
+                agent_already_saved = Agent.find_by(identifier: agent_data['identifier'])
+              
+                if agent_already_saved #Agent.exists?(identifier: agent_data['identifier']) 
+
+                    agent_already_saved.update!(agent_data)
+                    api_data = agent_already_saved.as_json(root: 'request', only: [:identifier, :last_name, :first_name, :grade])
+                    api_data['request']['model'] = 'Agent'
+                    CrudApiManager::UpdateData.call(api_data)
+
+                    #Agent.where(identifier: agent_data['identifier']).limit(1).update_all(agent_data)
                 else
                     agent = Agent.new(agent_data)
                     agent.save!
