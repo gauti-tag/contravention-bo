@@ -27,7 +27,8 @@ class ApplicationService # mother class for services
 
         request.run
         response = JSON.parse(request.response.body)
-        response['token']
+        token ||= response['token']
+        token
     end
     
     # Method that handle credentials giving by the Core to be authenticated

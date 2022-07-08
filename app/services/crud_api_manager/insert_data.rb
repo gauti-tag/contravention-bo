@@ -30,8 +30,7 @@ module CrudApiManager # Module crud_api_manager
                 @data = response['data']
                 OpenStruct.new(message: "Successfull created!", status: 200, data: @data) 
             else
-                errors.add(:operation, 'Request Failed !')
-                OpenStruct.new(response)
+                OpenStruct.new(message: "Operation failed !", status: 400) 
             end
         end
     end
