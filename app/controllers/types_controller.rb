@@ -3,7 +3,7 @@ class TypesController < ApplicationController
   before_action :set_type, only: [:edit, :update, :destroy]
 
   def index 
-    @types = ContraventionType.all
+    @types = ContraventionType.all.order(created_at: :desc)
   end
 
   def new 
@@ -15,9 +15,13 @@ class TypesController < ApplicationController
   def create 
 
     @type = ContraventionType.new(type_params)
-    @type.author_id = current_user 
+    @type.author_id = current_user.id 
 
     if @type.save
+       api_data = @type.as_json(root: 'request', only: [:code, :label, :amount])
+       api_data['request']['model'] = 'ContraventionType'
+       api_data['request']['index'] = @type.contravention_group.code # Foreign code 
+       CrudApiManager::InsertData.call(api_data) # Service request to send data to be saved
        flash[:notice] = "Le type a été créé"
        redirect_to types_url
     else
@@ -33,6 +37,10 @@ class TypesController < ApplicationController
 
   def update
     if @type.update(type_params)
+      api_data = @type.as_json(root: 'request', only: [:code, :label, :amount])
+      api_data['request']['model'] = 'ContraventionType'
+      api_data['request']['index'] = @type.contravention_group.code
+      CrudApiManager::UpdateData.call(api_data)
       flash[:notice] = "Le type a été modifié."
       redirect_to types_url 
     else
@@ -42,6 +50,9 @@ class TypesController < ApplicationController
   end
 
   def destroy 
+    api_data = @type.as_json(root: 'request', only: [:code])
+    api_data['request']['model'] = 'ContraventionType'
+    CrudApiManager::DeleteData.call(api_data)
     if @type.destroy
        flash[:notice] = "Type supprimé avec succès"
        redirect_to types_url
@@ -110,12 +121,29 @@ class TypesController < ApplicationController
                   code = ContraventionType.find_by(code: type_data['code'])
                   code.label = type_data['label']
                   code.contravention_group_id = type_data['contravention_group_id']
-                  code.author_id = current_user
+                  code.author_id = current_user.id
                   code.save
+
+                  # Request to send values to Core to be Update
+
+                  api_data = code.as_json(root: 'request', only: [:code, :label, :amount])
+                  api_data['request']['model'] = 'ContraventionType'
+                  api_data['request']['index'] = code.contravention_group.code
+                  CrudApiManager::UpdateData.call(api_data)
+                  
               else
 
                 type = ContraventionType.new(type_data)
-                type.save!
+                type.author_id = current_user.id
+                type.save
+
+                # Request to send values to Core to be saved
+
+                api_data = type.as_json(root: 'request', only: [:code, :label, :amount])
+                api_data['request']['model'] = 'ContraventionType'
+                api_data['request']['index'] = type.contravention_group.code
+                CrudApiManager::InsertData.call(api_data)
+
               end
               flash[:notice] = "Importation effectuée avec succès"
             end

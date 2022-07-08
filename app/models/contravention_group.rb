@@ -1,5 +1,5 @@
 class ContraventionGroup < ApplicationRecord
-
+  
   validates :code, presence: true
   validates_uniqueness_of :code, on: [:create, :import], message: "doit être unique"
   validates :label, presence: true
@@ -7,6 +7,14 @@ class ContraventionGroup < ApplicationRecord
 
   has_many :contravention_notebooks, dependent: :destroy
   has_many :contravention_types, dependent: :destroy
+
+  def attributes
+    {
+      'code' => nil,
+      'label' => nil,
+      'description' => nil
+    }
+  end
 
 
   def self.open_spreadsheet(file)

@@ -6,6 +6,14 @@ class ContraventionType < ApplicationRecord
   validates :amount, presence: true
   validates_uniqueness_of :code, on: :create, message: "doit être unique"
 
+  def attributes 
+    {
+      'code' => nil,
+      'label' => nil,
+      'amount' => nil
+    }
+  end
+
 
   def self.open_spreadsheet(file)
     case File.extname(file.original_filename)
