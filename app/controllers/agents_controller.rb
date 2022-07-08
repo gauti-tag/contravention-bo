@@ -12,7 +12,7 @@ class AgentsController < ApplicationController
 
   def create
     @agent = Agent.new(agent_params)
-    @agent.author_id = current_user
+    @agent.author_id = current_user.id
     if @agent.save
       api_data = @agent.as_json(root: 'request', only: [:identifier, :last_name, :first_name, :grade])
       api_data['request']['model'] = 'Agent'
@@ -117,6 +117,7 @@ class AgentsController < ApplicationController
                     #Agent.where(identifier: agent_data['identifier']).limit(1).update_all(agent_data)
                 else
                     agent = Agent.new(agent_data)
+                    agent.author_id = current_user.id
                     agent.save!
                      
                     # Api to save Agent to Core By mass
