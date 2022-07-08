@@ -4,6 +4,14 @@ class ContraventionNotebook < ApplicationRecord
   validates :label, presence: true
   validates :sheets, presence: true
   validates_uniqueness_of :number, on: :create, message: "<< le numéro doit être unique >>"
+
+  def attributes 
+    {
+      'number' => nil,
+      'label' => nil,
+      'sheets' => nil
+    }
+  end
   
 
   def self.open_spreadsheet(file)

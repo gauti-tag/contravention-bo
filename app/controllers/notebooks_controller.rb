@@ -2,7 +2,7 @@ class NotebooksController < ApplicationController
 
   before_action :set_notebook, only: [:edit, :update, :destroy]
   def index
-    @notebooks = ContraventionNotebook.all
+    @notebooks = ContraventionNotebook.all.order(created_at: :desc)
     #@profiles_for_user = AdminProfile.order(title: :asc).collect { |p| [p.title, p.id] }
   end  
   def new 
@@ -13,9 +13,13 @@ class NotebooksController < ApplicationController
 
   def create 
     @notebook = ContraventionNotebook.new(notebook_params)
-    @notebook.author_id = current_user
+    @notebook.author_id = current_user.id
     
     if @notebook.save 
+      api_data = @notebook.as_json(root: 'request', only: [:number, :label, :sheets])
+      api_data['request']['model'] = 'ContraventionNotebook' # Defined Model to be used to Core
+      api_data['request']['index'] = @notebook.contravention_group.code
+      CrudApiManager::InsertData.call(api_data) # Service request to send data to be saved to Core
       flash[:notice] = 'Le carnet a été créé.'
       redirect_to notebooks_url
     else
@@ -32,8 +36,11 @@ class NotebooksController < ApplicationController
   end
 
   def update
-
     if @notebook.update(notebook_params)
+       api_data = @notebook.as_json(root: 'request', only: [:number, :label, :sheets])
+       api_data['request']['model'] = 'ContraventionNotebook'
+       api_data['request']['index'] = @notebook.contravention_group.code
+       CrudApiManager::UpdateData.call(api_data)
       flash[:notice] = "Le carnet a été modifié."
       redirect_to notebooks_url 
     else
@@ -44,6 +51,9 @@ class NotebooksController < ApplicationController
 
   def destroy 
     if @notebook.destroy
+       api_data = @notebook.as_json(root: 'request', only: [:number])
+       api_data['request']['model'] = 'ContraventionNotebook'
+       CrudApiManager::DeleteData.call(api_data)
        flash[:notice] = "Carnet supprimé avec succès"
        redirect_to notebooks_url
     else
@@ -127,10 +137,23 @@ class NotebooksController < ApplicationController
                   code.label = type_data['label']
                   code.contravention_group_id = type_data['contravention_group_id']
                   code.save
+
+                  # Request to Core
+
+                  api_data = code.as_json(root: 'request', only: [:number, :label, :sheets])
+                  api_data['request']['model'] = 'ContraventionNotebook'
+                  api_data['request']['index'] = code.contravention_group.code
+                  CrudApiManager::UpdateData.call(api_data)
+
               else
 
                 notebook = ContraventionNotebook.new(type_data)
-                notebook.save!
+                notebook.author_id = current_user.id
+                notebook.save
+                api_data = notebook.as_json(root: 'request', only: [:number, :label, :sheets])
+                api_data['request']['model'] = 'ContraventionNotebook'
+                api_data['request']['index'] = notebook.contravention_group.code
+                CrudApiManager::InsertData.call(api_data) 
               end
 
 
