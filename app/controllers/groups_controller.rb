@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
   before_action :set_group, only: [:edit, :update, :destroy]
 
   def index
-    @goups = ContraventionGroup.all
+    @goups = ContraventionGroup.all.order(created_at: :desc)
   end
 
   def new
@@ -13,9 +13,11 @@ class GroupsController < ApplicationController
 
   def create
    @group = ContraventionGroup.new(group_params)
-   @group.author_id = current_user
-
+   @group.author_id = current_user.id
    if @group.save
+     api_data = @group.as_json(root: 'request', only: [:code, :label, :description])
+     api_data['request']['model'] = 'ContraventionGroup'
+     CrudApiManager::InsertData.call(api_data) # Service Request to send values to be saved to core
      flash[:notice] = "La classe a été créée"
      redirect_to groups_url
    else
@@ -26,26 +28,25 @@ class GroupsController < ApplicationController
   end
 
 
-  def edit 
-  end
+  def edit; end
 
   def update 
-    if @group.contravention_notebooks.exists? 
-      flash[:alert] = "Classe affectée à un carnet"
-    elsif  @group.contravention_types.exists?
-      flash[:alert] = "Classe affectée à un type"
-    else
       if @group.update(group_params)
+        api_data = @group.as_json(root: 'request', only: [:code, :label, :description])
+        api_data['request']['model'] = 'ContraventionGroup'
+        CrudApiManager::UpdateData.call(api_data) # Service Request to send values to be updated to Core
         flash[:notice] = "La classe a été modifiée."
         redirect_to groups_url 
       else
         flash[:alert] = @group.errors.full_messages.joint(', ')
         render :edit
       end
-    end
   end 
 
   def destroy 
+    api_data = @group.as_json(root: 'request', only: [:code])
+    api_data['request']['model'] = 'ContraventionGroup'
+    CrudApiManager::DeleteData.call(api_data) # Service Request to send values to be deleted to Core
     if @group.destroy
        flash[:notice] = "Classe supprimé avec succès"
        redirect_to groups_url
@@ -98,14 +99,23 @@ class GroupsController < ApplicationController
             group_data = Hash[[header_for_group_table, row].transpose]
 
             # if the agent exists update the row
-            if ContraventionGroup.exists?(code: group_data['code'])
+            group_already_saved = ContraventionGroup.find_by(code: group_data['code'])
+            if group_already_saved #ContraventionGroup.exists?(code: group_data['code'])
 
               #ContraventionGroup.update(group_data)
-              ContraventionGroup.where(code: group_data['code']).limit(1).update_all(group_data)
+              #ContraventionGroup.where(code: group_data['code']).limit(1).update_all(group_data)
+              group_already_saved.update!(group_data)
+              api_data = group_already_saved.as_json(root: 'request', only: [:code, :label, :description])
+              api_data['request']['model'] = 'ContraventionGroup'
+              CrudApiManager::UpdateData.call(api_data)
 
             else
               group = ContraventionGroup.new(group_data)
+              group.author_id = current_user.id
               group.save!
+              api_data = group.as_json(root: 'request', only: [:code, :label, :description])
+              api_data['request']['model'] = 'ContraventionGroup'
+              CrudApiManager::InsertData.call(api_data)
             end
 
 
