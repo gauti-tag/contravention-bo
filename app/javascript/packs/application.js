@@ -103,15 +103,17 @@ window.fetchDatatable = function (dtId, data) {
 function getDatatableColumns(modelName) {
   let columns = [];
   switch (modelName) {
-      case 'placed-bets':
+      case 'ticket_payments':
           columns = [
             {
-              data: "sender_cb",
+              data: "transaction_id",
               className: "all",
-              width: "10%",
+              orderable: false,
+              searchable: true,
+              width: "10%"
             },
             {
-              data: "msisdn",
+              data: "ticket_number",
               orderable: false,
               searchable: true,
             },
@@ -122,42 +124,63 @@ function getDatatableColumns(modelName) {
               className: "all",
               width: "10%",
               render(data, type, row, meta) {
-                return row.draws.map(num => `<span class="badge bg-primary"> ${num} </span>`);
-              },
-            },
-            {
-              data: "record_date",
-              className: "all",
-              orderable: true,
-              searchable: false,
-              width: "5%",
-            },
-            {
-              data: null,
-              orderable: true,
-              searchable: false,
-              className: "all",
-              width: "5%",
-              render(data, type, row, meta) {
-                return new Intl.NumberFormat().format(row.bet_amount);
+                return new Intl.NumberFormat().format(row.amount);
               },
             },
             {
               data: null,
-              orderable: true,
+              className: "all",
+              orderable: false,
+              searchable: false,
+              width: "5%",
+              render(data, type, row, meta){
+                return new Intl.NumberFormat().format(row.transaction_fees)
+              }
+            },
+            {
+              data: "msisdn",
+              orderable: false,
+              searchable: true,
+              className: "all",
+              width: "5%"
+            },
+            {
+              data: null,
+              orderable: false,
+              searchable: false,
+              className: "all",
+              width: "5%",
+              render(data, type, row, meta){
+                return walletStatus(row.wallet)
+              },
+            },
+            {
+              data: null,
+              orderable: false,
               searchable: false,
               className: "all",
               width: "5%",
               render(data, type, row, meta) {
-                return showStatus(row.placed_bet_status);
+                return showStatus(row.status);
               },
-            }];
+            },
+            {
+              data: "payment_trnx_ref",
+              orderable: true,
+              searchable: false,
+              className: "all"
+            },
+            {
+                data: "record_date",
+                orderable: true,
+                searchable: false,
+                className: "all"
+        }];
           break;
-      case 'winning-bets':
-      case 'report-bets':
+      case '':
         columns = [
           {
-            data: "sender_cb",
+            data: null,
             className: "all",
             width: "10%",
           },
@@ -172,7 +195,7 @@ function getDatatableColumns(modelName) {
             },
           },
           {
-            data: "record_date",
+            data: null,
             className: "all",
             orderable: true,
             searchable: false,
@@ -209,15 +232,15 @@ function getDatatableColumns(modelName) {
             },
           }];
         break;
-      case 'bet-payments':
+      case '':
           columns = [
             {
-              data: "transaction_id",
+              data: null,
               className: "all",
               width: "10%",
             },
             {
-              data: "sender_cb",
+              data: null,
               orderable: false,
               searchable: true,
             },
@@ -232,19 +255,19 @@ function getDatatableColumns(modelName) {
               },
             },
             {
-              data: "msisdn",
+              data: null,
               orderable: false,
               searchable: true,
             },
             {
-              data: "record_date",
+              data: null,
               className: "all",
               orderable: true,
               searchable: false,
               width: "5%",
             },
             {
-              data: "payment_ref",
+              data: null,
               orderable: false,
               searchable: true,
             }];
@@ -259,7 +282,7 @@ function getDatatableColumns(modelName) {
     className: "all",
     width: "5%",
     render(data, type, row, meta) {
-      const link = `/loto/show/${modelName}/${row.sender_cb}`;
+      var link = `/transactions/contravention/show/${modelName}/${row.transaction_id}`;
       return showDetailsColumn(link);
     },
   });
@@ -295,3 +318,17 @@ function showStatus(status) {
   return `<span class="fw-bold ${style}">${label}</span>`;
 }
 
+const walletStatus = (status) => {
+    let wallet = ''
+    switch (status){
+        case 'mtn_guinee':
+           wallet = 'Mtn'
+         break;
+        case 'orange_guinee':
+           wallet = 'Orange'
+         break;
+        default:
+         break;
+    }
+    return wallet;
+}
