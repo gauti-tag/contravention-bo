@@ -85,6 +85,13 @@ module ViewsHelper
     }.fetch(status, '')
   end 
 
+  def display_wallet(wallet)
+    {
+        'mtn_guinee' => 'Mtn',
+        'orange_guinee' => 'Orange'
+    }.fetch(wallet)
+  end
+
   
   
 end
