@@ -62,5 +62,6 @@ Rails.application.routes.draw do
   # Transactions
   scope 'transactions' do
     get 'contravention/:model', to: 'transactions#index', as: :transactions
+    get 'contravention/show/:model/:id', to: 'transactions#show', as: :show_transaction
   end
 end
