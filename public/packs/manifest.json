@@ -1,21 +1,21 @@
 {
-  "application.js": "/packs/js/application-db4b83a1cfbda6a47837.js",
-  "application.js.map": "/packs/js/application-db4b83a1cfbda6a47837.js.map",
+  "application.js": "/packs/js/application-63d35ffc80ac1a0d9193.js",
+  "application.js.map": "/packs/js/application-63d35ffc80ac1a0d9193.js.map",
   "entrypoints": {
     "application": {
       "js": [
-        "/packs/js/application-db4b83a1cfbda6a47837.js"
+        "/packs/js/application-63d35ffc80ac1a0d9193.js"
       ],
       "js.map": [
-        "/packs/js/application-db4b83a1cfbda6a47837.js.map"
+        "/packs/js/application-63d35ffc80ac1a0d9193.js.map"
       ]
     },
     "turbolinks": {
       "js": [
-        "/packs/js/turbolinks-364c662702ac4a893fc9.js"
+        "/packs/js/turbolinks-d2926d8d44ce6396c5dc.js"
       ],
       "js.map": [
-        "/packs/js/turbolinks-364c662702ac4a893fc9.js.map"
+        "/packs/js/turbolinks-d2926d8d44ce6396c5dc.js.map"
       ]
     },
     "typed": {
@@ -35,8 +35,8 @@
       ]
     }
   },
-  "turbolinks.js": "/packs/js/turbolinks-364c662702ac4a893fc9.js",
-  "turbolinks.js.map": "/packs/js/turbolinks-364c662702ac4a893fc9.js.map",
+  "turbolinks.js": "/packs/js/turbolinks-d2926d8d44ce6396c5dc.js",
+  "turbolinks.js.map": "/packs/js/turbolinks-d2926d8d44ce6396c5dc.js.map",
   "typed.js": "/packs/js/typed-85e1c536a01dcd2ff0b6.js",
   "typed.js.map": "/packs/js/typed-85e1c536a01dcd2ff0b6.js.map",
   "volt.js": "/packs/js/volt-5f89d92f146761248079.js",
