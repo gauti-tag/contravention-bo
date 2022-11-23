@@ -1285,7 +1285,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       form.removeChild(button);
     }
 
-    submitButtonsByForm.delete(form);
+    submitButtonsByForm["delete"](form);
   }
 
   function disable(input) {
@@ -5575,7 +5575,7 @@ Released under the MIT license
     readyList.then(fn) // Wrap jQuery.readyException in a function so that the lookup
     // happens at the time of error handling instead of callback
     // registration.
-    .catch(function (error) {
+    ["catch"](function (error) {
       jQuery.readyException(error);
     });
     return this;
@@ -7889,10 +7889,10 @@ Released under the MIT license
 
 
   function finalPropName(name) {
-    var final = jQuery.cssProps[name] || vendorProps[name];
+    var _final = jQuery.cssProps[name] || vendorProps[name];
 
-    if (final) {
-      return final;
+    if (_final) {
+      return _final;
     }
 
     if (name in emptyStyle) {
@@ -10216,7 +10216,7 @@ Released under the MIT license
 
           if (conv !== true) {
             // Unless errors are allowed to bubble, catch and return them
-            if (conv && s.throws) {
+            if (conv && s["throws"]) {
               response = conv(response);
             } else {
               try {
@@ -12688,4 +12688,4 @@ module.exports = function (module) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=turbolinks-364c662702ac4a893fc9.js.map
+//# sourceMappingURL=turbolinks-d2926d8d44ce6396c5dc.js.map

@@ -272,8 +272,9 @@ window.simpleDatatables = simpleDatatables;
 window.vanillajsDatepicker = vanillajsDatepicker;
 window.Choices = Choices;
 
-__webpack_require__(/*! packs/volt */ "./app/javascript/packs/volt.js"); //require('packs/typed')
-// Uncomment to copy all static images under ../images to the output folder and reference
+__webpack_require__(/*! packs/volt */ "./app/javascript/packs/volt.js");
+
+__webpack_require__(/*! packs/typed */ "./app/javascript/packs/typed.js"); // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
 // or the `imagePath` JavaScript helper below.
 //
@@ -346,13 +347,15 @@ function getDatatableColumns(modelName) {
   var columns = [];
 
   switch (modelName) {
-    case 'placed-bets':
+    case 'ticket_payments':
       columns = [{
-        data: "sender_cb",
+        data: "transaction_id",
         className: "all",
+        orderable: false,
+        searchable: true,
         width: "10%"
       }, {
-        data: "msisdn",
+        data: "ticket_number",
         orderable: false,
         searchable: true
       }, {
@@ -362,41 +365,57 @@ function getDatatableColumns(modelName) {
         className: "all",
         width: "10%",
         render: function render(data, type, row, meta) {
-          return row.draws.map(function (num) {
-            return "<span class=\"badge bg-primary\"> ".concat(num, " </span>");
-          });
+          return new Intl.NumberFormat().format(row.amount);
         }
       }, {
-        data: "record_date",
+        data: null,
         className: "all",
-        orderable: true,
+        orderable: false,
         searchable: false,
+        width: "5%",
+        render: function render(data, type, row, meta) {
+          return new Intl.NumberFormat().format(row.transaction_fees);
+        }
+      }, {
+        data: "msisdn",
+        orderable: false,
+        searchable: true,
+        className: "all",
         width: "5%"
       }, {
         data: null,
-        orderable: true,
+        orderable: false,
         searchable: false,
         className: "all",
         width: "5%",
         render: function render(data, type, row, meta) {
-          return new Intl.NumberFormat().format(row.bet_amount);
+          return walletStatus(row.wallet);
         }
       }, {
         data: null,
-        orderable: true,
+        orderable: false,
         searchable: false,
         className: "all",
         width: "5%",
         render: function render(data, type, row, meta) {
-          return showStatus(row.placed_bet_status);
+          return showStatus(row.status);
         }
+      }, {
+        data: "payment_trnx_ref",
+        orderable: true,
+        searchable: false,
+        className: "all"
+      }, {
+        data: "record_date",
+        orderable: true,
+        searchable: false,
+        className: "all"
       }];
       break;
 
-    case 'winning-bets':
-    case 'report-bets':
+    case '':
       columns = [{
-        data: "sender_cb",
+        data: null,
         className: "all",
         width: "10%"
       }, {
@@ -411,7 +430,7 @@ function getDatatableColumns(modelName) {
           });
         }
       }, {
-        data: "record_date",
+        data: null,
         className: "all",
         orderable: true,
         searchable: false,
@@ -446,13 +465,13 @@ function getDatatableColumns(modelName) {
       }];
       break;
 
-    case 'bet-payments':
+    case '':
       columns = [{
-        data: "transaction_id",
+        data: null,
         className: "all",
         width: "10%"
       }, {
-        data: "sender_cb",
+        data: null,
         orderable: false,
         searchable: true
       }, {
@@ -465,17 +484,17 @@ function getDatatableColumns(modelName) {
           return new Intl.NumberFormat().format(row.amount);
         }
       }, {
-        data: "msisdn",
+        data: null,
         orderable: false,
         searchable: true
       }, {
-        data: "record_date",
+        data: null,
         className: "all",
         orderable: true,
         searchable: false,
         width: "5%"
       }, {
-        data: "payment_ref",
+        data: null,
         orderable: false,
         searchable: true
       }];
@@ -493,7 +512,7 @@ function getDatatableColumns(modelName) {
     className: "all",
     width: "5%",
     render: function render(data, type, row, meta) {
-      var link = "/loto/show/".concat(modelName, "/").concat(row.sender_cb);
+      var link = "/transactions/contravention/show/".concat(modelName, "/").concat(row.transaction_id);
       return showDetailsColumn(link);
     }
   });
@@ -526,7 +545,462 @@ function showStatus(status) {
 
   return "<span class=\"fw-bold ".concat(style, "\">").concat(label, "</span>");
 }
+
+var walletStatus = function walletStatus(status) {
+  var wallet = '';
+
+  switch (status) {
+    case 'mtn_guinee':
+      wallet = 'Mtn';
+      break;
+
+    case 'orange_guinee':
+      wallet = 'Orange';
+      break;
+
+    default:
+      break;
+  }
+
+  return wallet;
+};
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! @rails/ujs */ "./node_modules/@rails/ujs/lib/assets/compiled/rails-ujs.js")))
+
+/***/ }),
+
+/***/ "./app/javascript/packs/typed.js":
+/*!***************************************!*\
+  !*** ./app/javascript/packs/typed.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*!
+ * 
+ *   typed.js - A JavaScript Typing Animation Library
+ *   Author: Matt Boldt <me@mattboldt.com>
+ *   Version: v2.0.12
+ *   Url: https://github.com/mattboldt/typed.js
+ *   License(s): MIT
+ * 
+ */
+(function (t, e) {
+   true ? module.exports = e() : undefined;
+})(this, function () {
+  return function (t) {
+    function e(n) {
+      if (s[n]) return s[n].exports;
+      var i = s[n] = {
+        exports: {},
+        id: n,
+        loaded: !1
+      };
+      return t[n].call(i.exports, i, i.exports, e), i.loaded = !0, i.exports;
+    }
+
+    var s = {};
+    return e.m = t, e.c = s, e.p = "", e(0);
+  }([function (t, e, s) {
+    "use strict";
+
+    function n(t, e) {
+      if (!(t instanceof e)) throw new TypeError("Cannot call a class as a function");
+    }
+
+    Object.defineProperty(e, "__esModule", {
+      value: !0
+    });
+
+    var i = function () {
+      function t(t, e) {
+        for (var s = 0; s < e.length; s++) {
+          var n = e[s];
+          n.enumerable = n.enumerable || !1, n.configurable = !0, "value" in n && (n.writable = !0), Object.defineProperty(t, n.key, n);
+        }
+      }
+
+      return function (e, s, n) {
+        return s && t(e.prototype, s), n && t(e, n), e;
+      };
+    }(),
+        r = s(1),
+        o = s(3),
+        a = function () {
+      function t(e, s) {
+        n(this, t), r.initializer.load(this, s, e), this.begin();
+      }
+
+      return i(t, [{
+        key: "toggle",
+        value: function value() {
+          this.pause.status ? this.start() : this.stop();
+        }
+      }, {
+        key: "stop",
+        value: function value() {
+          this.typingComplete || this.pause.status || (this.toggleBlinking(!0), this.pause.status = !0, this.options.onStop(this.arrayPos, this));
+        }
+      }, {
+        key: "start",
+        value: function value() {
+          this.typingComplete || this.pause.status && (this.pause.status = !1, this.pause.typewrite ? this.typewrite(this.pause.curString, this.pause.curStrPos) : this.backspace(this.pause.curString, this.pause.curStrPos), this.options.onStart(this.arrayPos, this));
+        }
+      }, {
+        key: "destroy",
+        value: function value() {
+          this.reset(!1), this.options.onDestroy(this);
+        }
+      }, {
+        key: "reset",
+        value: function value() {
+          var t = arguments.length <= 0 || void 0 === arguments[0] || arguments[0];
+          clearInterval(this.timeout), this.replaceText(""), this.cursor && this.cursor.parentNode && (this.cursor.parentNode.removeChild(this.cursor), this.cursor = null), this.strPos = 0, this.arrayPos = 0, this.curLoop = 0, t && (this.insertCursor(), this.options.onReset(this), this.begin());
+        }
+      }, {
+        key: "begin",
+        value: function value() {
+          var t = this;
+          this.options.onBegin(this), this.typingComplete = !1, this.shuffleStringsIfNeeded(this), this.insertCursor(), this.bindInputFocusEvents && this.bindFocusEvents(), this.timeout = setTimeout(function () {
+            t.currentElContent && 0 !== t.currentElContent.length ? t.backspace(t.currentElContent, t.currentElContent.length) : t.typewrite(t.strings[t.sequence[t.arrayPos]], t.strPos);
+          }, this.startDelay);
+        }
+      }, {
+        key: "typewrite",
+        value: function value(t, e) {
+          var s = this;
+          this.fadeOut && this.el.classList.contains(this.fadeOutClass) && (this.el.classList.remove(this.fadeOutClass), this.cursor && this.cursor.classList.remove(this.fadeOutClass));
+          var n = this.humanizer(this.typeSpeed),
+              i = 1;
+          return this.pause.status === !0 ? void this.setPauseStatus(t, e, !0) : void (this.timeout = setTimeout(function () {
+            e = o.htmlParser.typeHtmlChars(t, e, s);
+            var n = 0,
+                r = t.substr(e);
+
+            if ("^" === r.charAt(0) && /^\^\d+/.test(r)) {
+              var a = 1;
+              r = /\d+/.exec(r)[0], a += r.length, n = parseInt(r), s.temporaryPause = !0, s.options.onTypingPaused(s.arrayPos, s), t = t.substring(0, e) + t.substring(e + a), s.toggleBlinking(!0);
+            }
+
+            if ("`" === r.charAt(0)) {
+              for (; "`" !== t.substr(e + i).charAt(0) && (i++, !(e + i > t.length));) {
+                ;
+              }
+
+              var u = t.substring(0, e),
+                  l = t.substring(u.length + 1, e + i),
+                  c = t.substring(e + i + 1);
+              t = u + l + c, i--;
+            }
+
+            s.timeout = setTimeout(function () {
+              s.toggleBlinking(!1), e >= t.length ? s.doneTyping(t, e) : s.keepTyping(t, e, i), s.temporaryPause && (s.temporaryPause = !1, s.options.onTypingResumed(s.arrayPos, s));
+            }, n);
+          }, n));
+        }
+      }, {
+        key: "keepTyping",
+        value: function value(t, e, s) {
+          0 === e && (this.toggleBlinking(!1), this.options.preStringTyped(this.arrayPos, this)), e += s;
+          var n = t.substr(0, e);
+          this.replaceText(n), this.typewrite(t, e);
+        }
+      }, {
+        key: "doneTyping",
+        value: function value(t, e) {
+          var s = this;
+          this.options.onStringTyped(this.arrayPos, this), this.toggleBlinking(!0), this.arrayPos === this.strings.length - 1 && (this.complete(), this.loop === !1 || this.curLoop === this.loopCount) || (this.timeout = setTimeout(function () {
+            s.backspace(t, e);
+          }, this.backDelay));
+        }
+      }, {
+        key: "backspace",
+        value: function value(t, e) {
+          var s = this;
+          if (this.pause.status === !0) return void this.setPauseStatus(t, e, !1);
+          if (this.fadeOut) return this.initFadeOut();
+          this.toggleBlinking(!1);
+          var n = this.humanizer(this.backSpeed);
+          this.timeout = setTimeout(function () {
+            e = o.htmlParser.backSpaceHtmlChars(t, e, s);
+            var n = t.substr(0, e);
+
+            if (s.replaceText(n), s.smartBackspace) {
+              var i = s.strings[s.arrayPos + 1];
+              i && n === i.substr(0, e) ? s.stopNum = e : s.stopNum = 0;
+            }
+
+            e > s.stopNum ? (e--, s.backspace(t, e)) : e <= s.stopNum && (s.arrayPos++, s.arrayPos === s.strings.length ? (s.arrayPos = 0, s.options.onLastStringBackspaced(), s.shuffleStringsIfNeeded(), s.begin()) : s.typewrite(s.strings[s.sequence[s.arrayPos]], e));
+          }, n);
+        }
+      }, {
+        key: "complete",
+        value: function value() {
+          this.options.onComplete(this), this.loop ? this.curLoop++ : this.typingComplete = !0;
+        }
+      }, {
+        key: "setPauseStatus",
+        value: function value(t, e, s) {
+          this.pause.typewrite = s, this.pause.curString = t, this.pause.curStrPos = e;
+        }
+      }, {
+        key: "toggleBlinking",
+        value: function value(t) {
+          this.cursor && (this.pause.status || this.cursorBlinking !== t && (this.cursorBlinking = t, t ? this.cursor.classList.add("typed-cursor--blink") : this.cursor.classList.remove("typed-cursor--blink")));
+        }
+      }, {
+        key: "humanizer",
+        value: function value(t) {
+          return Math.round(Math.random() * t / 2) + t;
+        }
+      }, {
+        key: "shuffleStringsIfNeeded",
+        value: function value() {
+          this.shuffle && (this.sequence = this.sequence.sort(function () {
+            return Math.random() - .5;
+          }));
+        }
+      }, {
+        key: "initFadeOut",
+        value: function value() {
+          var t = this;
+          return this.el.className += " " + this.fadeOutClass, this.cursor && (this.cursor.className += " " + this.fadeOutClass), setTimeout(function () {
+            t.arrayPos++, t.replaceText(""), t.strings.length > t.arrayPos ? t.typewrite(t.strings[t.sequence[t.arrayPos]], 0) : (t.typewrite(t.strings[0], 0), t.arrayPos = 0);
+          }, this.fadeOutDelay);
+        }
+      }, {
+        key: "replaceText",
+        value: function value(t) {
+          this.attr ? this.el.setAttribute(this.attr, t) : this.isInput ? this.el.value = t : "html" === this.contentType ? this.el.innerHTML = t : this.el.textContent = t;
+        }
+      }, {
+        key: "bindFocusEvents",
+        value: function value() {
+          var t = this;
+          this.isInput && (this.el.addEventListener("focus", function (e) {
+            t.stop();
+          }), this.el.addEventListener("blur", function (e) {
+            t.el.value && 0 !== t.el.value.length || t.start();
+          }));
+        }
+      }, {
+        key: "insertCursor",
+        value: function value() {
+          this.showCursor && (this.cursor || (this.cursor = document.createElement("span"), this.cursor.className = "typed-cursor", this.cursor.setAttribute("aria-hidden", !0), this.cursor.innerHTML = this.cursorChar, this.el.parentNode && this.el.parentNode.insertBefore(this.cursor, this.el.nextSibling)));
+        }
+      }]), t;
+    }();
+
+    e["default"] = a, t.exports = e["default"];
+  }, function (t, e, s) {
+    "use strict";
+
+    function n(t) {
+      return t && t.__esModule ? t : {
+        "default": t
+      };
+    }
+
+    function i(t, e) {
+      if (!(t instanceof e)) throw new TypeError("Cannot call a class as a function");
+    }
+
+    Object.defineProperty(e, "__esModule", {
+      value: !0
+    });
+
+    var r = Object.assign || function (t) {
+      for (var e = 1; e < arguments.length; e++) {
+        var s = arguments[e];
+
+        for (var n in s) {
+          Object.prototype.hasOwnProperty.call(s, n) && (t[n] = s[n]);
+        }
+      }
+
+      return t;
+    },
+        o = function () {
+      function t(t, e) {
+        for (var s = 0; s < e.length; s++) {
+          var n = e[s];
+          n.enumerable = n.enumerable || !1, n.configurable = !0, "value" in n && (n.writable = !0), Object.defineProperty(t, n.key, n);
+        }
+      }
+
+      return function (e, s, n) {
+        return s && t(e.prototype, s), n && t(e, n), e;
+      };
+    }(),
+        a = s(2),
+        u = n(a),
+        l = function () {
+      function t() {
+        i(this, t);
+      }
+
+      return o(t, [{
+        key: "load",
+        value: function value(t, e, s) {
+          if ("string" == typeof s ? t.el = document.querySelector(s) : t.el = s, t.options = r({}, u["default"], e), t.isInput = "input" === t.el.tagName.toLowerCase(), t.attr = t.options.attr, t.bindInputFocusEvents = t.options.bindInputFocusEvents, t.showCursor = !t.isInput && t.options.showCursor, t.cursorChar = t.options.cursorChar, t.cursorBlinking = !0, t.elContent = t.attr ? t.el.getAttribute(t.attr) : t.el.textContent, t.contentType = t.options.contentType, t.typeSpeed = t.options.typeSpeed, t.startDelay = t.options.startDelay, t.backSpeed = t.options.backSpeed, t.smartBackspace = t.options.smartBackspace, t.backDelay = t.options.backDelay, t.fadeOut = t.options.fadeOut, t.fadeOutClass = t.options.fadeOutClass, t.fadeOutDelay = t.options.fadeOutDelay, t.isPaused = !1, t.strings = t.options.strings.map(function (t) {
+            return t.trim();
+          }), "string" == typeof t.options.stringsElement ? t.stringsElement = document.querySelector(t.options.stringsElement) : t.stringsElement = t.options.stringsElement, t.stringsElement) {
+            t.strings = [], t.stringsElement.style.display = "none";
+            var n = Array.prototype.slice.apply(t.stringsElement.children),
+                i = n.length;
+            if (i) for (var o = 0; o < i; o += 1) {
+              var a = n[o];
+              t.strings.push(a.innerHTML.trim());
+            }
+          }
+
+          t.strPos = 0, t.arrayPos = 0, t.stopNum = 0, t.loop = t.options.loop, t.loopCount = t.options.loopCount, t.curLoop = 0, t.shuffle = t.options.shuffle, t.sequence = [], t.pause = {
+            status: !1,
+            typewrite: !0,
+            curString: "",
+            curStrPos: 0
+          }, t.typingComplete = !1;
+
+          for (var o in t.strings) {
+            t.sequence[o] = o;
+          }
+
+          t.currentElContent = this.getCurrentElContent(t), t.autoInsertCss = t.options.autoInsertCss, this.appendAnimationCss(t);
+        }
+      }, {
+        key: "getCurrentElContent",
+        value: function value(t) {
+          var e = "";
+          return e = t.attr ? t.el.getAttribute(t.attr) : t.isInput ? t.el.value : "html" === t.contentType ? t.el.innerHTML : t.el.textContent;
+        }
+      }, {
+        key: "appendAnimationCss",
+        value: function value(t) {
+          var e = "data-typed-js-css";
+
+          if (t.autoInsertCss && (t.showCursor || t.fadeOut) && !document.querySelector("[" + e + "]")) {
+            var s = document.createElement("style");
+            s.type = "text/css", s.setAttribute(e, !0);
+            var n = "";
+            t.showCursor && (n += "\n        .typed-cursor{\n          opacity: 1;\n        }\n        .typed-cursor.typed-cursor--blink{\n          animation: typedjsBlink 0.7s infinite;\n          -webkit-animation: typedjsBlink 0.7s infinite;\n                  animation: typedjsBlink 0.7s infinite;\n        }\n        @keyframes typedjsBlink{\n          50% { opacity: 0.0; }\n        }\n        @-webkit-keyframes typedjsBlink{\n          0% { opacity: 1; }\n          50% { opacity: 0.0; }\n          100% { opacity: 1; }\n        }\n      "), t.fadeOut && (n += "\n        .typed-fade-out{\n          opacity: 0;\n          transition: opacity .25s;\n        }\n        .typed-cursor.typed-cursor--blink.typed-fade-out{\n          -webkit-animation: 0;\n          animation: 0;\n        }\n      "), 0 !== s.length && (s.innerHTML = n, document.body.appendChild(s));
+          }
+        }
+      }]), t;
+    }();
+
+    e["default"] = l;
+    var c = new l();
+    e.initializer = c;
+  }, function (t, e) {
+    "use strict";
+
+    Object.defineProperty(e, "__esModule", {
+      value: !0
+    });
+    var s = {
+      strings: ["These are the default values...", "You know what you should do?", "Use your own!", "Have a great day!"],
+      stringsElement: null,
+      typeSpeed: 0,
+      startDelay: 0,
+      backSpeed: 0,
+      smartBackspace: !0,
+      shuffle: !1,
+      backDelay: 700,
+      fadeOut: !1,
+      fadeOutClass: "typed-fade-out",
+      fadeOutDelay: 500,
+      loop: !1,
+      loopCount: 1 / 0,
+      showCursor: !0,
+      cursorChar: "|",
+      autoInsertCss: !0,
+      attr: null,
+      bindInputFocusEvents: !1,
+      contentType: "html",
+      onBegin: function onBegin(t) {},
+      onComplete: function onComplete(t) {},
+      preStringTyped: function preStringTyped(t, e) {},
+      onStringTyped: function onStringTyped(t, e) {},
+      onLastStringBackspaced: function onLastStringBackspaced(t) {},
+      onTypingPaused: function onTypingPaused(t, e) {},
+      onTypingResumed: function onTypingResumed(t, e) {},
+      onReset: function onReset(t) {},
+      onStop: function onStop(t, e) {},
+      onStart: function onStart(t, e) {},
+      onDestroy: function onDestroy(t) {}
+    };
+    e["default"] = s, t.exports = e["default"];
+  }, function (t, e) {
+    "use strict";
+
+    function s(t, e) {
+      if (!(t instanceof e)) throw new TypeError("Cannot call a class as a function");
+    }
+
+    Object.defineProperty(e, "__esModule", {
+      value: !0
+    });
+
+    var n = function () {
+      function t(t, e) {
+        for (var s = 0; s < e.length; s++) {
+          var n = e[s];
+          n.enumerable = n.enumerable || !1, n.configurable = !0, "value" in n && (n.writable = !0), Object.defineProperty(t, n.key, n);
+        }
+      }
+
+      return function (e, s, n) {
+        return s && t(e.prototype, s), n && t(e, n), e;
+      };
+    }(),
+        i = function () {
+      function t() {
+        s(this, t);
+      }
+
+      return n(t, [{
+        key: "typeHtmlChars",
+        value: function value(t, e, s) {
+          if ("html" !== s.contentType) return e;
+          var n = t.substr(e).charAt(0);
+
+          if ("<" === n || "&" === n) {
+            var i = "";
+
+            for (i = "<" === n ? ">" : ";"; t.substr(e + 1).charAt(0) !== i && (e++, !(e + 1 > t.length));) {
+              ;
+            }
+
+            e++;
+          }
+
+          return e;
+        }
+      }, {
+        key: "backSpaceHtmlChars",
+        value: function value(t, e, s) {
+          if ("html" !== s.contentType) return e;
+          var n = t.substr(e).charAt(0);
+
+          if (">" === n || ";" === n) {
+            var i = "";
+
+            for (i = ">" === n ? "<" : "&"; t.substr(e - 1).charAt(0) !== i && (e--, !(e < 0));) {
+              ;
+            }
+
+            e--;
+          }
+
+          return e;
+        }
+      }]), t;
+    }();
+
+    e["default"] = i;
+    var r = new i();
+    e.htmlParser = r;
+  }]);
+});
 
 /***/ }),
 
@@ -7514,10 +7988,10 @@ var Data = {
     }
 
     var instanceMap = elementMap.get(element);
-    instanceMap.delete(key); // free up element references if there are no instances left for an element
+    instanceMap["delete"](key); // free up element references if there are no instances left for an element
 
     if (instanceMap.size === 0) {
-      elementMap.delete(element);
+      elementMap["delete"](element);
     }
   }
 };
@@ -12724,8 +13198,8 @@ module.exports = canUseDOM;
       } // see https://github.com/facebook/react/blob/b5ac963fb791d1298e7f396236383bc955f916c1/src/isomorphic/classic/element/ReactElement.js#L21-L25
 
 
-      var canUseSymbol = typeof Symbol === 'function' && Symbol.for;
-      var REACT_ELEMENT_TYPE = canUseSymbol ? Symbol.for('react.element') : 0xeac7;
+      var canUseSymbol = typeof Symbol === 'function' && Symbol["for"];
+      var REACT_ELEMENT_TYPE = canUseSymbol ? Symbol["for"]('react.element') : 0xeac7;
 
       function isReactElement(value) {
         return value.$$typeof === REACT_ELEMENT_TYPE;
@@ -12914,7 +13388,7 @@ module.exports = canUseDOM;
             return r;
           }, n.n = function (e) {
             var t = e && e.__esModule ? function () {
-              return e.default;
+              return e["default"];
             } : function () {
               return e;
             };
@@ -17236,7 +17710,7 @@ module.exports = canUseDOM;
                 return fetcher;
               }).then(function (data) {
                 return _this11.setChoices(data, value, label, replaceChoices);
-              }).catch(function (err) {
+              })["catch"](function (err) {
                 if (!_this11.config.silent) {
                   console.error(err);
                 }
@@ -28225,7 +28699,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
       var n = features.f;
       var val = !this.value ? "" : this.value; // mental IE8 fix :-(
 
-      if (previousSearch.return && event.key !== "Enter") {
+      if (previousSearch["return"] && event.key !== "Enter") {
         return;
       }
       /* Now do the filter */
@@ -28237,7 +28711,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
           "bRegex": previousSearch.bRegex,
           "bSmart": previousSearch.bSmart,
           "bCaseInsensitive": previousSearch.bCaseInsensitive,
-          "return": previousSearch.return
+          "return": previousSearch["return"]
         }); // Need to redraw, without resorting
 
 
@@ -28294,7 +28768,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
       oPrevSearch.bRegex = oFilter.bRegex;
       oPrevSearch.bSmart = oFilter.bSmart;
       oPrevSearch.bCaseInsensitive = oFilter.bCaseInsensitive;
-      oPrevSearch.return = oFilter.return;
+      oPrevSearch["return"] = oFilter["return"];
     };
 
     var fnRegex = function fnRegex(o) {
@@ -28310,7 +28784,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
 
     if (_fnDataSource(oSettings) != 'ssp') {
       /* Global filter */
-      _fnFilter(oSettings, oInput.sSearch, iForce, fnRegex(oInput), oInput.bSmart, oInput.bCaseInsensitive, oInput.return);
+      _fnFilter(oSettings, oInput.sSearch, iForce, fnRegex(oInput), oInput.bSmart, oInput.bCaseInsensitive, oInput["return"]);
 
       fnSaveFilter(oInput);
       /* Now do the individual column filter */
@@ -44717,21 +45191,21 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
             var pointer = 0;
             var value, length, numbersSeen, ipv4Piece, number, swaps, swap;
 
-            var char = function char() {
+            var _char = function _char() {
               return input.charAt(pointer);
             };
 
-            if (char() == ':') {
+            if (_char() == ':') {
               if (input.charAt(1) != ':') return;
               pointer += 2;
               pieceIndex++;
               compress = pieceIndex;
             }
 
-            while (char()) {
+            while (_char()) {
               if (pieceIndex == 8) return;
 
-              if (char() == ':') {
+              if (_char() == ':') {
                 if (compress !== null) return;
                 pointer++;
                 pieceIndex++;
@@ -44741,29 +45215,29 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
 
               value = length = 0;
 
-              while (length < 4 && HEX.test(char())) {
-                value = value * 16 + parseInt(char(), 16);
+              while (length < 4 && HEX.test(_char())) {
+                value = value * 16 + parseInt(_char(), 16);
                 pointer++;
                 length++;
               }
 
-              if (char() == '.') {
+              if (_char() == '.') {
                 if (length == 0) return;
                 pointer -= length;
                 if (pieceIndex > 6) return;
                 numbersSeen = 0;
 
-                while (char()) {
+                while (_char()) {
                   ipv4Piece = null;
 
                   if (numbersSeen > 0) {
-                    if (char() == '.' && numbersSeen < 4) pointer++;else return;
+                    if (_char() == '.' && numbersSeen < 4) pointer++;else return;
                   }
 
-                  if (!DIGIT.test(char())) return;
+                  if (!DIGIT.test(_char())) return;
 
-                  while (DIGIT.test(char())) {
-                    number = parseInt(char(), 10);
+                  while (DIGIT.test(_char())) {
+                    number = parseInt(_char(), 10);
                     if (ipv4Piece === null) ipv4Piece = number;else if (ipv4Piece == 0) return;else ipv4Piece = ipv4Piece * 10 + number;
                     if (ipv4Piece > 255) return;
                     pointer++;
@@ -44776,10 +45250,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
 
                 if (numbersSeen != 4) return;
                 break;
-              } else if (char() == ':') {
+              } else if (_char() == ':') {
                 pointer++;
-                if (!char()) return;
-              } else if (char()) return;
+                if (!_char()) return;
+              } else if (_char()) return;
 
               address[pieceIndex++] = value;
             }
@@ -44890,9 +45364,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
             '|': 1
           });
 
-          var percentEncode = function percentEncode(char, set) {
-            var code = codeAt(char, 0);
-            return code > 0x20 && code < 0x7F && !has(set, char) ? char : encodeURIComponent(char);
+          var percentEncode = function percentEncode(_char2, set) {
+            var code = codeAt(_char2, 0);
+            return code > 0x20 && code < 0x7F && !has(set, _char2) ? _char2 : encodeURIComponent(_char2);
           };
 
           var specialSchemes = {
@@ -44974,7 +45448,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
             var seenAt = false;
             var seenBracket = false;
             var seenPasswordToken = false;
-            var codePoints, char, bufferCodePoints, failure;
+
+            var codePoints, _char3, bufferCodePoints, failure;
 
             if (!stateOverride) {
               url.scheme = '';
@@ -44993,12 +45468,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
             codePoints = arrayFrom(input);
 
             while (pointer <= codePoints.length) {
-              char = codePoints[pointer];
+              _char3 = codePoints[pointer];
 
               switch (state) {
                 case SCHEME_START:
-                  if (char && ALPHA.test(char)) {
-                    buffer += char.toLowerCase();
+                  if (_char3 && ALPHA.test(_char3)) {
+                    buffer += _char3.toLowerCase();
                     state = SCHEME;
                   } else if (!stateOverride) {
                     state = NO_SCHEME;
@@ -45008,9 +45483,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                   break;
 
                 case SCHEME:
-                  if (char && (ALPHANUMERIC.test(char) || char == '+' || char == '-' || char == '.')) {
-                    buffer += char.toLowerCase();
-                  } else if (char == ':') {
+                  if (_char3 && (ALPHANUMERIC.test(_char3) || _char3 == '+' || _char3 == '-' || _char3 == '.')) {
+                    buffer += _char3.toLowerCase();
+                  } else if (_char3 == ':') {
                     if (stateOverride && (isSpecial(url) != has(specialSchemes, buffer) || buffer == 'file' && (includesCredentials(url) || url.port !== null) || url.scheme == 'file' && !url.host)) return;
                     url.scheme = buffer;
 
@@ -45045,9 +45520,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                   break;
 
                 case NO_SCHEME:
-                  if (!base || base.cannotBeABaseURL && char != '#') return INVALID_SCHEME;
+                  if (!base || base.cannotBeABaseURL && _char3 != '#') return INVALID_SCHEME;
 
-                  if (base.cannotBeABaseURL && char == '#') {
+                  if (base.cannotBeABaseURL && _char3 == '#') {
                     url.scheme = base.scheme;
                     url.path = base.path.slice();
                     url.query = base.query;
@@ -45061,7 +45536,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                   continue;
 
                 case SPECIAL_RELATIVE_OR_AUTHORITY:
-                  if (char == '/' && codePoints[pointer + 1] == '/') {
+                  if (_char3 == '/' && codePoints[pointer + 1] == '/') {
                     state = SPECIAL_AUTHORITY_IGNORE_SLASHES;
                     pointer++;
                   } else {
@@ -45072,7 +45547,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                   break;
 
                 case PATH_OR_AUTHORITY:
-                  if (char == '/') {
+                  if (_char3 == '/') {
                     state = AUTHORITY;
                     break;
                   } else {
@@ -45083,16 +45558,16 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                 case RELATIVE:
                   url.scheme = base.scheme;
 
-                  if (char == EOF) {
+                  if (_char3 == EOF) {
                     url.username = base.username;
                     url.password = base.password;
                     url.host = base.host;
                     url.port = base.port;
                     url.path = base.path.slice();
                     url.query = base.query;
-                  } else if (char == '/' || char == '\\' && isSpecial(url)) {
+                  } else if (_char3 == '/' || _char3 == '\\' && isSpecial(url)) {
                     state = RELATIVE_SLASH;
-                  } else if (char == '?') {
+                  } else if (_char3 == '?') {
                     url.username = base.username;
                     url.password = base.password;
                     url.host = base.host;
@@ -45100,7 +45575,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                     url.path = base.path.slice();
                     url.query = '';
                     state = QUERY;
-                  } else if (char == '#') {
+                  } else if (_char3 == '#') {
                     url.username = base.username;
                     url.password = base.password;
                     url.host = base.host;
@@ -45123,9 +45598,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                   break;
 
                 case RELATIVE_SLASH:
-                  if (isSpecial(url) && (char == '/' || char == '\\')) {
+                  if (isSpecial(url) && (_char3 == '/' || _char3 == '\\')) {
                     state = SPECIAL_AUTHORITY_IGNORE_SLASHES;
-                  } else if (char == '/') {
+                  } else if (_char3 == '/') {
                     state = AUTHORITY;
                   } else {
                     url.username = base.username;
@@ -45140,12 +45615,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
 
                 case SPECIAL_AUTHORITY_SLASHES:
                   state = SPECIAL_AUTHORITY_IGNORE_SLASHES;
-                  if (char != '/' || buffer.charAt(pointer + 1) != '/') continue;
+                  if (_char3 != '/' || buffer.charAt(pointer + 1) != '/') continue;
                   pointer++;
                   break;
 
                 case SPECIAL_AUTHORITY_IGNORE_SLASHES:
-                  if (char != '/' && char != '\\') {
+                  if (_char3 != '/' && _char3 != '\\') {
                     state = AUTHORITY;
                     continue;
                   }
@@ -45153,7 +45628,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                   break;
 
                 case AUTHORITY:
-                  if (char == '@') {
+                  if (_char3 == '@') {
                     if (seenAt) buffer = '%40' + buffer;
                     seenAt = true;
                     bufferCodePoints = arrayFrom(buffer);
@@ -45171,12 +45646,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                     }
 
                     buffer = '';
-                  } else if (char == EOF || char == '/' || char == '?' || char == '#' || char == '\\' && isSpecial(url)) {
+                  } else if (_char3 == EOF || _char3 == '/' || _char3 == '?' || _char3 == '#' || _char3 == '\\' && isSpecial(url)) {
                     if (seenAt && buffer == '') return INVALID_AUTHORITY;
                     pointer -= arrayFrom(buffer).length + 1;
                     buffer = '';
                     state = HOST;
-                  } else buffer += char;
+                  } else buffer += _char3;
 
                   break;
 
@@ -45185,14 +45660,14 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                   if (stateOverride && url.scheme == 'file') {
                     state = FILE_HOST;
                     continue;
-                  } else if (char == ':' && !seenBracket) {
+                  } else if (_char3 == ':' && !seenBracket) {
                     if (buffer == '') return INVALID_HOST;
                     failure = parseHost(url, buffer);
                     if (failure) return failure;
                     buffer = '';
                     state = PORT;
                     if (stateOverride == HOSTNAME) return;
-                  } else if (char == EOF || char == '/' || char == '?' || char == '#' || char == '\\' && isSpecial(url)) {
+                  } else if (_char3 == EOF || _char3 == '/' || _char3 == '?' || _char3 == '#' || _char3 == '\\' && isSpecial(url)) {
                     if (isSpecial(url) && buffer == '') return INVALID_HOST;
                     if (stateOverride && buffer == '' && (includesCredentials(url) || url.port !== null)) return;
                     failure = parseHost(url, buffer);
@@ -45202,16 +45677,16 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                     if (stateOverride) return;
                     continue;
                   } else {
-                    if (char == '[') seenBracket = true;else if (char == ']') seenBracket = false;
-                    buffer += char;
+                    if (_char3 == '[') seenBracket = true;else if (_char3 == ']') seenBracket = false;
+                    buffer += _char3;
                   }
 
                   break;
 
                 case PORT:
-                  if (DIGIT.test(char)) {
-                    buffer += char;
-                  } else if (char == EOF || char == '/' || char == '?' || char == '#' || char == '\\' && isSpecial(url) || stateOverride) {
+                  if (DIGIT.test(_char3)) {
+                    buffer += _char3;
+                  } else if (_char3 == EOF || _char3 == '/' || _char3 == '?' || _char3 == '#' || _char3 == '\\' && isSpecial(url) || stateOverride) {
                     if (buffer != '') {
                       var port = parseInt(buffer, 10);
                       if (port > 0xFFFF) return INVALID_PORT;
@@ -45228,17 +45703,17 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
 
                 case FILE:
                   url.scheme = 'file';
-                  if (char == '/' || char == '\\') state = FILE_SLASH;else if (base && base.scheme == 'file') {
-                    if (char == EOF) {
+                  if (_char3 == '/' || _char3 == '\\') state = FILE_SLASH;else if (base && base.scheme == 'file') {
+                    if (_char3 == EOF) {
                       url.host = base.host;
                       url.path = base.path.slice();
                       url.query = base.query;
-                    } else if (char == '?') {
+                    } else if (_char3 == '?') {
                       url.host = base.host;
                       url.path = base.path.slice();
                       url.query = '';
                       state = QUERY;
-                    } else if (char == '#') {
+                    } else if (_char3 == '#') {
                       url.host = base.host;
                       url.path = base.path.slice();
                       url.query = base.query;
@@ -45261,7 +45736,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                   break;
 
                 case FILE_SLASH:
-                  if (char == '/' || char == '\\') {
+                  if (_char3 == '/' || _char3 == '\\') {
                     state = FILE_HOST;
                     break;
                   }
@@ -45274,7 +45749,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                   continue;
 
                 case FILE_HOST:
-                  if (char == EOF || char == '/' || char == '\\' || char == '?' || char == '#') {
+                  if (_char3 == EOF || _char3 == '/' || _char3 == '\\' || _char3 == '?' || _char3 == '#') {
                     if (!stateOverride && isWindowsDriveLetter(buffer)) {
                       state = PATH;
                     } else if (buffer == '') {
@@ -45291,37 +45766,37 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
                     }
 
                     continue;
-                  } else buffer += char;
+                  } else buffer += _char3;
 
                   break;
 
                 case PATH_START:
                   if (isSpecial(url)) {
                     state = PATH;
-                    if (char != '/' && char != '\\') continue;
-                  } else if (!stateOverride && char == '?') {
+                    if (_char3 != '/' && _char3 != '\\') continue;
+                  } else if (!stateOverride && _char3 == '?') {
                     url.query = '';
                     state = QUERY;
-                  } else if (!stateOverride && char == '#') {
+                  } else if (!stateOverride && _char3 == '#') {
                     url.fragment = '';
                     state = FRAGMENT;
-                  } else if (char != EOF) {
+                  } else if (_char3 != EOF) {
                     state = PATH;
-                    if (char != '/') continue;
+                    if (_char3 != '/') continue;
                   }
 
                   break;
 
                 case PATH:
-                  if (char == EOF || char == '/' || char == '\\' && isSpecial(url) || !stateOverride && (char == '?' || char == '#')) {
+                  if (_char3 == EOF || _char3 == '/' || _char3 == '\\' && isSpecial(url) || !stateOverride && (_char3 == '?' || _char3 == '#')) {
                     if (isDoubleDot(buffer)) {
                       shortenURLsPath(url);
 
-                      if (char != '/' && !(char == '\\' && isSpecial(url))) {
+                      if (_char3 != '/' && !(_char3 == '\\' && isSpecial(url))) {
                         url.path.push('');
                       }
                     } else if (isSingleDot(buffer)) {
-                      if (char != '/' && !(char == '\\' && isSpecial(url))) {
+                      if (_char3 != '/' && !(_char3 == '\\' && isSpecial(url))) {
                         url.path.push('');
                       }
                     } else {
@@ -45335,50 +45810,50 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
 
                     buffer = '';
 
-                    if (url.scheme == 'file' && (char == EOF || char == '?' || char == '#')) {
+                    if (url.scheme == 'file' && (_char3 == EOF || _char3 == '?' || _char3 == '#')) {
                       while (url.path.length > 1 && url.path[0] === '') {
                         url.path.shift();
                       }
                     }
 
-                    if (char == '?') {
+                    if (_char3 == '?') {
                       url.query = '';
                       state = QUERY;
-                    } else if (char == '#') {
+                    } else if (_char3 == '#') {
                       url.fragment = '';
                       state = FRAGMENT;
                     }
                   } else {
-                    buffer += percentEncode(char, pathPercentEncodeSet);
+                    buffer += percentEncode(_char3, pathPercentEncodeSet);
                   }
 
                   break;
 
                 case CANNOT_BE_A_BASE_URL_PATH:
-                  if (char == '?') {
+                  if (_char3 == '?') {
                     url.query = '';
                     state = QUERY;
-                  } else if (char == '#') {
+                  } else if (_char3 == '#') {
                     url.fragment = '';
                     state = FRAGMENT;
-                  } else if (char != EOF) {
-                    url.path[0] += percentEncode(char, C0ControlPercentEncodeSet);
+                  } else if (_char3 != EOF) {
+                    url.path[0] += percentEncode(_char3, C0ControlPercentEncodeSet);
                   }
 
                   break;
 
                 case QUERY:
-                  if (!stateOverride && char == '#') {
+                  if (!stateOverride && _char3 == '#') {
                     url.fragment = '';
                     state = FRAGMENT;
-                  } else if (char != EOF) {
-                    if (char == "'" && isSpecial(url)) url.query += '%27';else if (char == '#') url.query += '%23';else url.query += percentEncode(char, C0ControlPercentEncodeSet);
+                  } else if (_char3 != EOF) {
+                    if (_char3 == "'" && isSpecial(url)) url.query += '%27';else if (_char3 == '#') url.query += '%23';else url.query += percentEncode(_char3, C0ControlPercentEncodeSet);
                   }
 
                   break;
 
                 case FRAGMENT:
-                  if (char != EOF) url.fragment += percentEncode(char, fragmentPercentEncodeSet);
+                  if (_char3 != EOF) url.fragment += percentEncode(_char3, fragmentPercentEncodeSet);
                   break;
               }
 
@@ -46081,7 +46556,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
             },
             f: function f() {
               try {
-                if (!normalCompletion && it.return != null) it.return();
+                if (!normalCompletion && it["return"] != null) it["return"]();
               } finally {
                 if (didErr) throw err;
               }
@@ -46307,7 +46782,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
             },
             f: function f() {
               try {
-                if (!normalCompletion && it.return != null) it.return();
+                if (!normalCompletion && it["return"] != null) it["return"]();
               } finally {
                 if (didErr) throw err;
               }
@@ -47203,7 +47678,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
             },
             f: function f() {
               try {
-                if (!normalCompletion && it.return != null) it.return();
+                if (!normalCompletion && it["return"] != null) it["return"]();
               } finally {
                 if (didErr) throw err;
               }
@@ -53333,7 +53808,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
     readyList.then(fn) // Wrap jQuery.readyException in a function so that the lookup
     // happens at the time of error handling instead of callback
     // registration.
-    .catch(function (error) {
+    ["catch"](function (error) {
       jQuery.readyException(error);
     });
     return this;
@@ -55647,10 +56122,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
 
 
   function finalPropName(name) {
-    var final = jQuery.cssProps[name] || vendorProps[name];
+    var _final = jQuery.cssProps[name] || vendorProps[name];
 
-    if (final) {
-      return final;
+    if (_final) {
+      return _final;
     }
 
     if (name in emptyStyle) {
@@ -57974,7 +58449,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
 
           if (conv !== true) {
             // Unless errors are allowed to bubble, catch and return them
-            if (conv && s.throws) {
+            if (conv && s["throws"]) {
               response = conv(response);
             } else {
               try {
@@ -80457,8 +80932,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   proto.toISOString = toISOString;
   proto.inspect = inspect;
 
-  if (typeof Symbol !== 'undefined' && Symbol.for != null) {
-    proto[Symbol.for('nodejs.util.inspect.custom')] = function () {
+  if (typeof Symbol !== 'undefined' && Symbol["for"] != null) {
+    proto[Symbol["for"]('nodejs.util.inspect.custom')] = function () {
       return 'Moment<' + this.format() + '>';
     };
   }
@@ -84292,7 +84767,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   };
   exports.create = initialize;
   exports.cssClasses = cssClasses;
-  exports.default = nouislider;
+  exports["default"] = nouislider;
   Object.defineProperty(exports, '__esModule', {
     value: true
   });
@@ -85567,7 +86042,7 @@ var DataTable = /*#__PURE__*/function () {
 
 
       this.wrapper = Object(_helpers__WEBPACK_IMPORTED_MODULE_4__["createElement"])("div", {
-        class: "dataTable-wrapper dataTable-loading"
+        "class": "dataTable-wrapper dataTable-loading"
       }); // Template for custom layouts
 
       template += "<div class='dataTable-top'>";
@@ -85592,7 +86067,7 @@ var DataTable = /*#__PURE__*/function () {
         wrap += "</label></div>"; // Create the select
 
         var select = Object(_helpers__WEBPACK_IMPORTED_MODULE_4__["createElement"])("select", {
-          class: "dataTable-selector"
+          "class": "dataTable-selector"
         }); // Create the options
 
         options.perPageSelect.forEach(function (val) {
@@ -85626,10 +86101,10 @@ var DataTable = /*#__PURE__*/function () {
       this.table.classList.add("dataTable-table"); // Paginator
 
       var paginatorWrapper = Object(_helpers__WEBPACK_IMPORTED_MODULE_4__["createElement"])("nav", {
-        class: "dataTable-pagination"
+        "class": "dataTable-pagination"
       });
       var paginator = Object(_helpers__WEBPACK_IMPORTED_MODULE_4__["createElement"])("ul", {
-        class: "dataTable-pagination-list"
+        "class": "dataTable-pagination-list"
       });
       paginatorWrapper.appendChild(paginator); // Pager(s) placement
 
@@ -85821,7 +86296,7 @@ var DataTable = /*#__PURE__*/function () {
           if (_this4.options.sortable && th.sortable) {
             var link = Object(_helpers__WEBPACK_IMPORTED_MODULE_4__["createElement"])("a", {
               href: "#",
-              class: "dataTable-sorter",
+              "class": "dataTable-sorter",
               html: th.innerHTML
             });
             th.innerHTML = "";
@@ -86125,10 +86600,10 @@ var DataTable = /*#__PURE__*/function () {
 
             if (!this.headerTable) {
               this.headerTable = Object(_helpers__WEBPACK_IMPORTED_MODULE_4__["createElement"])("table", {
-                class: "dataTable-table"
+                "class": "dataTable-table"
               });
               var headercontainer = Object(_helpers__WEBPACK_IMPORTED_MODULE_4__["createElement"])("div", {
-                class: "dataTable-headercontainer"
+                "class": "dataTable-headercontainer"
               });
               headercontainer.appendChild(this.headerTable);
               container.parentElement.insertBefore(headercontainer, container);
@@ -86897,7 +87372,7 @@ var flush = function flush(el) {
 
 var button = function button(className, page, text) {
   return createElement("li", {
-    class: className,
+    "class": className,
     html: "<a href=\"#\" data-page=\"".concat(page, "\">").concat(text, "</a>")
   });
 };
@@ -86971,7 +87446,7 @@ var truncate = function truncate(a, b, c, d, ellipsis) {
 
       if (d - _e == 2) i.push(a[_e]);else if (d - _e != 1) {
         var _f = createElement("li", {
-          class: "ellipsis",
+          "class": "ellipsis",
           html: "<a href=\"#\">".concat(ellipsis, "</a>")
         });
 
@@ -88150,7 +88625,7 @@ var SimpleBar = /*#__PURE__*/function () {
 
   _proto.unMount = function unMount() {
     this.removeListeners();
-    SimpleBar.instances.delete(this.el);
+    SimpleBar.instances["delete"](this.el);
   }
   /**
    * Check if mouse is within bounds
@@ -90885,7 +91360,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       show(input);
       input.focus();
       instance.hideLoading();
-    }).catch(function (err) {
+    })["catch"](function (err) {
       error("Error in inputValue promise: ".concat(err));
       input.value = '';
       show(input);
@@ -91626,7 +92101,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       key: "finally",
       value: function _finally(onFinally) {
         var promise = privateProps.promise.get(this);
-        return promise.finally(onFinally);
+        return promise["finally"](onFinally);
       }
     }]);
 
@@ -91650,7 +92125,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   SweetAlert.DismissReason = DismissReason;
   SweetAlert.version = '11.1.2';
   var Swal = SweetAlert;
-  Swal.default = Swal;
+  Swal["default"] = Swal;
   return Swal;
 });
 
@@ -93475,7 +93950,7 @@ function unregisterListeners(keyObj) {
   listeners.forEach(function (listener) {
     removeEventListener.call.apply(removeEventListener, _toConsumableArray(listener));
   });
-  listenerRegistry.delete(keyObj);
+  listenerRegistry["delete"](keyObj);
 } // Event.composedPath() polyfill for Edge
 // based on https://gist.github.com/kleinfreund/e9787d73776c0e3750dcfcdc89f100ec
 
@@ -94423,7 +94898,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../lib/utils.js */ "./node_modules/vanillajs-datepicker/js/lib/utils.js");
 
 var calendarWeeksTemplate = Object(_lib_utils_js__WEBPACK_IMPORTED_MODULE_0__["optimizeTemplateHTML"])("<div class=\"calendar-weeks\">\n  <div class=\"days-of-week\"><span class=\"dow\"></span></div>\n  <div class=\"weeks\">".concat(Object(_lib_utils_js__WEBPACK_IMPORTED_MODULE_0__["createTagRepeat"])('span', 6, {
-  class: 'week'
+  "class": 'week'
 }), "</div>\n</div>"));
 /* harmony default export */ __webpack_exports__["default"] = (calendarWeeksTemplate);
 
@@ -94441,7 +94916,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../lib/utils.js */ "./node_modules/vanillajs-datepicker/js/lib/utils.js");
 
 var daysTemplate = Object(_lib_utils_js__WEBPACK_IMPORTED_MODULE_0__["optimizeTemplateHTML"])("<div class=\"days\">\n  <div class=\"days-of-week\">".concat(Object(_lib_utils_js__WEBPACK_IMPORTED_MODULE_0__["createTagRepeat"])('span', 7, {
-  class: 'dow'
+  "class": 'dow'
 }), "</div>\n  <div class=\"datepicker-grid\">").concat(Object(_lib_utils_js__WEBPACK_IMPORTED_MODULE_0__["createTagRepeat"])('span', 42), "</div>\n</div>"));
 /* harmony default export */ __webpack_exports__["default"] = (daysTemplate);
 
@@ -95582,4 +96057,4 @@ module.exports = function (module) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=application-f271ae9fbc4edef0719a.js.map
+//# sourceMappingURL=application-63d35ffc80ac1a0d9193.js.map
