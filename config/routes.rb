@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   root 'main#index'
   resources :users
   resources :admin_profiles
+  resources :parameters
 
   get '/dashboard', to: 'main#index', as: :dashboard
   get '/piste-audit', to: 'main#audit', as: :audit
