@@ -8,6 +8,10 @@ class ContraventionGroup < ApplicationRecord
   has_many :contravention_notebooks, dependent: :destroy
   has_many :contravention_types, dependent: :destroy
 
+  before_create do 
+    self.code = self.code.upcase
+  end
+
   def attributes
     {
       'code' => nil,

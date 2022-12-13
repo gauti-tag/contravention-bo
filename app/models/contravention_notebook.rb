@@ -5,6 +5,10 @@ class ContraventionNotebook < ApplicationRecord
   validates :sheets, presence: true
   validates_uniqueness_of :number, on: :create, message: "<< le numéro doit être unique >>"
 
+  before_create do 
+    self.number = self.number.upcase
+  end
+
   def attributes 
     {
       'number' => nil,

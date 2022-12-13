@@ -6,6 +6,10 @@ class ContraventionType < ApplicationRecord
   validates :amount, presence: true
   validates_uniqueness_of :code, on: :create, message: "doit être unique"
 
+  before_create do 
+    self.code = self.code.upcase
+  end
+
   def attributes 
     {
       'code' => nil,

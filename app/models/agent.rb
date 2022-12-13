@@ -8,6 +8,10 @@ validates_uniqueness_of :identifier, on: [:create,:import], message: "<< le N° 
 #has_many :contravention_notebooks, dependent: :destroy
 # Roo::Spreadsheet.open(file.path, extension: :xlsx)
 
+  before_create do
+     self.identifier = self.identifier.upcase
+  end
+
   def attributes
     {
       'last_name'=> nil,
