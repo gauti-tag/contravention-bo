@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_153952) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "author_id"
     t.index ["contravention_group_id"], name: "index_contravention_notebooks_on_contravention_group_id"
-    t.index ["number"], name: "index_contravention_notebooks_on_number", unique: true
+    t.index ["number"], name: "index_contravention_notebooks_on_number"
   end
 
   create_table "contravention_types", force: :cascade do |t|

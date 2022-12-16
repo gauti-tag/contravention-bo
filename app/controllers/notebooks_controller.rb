@@ -23,8 +23,14 @@ class NotebooksController < ApplicationController
       flash[:notice] = 'Le carnet a été créé.'
       redirect_to notebooks_url
     else
-      flash[:alert] = @notebook.errors.full_messages.join(', ')
-      render :new
+        if @notebook.errors.include?(:base)
+            flash[:warning] = 'le numéro et la classe doivent être uniques!'
+            redirect_to new_notebook_url
+        else    
+            flash[:alert] = @notebook.errors.full_messages.join(', ')
+            redirect_to new_notebook_url
+        end
+     
     end
     
   end
