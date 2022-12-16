@@ -9,7 +9,7 @@ class CreateContraventionNotebooks < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index :contravention_notebooks, :number, unique: true
+    add_index :contravention_notebooks, :number
     add_column :contravention_notebooks, :author_id, :integer, null: true, index: true
     add_foreign_key :contravention_notebooks, :users, column: :author_id
   end
