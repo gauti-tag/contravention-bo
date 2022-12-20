@@ -9,7 +9,7 @@ admin_profile = AdminProfile.create(title: 'Administrateur')
 guest_profile = AdminProfile.create(title: 'Guest')
 
 User.create(email: 'gautier.tiehoule@ngser.com', password: 'contragb22', firstname: 'Gautier', lastname: 'Tiehoule', msisdn: '2250749586809', profile_id: admin_profile.id, account_status: 1)
+User.create(email: 'supports.maintenances@ngser.com', password: 'contragb22', firstname: 'Supports', lastname: 'NGSER', msisdn: '2250749586809', profile_id: admin_profile.id, account_status: 1)
+User.create(email: 'projet@ngser.com', password: 'contragb22', firstname: 'Projet', lastname: 'NGSER', msisdn: '2250757462025', profile_id: admin_profile.id, account_status: 1)
 User.create(email: 'awa.coulibaly@ngser.com', password: 'BAWA2022', firstname: 'Coulibaly', lastname: 'Awa', msisdn: '2250101141422', profile_id: admin_profile.id, account_status: 1)
-User.create(email: 'projet@ngser.com', password: 'lotogb22', firstname: '', lastname: 'Projet', msisdn: '2250757462025', profile_id: guest_profile.id, account_status: 1)
-
 Parameter.create(name: "Frais contraventions", value: "100", description: "")
