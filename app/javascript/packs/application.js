@@ -332,3 +332,20 @@ const walletStatus = (status) => {
     }
     return wallet;
 }
+
+
+$(document).ready(function(){
+    $('.open').hide();
+    $('.toggle-password').click(function(){
+        if ($('#password-field').attr("type") == "text")
+        {
+            $('#password-field').attr("type", "password");
+            $('.close').show();
+            $('.open').hide();
+        }else{
+            $('#password-field').attr("type", "text");
+            $('.open').show();
+            $('.close').hide();
+        }
+    })
+})

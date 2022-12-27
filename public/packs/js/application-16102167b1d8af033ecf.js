@@ -564,6 +564,21 @@ var walletStatus = function walletStatus(status) {
 
   return wallet;
 };
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open').hide();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-password').click(function () {
+    if (jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field').attr("type") == "text") {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field').attr("type", "password");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close').show();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open').hide();
+    } else {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field').attr("type", "text");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open').show();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close').hide();
+    }
+  });
+});
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! @rails/ujs */ "./node_modules/@rails/ujs/lib/assets/compiled/rails-ujs.js")))
 
 /***/ }),
@@ -96057,4 +96072,4 @@ module.exports = function (module) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=application-63d35ffc80ac1a0d9193.js.map
+//# sourceMappingURL=application-16102167b1d8af033ecf.js.map
