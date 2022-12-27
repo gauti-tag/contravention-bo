@@ -32,7 +32,7 @@
       <div class="col-md-6 mb-3">
         <div class="form-group">
           <%= f.label :first_name, "Prénoms" %>
-          <%= f.text_field :first_name, class: 'form-control', required: true, placeholder: "Entrer votre Prénoms", title: "" %>
+          <%= f.text_field :first_name, class: 'form-control', required: true, placeholder: "Entrer votre Prénoms", title: "", required: true %>
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
       <div class="col-md-6 mb-3">
         <div class="form-group">
           <%= f.label :region, "Région" %>
-          <%= f.text_field :region, class: 'form-control', placeholder: "Entrer votre Prénoms", title: "" %>
+          <%= f.text_field :region, class: 'form-control', placeholder: "Entrer votre région", title: "", required: true %>
         </div>
       </div>
     </div>
@@ -56,7 +56,7 @@
       <div class="col-md-6 mb-3">
         <div class="form-group">
           <%= f.label :identifier, "N° du badge" %>
-          <%= f.text_field :identifier, class: 'form-select mb-0', placeholder: "Entrer le N° du badge", readonly: true%>
+          <%= f.text_field :identifier, class: 'form-control', placeholder: "Entrer le N° du badge", readonly: true %>
         </div>
       </div>
     </div>

@@ -4,9 +4,10 @@ class Agent < ApplicationRecord
 #validates :first_name, presence: true
 #validates :grade, presence: true
 #validates :identifier, presence: true
-validates_uniqueness_of :identifier, on: [:create,:import], message: "<< le N° de grade doit être unique >>"
+#validates_uniqueness_of :identifier, on: [:create,:import], message: "<< le N° de grade doit être unique >>"
 #has_many :contravention_notebooks, dependent: :destroy
 # Roo::Spreadsheet.open(file.path, extension: :xlsx)
+validate :verify_uniq_identifier, on: :create
 
   before_create do
      self.identifier = self.identifier.upcase
@@ -29,6 +30,13 @@ validates_uniqueness_of :identifier, on: [:create,:import], message: "<< le N° 
     when ".xlsx" then Roo::Spreadsheet.open(file.path, extension: :xlsx)
     else
       "nok"
+    end
+  end
+
+  def verify_uniq_identifier
+    record = Agent.find_by(identifier: identifier)
+    if record.present?
+        errors.add(:same, 'le N° de grade doit être unique')
     end
   end
 

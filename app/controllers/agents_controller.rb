@@ -20,8 +20,13 @@ class AgentsController < ApplicationController
       flash[:notice] = "Agent crée avec succès"
       redirect_to agents_url
     else
-      flash[:alert] = @agent.errors.full_messages.join(', ')
-      render :new
+        if @agent.errors.include?(:same)
+            flash[:warning] = 'le N° de grade doit être unique'
+            redirect_to agents_url
+        else
+            flash[:alert] = @agent.errors.full_messages.join(', ')
+            redirect_to agents_url
+        end
     end
   end
 
@@ -36,7 +41,7 @@ class AgentsController < ApplicationController
       redirect_to agents_url
     else
       flash[:alert] = @agent.errors.full_messages.join(', ')
-      render :edit
+      redirect_to agents_url
     end
   end
 
