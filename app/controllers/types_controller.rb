@@ -26,7 +26,7 @@ class TypesController < ApplicationController
        redirect_to types_url
     else
       flash[:alert] = @type.errors.full_messages.join(', ')
-      render :new
+      redirect_to types_url
     end
 
   end
