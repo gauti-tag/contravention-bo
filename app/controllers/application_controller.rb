@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   def access_to_page?
     action_label = params[:action]
     controller_label = params[:controller]
-    action_label = params[:model_name] if controller_label == 'loto' && action_label == 'transactions'
+    #action_label = params[:model_name] if controller_label == 'loto' && action_label == 'transactions'
     unless current_user.access_to?(controller_label, action_label) == true
       flash[:warning] = 'Accès refusé!'
       redirect_to edit_user_registration_url, status: 301
