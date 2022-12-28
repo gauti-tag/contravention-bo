@@ -38,12 +38,42 @@
           <legend>
             <span class="badge bg-primary">ADMIN</span>
           </legend>
-          <%= f.collection_check_boxes(:admin_ability_ids, @abilities.where(tag: :admin), :id, :title)  do |ach| %>
+           <h5>
+            <span class="badge bg-primary">Tableau de bord / Audit</span>
+          </h5>
+          <%= f.collection_check_boxes(:admin_ability_ids, @abilities.where(tag: :admin, controller_name: "main"), :id, :title)  do |ach| %>
             <div class="form-check form-switch">
               <%= ach.label(class: 'form-check-label') do %>
                 <%= ach.check_box(class: 'form-check-input') %>
                 <span>
-                  <%= ach.text %></span>
+                  <%= ach.text %>
+                </span>
+              <% end%>
+            </div>
+          <%end %>
+          <h5>
+            <span class="badge bg-primary">Gestion des Utilisateurs</span>
+          </h5>
+          <%= f.collection_check_boxes(:admin_ability_ids, @abilities.where(tag: :admin, controller_name: "users"), :id, :title)  do |ach| %>
+            <div class="form-check form-switch">
+              <%= ach.label(class: 'form-check-label') do %>
+                <%= ach.check_box(class: 'form-check-input') %>
+                <span>
+                  <%= ach.text %>
+                </span>
+              <% end%>
+            </div>
+          <%end %>
+          <h5>
+            <span class="badge bg-primary">Gestion des profiles</span>
+          </h5>
+           <%= f.collection_check_boxes(:admin_ability_ids, @abilities.where(tag: :admin, controller_name: "admin_profiles"), :id, :title)  do |ach| %>
+            <div class="form-check form-switch">
+              <%= ach.label(class: 'form-check-label') do %>
+                <%= ach.check_box(class: 'form-check-input') %>
+                <span>
+                  <%= ach.text %>
+                </span>
               <% end%>
             </div>
           <%end %>
@@ -54,7 +84,46 @@
           <legend>
             <span class="badge bg-primary">MÉTIER</span>
           </legend>
-          <%= f.collection_check_boxes(:admin_ability_ids, @abilities.where(tag: :business), :id, :title)  do |ach| %>
+           <h5>
+            <span class="badge bg-primary">Gestion des classes</span>
+          </h5>
+          <%= f.collection_check_boxes(:admin_ability_ids, @abilities.where(tag: :business, controller_name: "groups"), :id, :title)  do |ach| %>
+             <div class="form-check form-switch">
+              <%= ach.label(class: 'form-check-label') do %>
+                <%= ach.check_box(class: 'form-check-input') %>
+                <span>
+                  <%= ach.text %></span>
+              <% end%>
+            </div>
+          <%end %>
+           <h5>
+            <span class="badge bg-primary">Gestion des types</span>
+          </h5>
+           <%= f.collection_check_boxes(:admin_ability_ids, @abilities.where(tag: :business, controller_name: "types"), :id, :title)  do |ach| %>
+             <div class="form-check form-switch">
+              <%= ach.label(class: 'form-check-label') do %>
+                <%= ach.check_box(class: 'form-check-input') %>
+                <span>
+                  <%= ach.text %></span>
+              <% end%>
+            </div>
+          <%end %>
+           <h5>
+            <span class="badge bg-primary">Gestion des carnets</span>
+          </h5>
+           <%= f.collection_check_boxes(:admin_ability_ids, @abilities.where(tag: :business, controller_name: "notebooks"), :id, :title)  do |ach| %>
+             <div class="form-check form-switch">
+              <%= ach.label(class: 'form-check-label') do %>
+                <%= ach.check_box(class: 'form-check-input') %>
+                <span>
+                  <%= ach.text %></span>
+              <% end%>
+            </div>
+          <%end %>
+           <h5>
+            <span class="badge bg-primary">Gestion des agents</span>
+          </h5>
+           <%= f.collection_check_boxes(:admin_ability_ids, @abilities.where(tag: :business, controller_name: "agents"), :id, :title)  do |ach| %>
              <div class="form-check form-switch">
               <%= ach.label(class: 'form-check-label') do %>
                 <%= ach.check_box(class: 'form-check-input') %>
