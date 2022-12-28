@@ -18,18 +18,47 @@ Parameter.create(name: "Frais contraventions", value: "100", description: "")
 
 # Abilitations
 # Admin
-AdminAbility.create(title: "Gestion des Utilisateurs", controller_name: "users", action_name: "index", tag: "admin")
-AdminAbility.create(title: "Gestion des profiles", controller_name: "users", action_name: "index", tag: "admin")
-AdminAbility.create(title: "Piste d'audit", controller_name: "main", action_name: "audit", tag: "admin")
-AdminAbility.create(title: "Tableau de bord", controller_name: "main", action_name: "index", tag: "admin")
+# User
+AdminAbility.create(title: "Consulation des Utilisateurs", controller_name: "users", action_name: "index", tag: "admin")
+AdminAbility.create(title: "Création des Utilisateurs", controller_name: "users", action_name: "create", tag: "admin")
+AdminAbility.create(title: "Modification des Utilisateurs", controller_name: "users", action_name: "update", tag: "admin")
+AdminAbility.create(title: "Suppression des Utilisateurs", controller_name: "users", action_name: "destroy", tag: "admin")
+# Profile
+AdminAbility.create(title: "Consultation des profiles", controller_name: "admin_profiles", action_name: "index", tag: "admin")
+AdminAbility.create(title: "Création des profiles", controller_name: "admin_profiles", action_name: "create", tag: "admin")
+AdminAbility.create(title: "Modification des profiles", controller_name: "admin_profiles", action_name: "update", tag: "admin")
+# Audit
+AdminAbility.create(title: "Consultation piste d'audit", controller_name: "main", action_name: "audit", tag: "admin")
+# Dashbord
+AdminAbility.create(title: "Consultation tableau de bord", controller_name: "main", action_name: "index", tag: "admin")
 
 # Business
-AdminAbility.create(title: "Gestion des Classes", controller_name: "groups", action_name: "index", tag: "business")
-AdminAbility.create(title: "Gestion des Types", controller_name: "types", action_name: "index", tag: "business")
-AdminAbility.create(title: "Gestion des Carnets", controller_name: "notebooks", action_name: "index", tag: "business")
-AdminAbility.create(title: "Gestion des Agents", controller_name: "agents", action_name: "index", tag: "business")
+# Classe
+AdminAbility.create(title: "Consultation des Classes", controller_name: "groups", action_name: "index", tag: "business")
+AdminAbility.create(title: "Création des Classes", controller_name: "groups", action_name: "create", tag: "business")
+AdminAbility.create(title: "Importation des Classes", controller_name: "groups", action_name: "import", tag: "business")
+AdminAbility.create(title: "Modification des Classes", controller_name: "groups", action_name: "update", tag: "business")
+AdminAbility.create(title: "Suppression des Classes", controller_name: "groups", action_name: "destroy", tag: "business")
+# Type
+AdminAbility.create(title: "Consultation des Types", controller_name: "types", action_name: "index", tag: "business")
+AdminAbility.create(title: "Création des Types", controller_name: "types", action_name: "create", tag: "business")
+AdminAbility.create(title: "Importation des Types", controller_name: "types", action_name: "import", tag: "business")
+AdminAbility.create(title: "Modification des Types", controller_name: "types", action_name: "update", tag: "business")
+AdminAbility.create(title: "Suppression des Types", controller_name: "types", action_name: "destroy", tag: "business")
+# Carnet
+AdminAbility.create(title: "Consultation des Carnets", controller_name: "notebooks", action_name: "index", tag: "business")
+AdminAbility.create(title: "Création des Carnets", controller_name: "notebooks", action_name: "create", tag: "business")
+AdminAbility.create(title: "Importation des Carnets", controller_name: "notebooks", action_name: "import", tag: "business")
+AdminAbility.create(title: "Modification des Carnets", controller_name: "notebooks", action_name: "update", tag: "business")
+AdminAbility.create(title: "Suppression des Carnets", controller_name: "notebooks", action_name: "destroy", tag: "business")
+# Agent
+AdminAbility.create(title: "Consultation des Agents", controller_name: "agents", action_name: "index", tag: "business")
+AdminAbility.create(title: "Création des Agents", controller_name: "agents", action_name: "create", tag: "business")
+AdminAbility.create(title: "Importation des Agents", controller_name: "agents", action_name: "import", tag: "business")
+AdminAbility.create(title: "Modification des Agents", controller_name: "agents", action_name: "update", tag: "business")
+AdminAbility.create(title: "Suppression des Agents", controller_name: "agents", action_name: "destroy", tag: "business")
 
 # Other
-AdminAbility.create(title: "Parametrage", controller_name: "parameters", action_name: "index", tag: "other")
+AdminAbility.create(title: "Consultation des paramètres", controller_name: "parameters", action_name: "index", tag: "other")
 AdminAbility.create(title: "Consultation des Transactions", controller_name: "transactions", action_name: "index", tag: "other")
 

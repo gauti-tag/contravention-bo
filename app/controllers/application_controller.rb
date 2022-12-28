@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
-  before_action :access_to_page?, unless: :devise_controller?
+  before_action :access_to_page?, unless: :devise_controller?, only: [:index, :create, :update, :delete, :audit, :import]
 
   def configure_permitted_parameters
     added_attrs = [:email, :password, :password_confirmation, :msisdn, :firstname, :lastname, :avatar]
