@@ -4,6 +4,12 @@ class AgentsController < ApplicationController
 
   def index 
     @agents = Agent.all.order(created_at: :desc)
+    #respond_to do |format|
+    #    format.html
+    #    format.csv do 
+    #        send_data Agent.to_csv(@agents), filename: "agents_#{Time.now.to_i.to_s}", content_type: 'text/csv'
+    #    end
+    #end
   end 
 
   def new 

@@ -1,6 +1,7 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
   include ActiveModel::Serialization
+  #include GenerateCsv
   @@log_title = ''
 
   IGNORED_MODELS_LOG = ['AuditLog', 'AdminAbility', 'ProfileAbility', 'Game']

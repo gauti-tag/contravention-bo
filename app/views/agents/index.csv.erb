@@ -1,9 +1,8 @@
-<%= fields = [:nom, :prenoms, :region, :grade, :identifiant].join(";")%>
+<%= fields = ['NOM', 'PRENOMS', 'GRADE', 'NUMERO_DU_BADGE'].join(";") %>
 <% @agents.each do |agent| %>
 <% nom = agent.last_name %>
 <% prenoms = agent.first_name %>
-<% region = agent.region %>
 <% grade = agent.grade %>
-<% identifiant = agent.identifier %>
-<%= [nom, prenoms, region, grade, identifiant].join(";") %>
+<% numero_grade = agent.identifier %>
+<%= [nom, prenoms, grade, numero_grade].join(";")  %>
 <% end %>

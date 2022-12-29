@@ -39,5 +39,4 @@ validate :verify_uniq_identifier, on: :create
         errors.add(:same, 'le N° de grade doit être unique')
     end
   end
-
 end
