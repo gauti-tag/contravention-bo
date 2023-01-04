@@ -60,5 +60,6 @@ AdminAbility.create(title: "Suppression des Agents", controller_name: "agents", 
 
 # Other
 AdminAbility.create(title: "Consultation des paramètres", controller_name: "parameters", action_name: "index", tag: "other")
+AdminAbility.create(title: "Modification des paramètres", controller_name: "parameters", action_name: "update", tag: "other")
 AdminAbility.create(title: "Consultation des Transactions", controller_name: "transactions", action_name: "index", tag: "other")
 

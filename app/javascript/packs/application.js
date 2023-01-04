@@ -49,7 +49,7 @@ window.downloadData = function (data) {
     body: JSON.stringify(data),
   }).then(response => response.json())
   .then(json => {
-    window.open(json.url, '_blank').focus();
+    window.open(json.data, '_blank').focus();
   })
 }
 

@@ -58,6 +58,7 @@ Rails.application.routes.draw do
   # Api Datatable
   scope 'api' do 
     get 'datatables', to: 'datatables#index'
+    match '/dataset/export', to: 'datatables#export_data', via: [:get, :post]
   end
 
   # Transactions

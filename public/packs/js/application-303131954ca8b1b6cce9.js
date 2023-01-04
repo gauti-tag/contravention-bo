@@ -296,7 +296,7 @@ window.downloadData = function (data) {
   }).then(function (response) {
     return response.json();
   }).then(function (json) {
-    window.open(json.url, '_blank').focus();
+    window.open(json.data, '_blank').focus();
   });
 };
 
@@ -96072,4 +96072,4 @@ module.exports = function (module) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=application-16102167b1d8af033ecf.js.map
+//# sourceMappingURL=application-303131954ca8b1b6cce9.js.map
