@@ -14,6 +14,7 @@ Rails.application.configure do
 
   config.hosts << 'crossroadtest.net'
   config.hosts << 'preprod.ngser.com'
+  config.hosts << 'contravention-gn.com'
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
