@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   as :user do
     get '/users/edit' => 'devise/registrations#edit', as: :edit_user_registration
     patch 'user/:id' => 'registrations#update', as: :user_registration
+    get '/reset_password/:reset_password_token', to: 'passwords#edit'
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
@@ -12,6 +13,7 @@ Rails.application.routes.draw do
   resources :admin_profiles
   resources :parameters
 
+ 
   get '/dashboard', to: 'main#index', as: :dashboard
   get '/piste-audit', to: 'main#audit', as: :audit
   get '/piste-audit/log/:id', to: 'main#show_log', as: :audit_log
