@@ -528,8 +528,8 @@ function showDetailsColumn() {
 
 var statusMap = {
   pending: ["En attente", 'text-dark'],
-  success: ["Validé", 'text-primary'],
-  failure: ["Échèc", 'text-danger'],
+  success: ["Valide", 'text-primary'],
+  failure: ["Echec", 'text-danger'],
   winning: ["Gagnant", 'text-success'],
   losing: ["Perdant", 'text-danger'],
   unpaid: ["En attente de paiement", 'text-info'],
@@ -567,6 +567,8 @@ var walletStatus = function walletStatus(status) {
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open').hide();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-first').hide();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-second').hide();
   jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-password').click(function () {
     if (jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field').attr("type") == "text") {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field').attr("type", "password");
@@ -578,7 +580,43 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close').hide();
     }
   });
-});
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-reset-password-first').click(function () {
+    if (jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-first').attr("type") == "text") {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-first').attr("type", "password");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-first').show();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-first').hide();
+    } else {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-first').attr("type", "text");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-first').show();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-first').hide();
+    }
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-reset-password-second').click(function () {
+    if (jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-second').attr("type") == "text") {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-second').attr("type", "password");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-second').show();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-second').hide();
+    } else {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-second').attr("type", "text");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-second').show();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-second').hide();
+    }
+  });
+}); // Compare password 
+
+var password = document.getElementById('password-field-first');
+var confirm_password = document.getElementById('password-field-second');
+
+var valid_password = function valid_password() {
+  if (password.value != confirm_password.value) {
+    confirm_password.setCustomValidity('Les mots de passe ne correspondent pas !');
+  } else {
+    confirm_password.setCustomValidity('');
+  }
+};
+
+password.onchange = valid_password;
+confirm_password.onkeyup = valid_password;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! @rails/ujs */ "./node_modules/@rails/ujs/lib/assets/compiled/rails-ujs.js")))
 
 /***/ }),
@@ -96072,4 +96110,4 @@ module.exports = function (module) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=application-303131954ca8b1b6cce9.js.map
+//# sourceMappingURL=application-a6369ddc7482c972e9fc.js.map

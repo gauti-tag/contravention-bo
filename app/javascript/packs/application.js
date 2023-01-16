@@ -304,8 +304,8 @@ function showDetailsColumn(link = "#") {
 
 const statusMap = {
   pending: ["En attente", 'text-dark'],
-  success: ["Validé", 'text-primary'],
-  failure: ["Échèc", 'text-danger'],
+  success: ["Valide", 'text-primary'],
+  failure: ["Echec", 'text-danger'],
   winning: ["Gagnant", 'text-success'],
   losing: ["Perdant", 'text-danger'],
   unpaid: ["En attente de paiement", 'text-info'],
@@ -336,7 +336,9 @@ const walletStatus = (status) => {
 
 $(document).ready(function(){
     $('.open').hide();
-    $('.toggle-password').click(function(){
+    $('.open-first').hide();
+    $('.open-second').hide();
+    $('.toggle-password').click(() => {
         if ($('#password-field').attr("type") == "text")
         {
             $('#password-field').attr("type", "password");
@@ -348,4 +350,44 @@ $(document).ready(function(){
             $('.close').hide();
         }
     })
+
+    $('.toggle-reset-password-first').click(() => {
+        if ($('#password-field-first').attr("type") == "text")
+        {
+            $('#password-field-first').attr("type", "password");
+            $('.close-first').show();
+            $('.open-first').hide();
+        }else{
+            $('#password-field-first').attr("type", "text");
+            $('.open-first').show();
+            $('.close-first').hide();
+        }
+    })
+    $('.toggle-reset-password-second').click(() => {
+        if ($('#password-field-second').attr("type") == "text")
+        {
+            $('#password-field-second').attr("type", "password");
+            $('.close-second').show();
+            $('.open-second').hide();
+        }else{
+            $('#password-field-second').attr("type", "text");
+            $('.open-second').show();
+            $('.close-second').hide();
+        }
+    })
 })
+
+
+// Compare password 
+const password = document.getElementById('password-field-first')
+const confirm_password = document.getElementById('password-field-second')
+
+const valid_password = () => {
+    if(password.value != confirm_password.value){
+        confirm_password.setCustomValidity('Les mots de passe ne correspondent pas !');
+    }else{
+        confirm_password.setCustomValidity('');
+    }
+}
+password.onchange = valid_password;
+confirm_password.onkeyup = valid_password
