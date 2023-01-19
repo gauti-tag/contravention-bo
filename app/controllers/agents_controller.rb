@@ -77,22 +77,21 @@ class AgentsController < ApplicationController
           headers = data.row(1)
           header_for_table = []
 
-          if headers.length == 2
+          if headers.length == 5
 
               headers.each_with_index do |header, idx|
-                if  header == "REGION"
-                  #header_for_table[0] = 'last_name'
-                  header_for_table[0] = 'region'
-                elsif  header == "MATRICULE"
-                  #header_for_table[1] = 'first_name'
-                  header_for_table[1] = 'identifier'
-                #elsif  header == "AGENTS"
-                #  header_for_table[2] = 'last_name'
-                #  header_for_table[3] = 'first_name'
-                #elsif  header == "NUMERO_GRADE"
-                #  header_for_table[3] = 'identifier'
+                if header == "NOM" 
+                    header_for_table[0] = 'last_name'   
+                elsif header == "PRENOMS" 
+                    header_for_table[1] = 'first_name'                    
+                elsif  header == "REGION"
+                    header_for_table[2] = 'region'
+                elsif  header == "GRADE"
+                    header_for_table[3] = 'grade'
+                elsif  header == "NUMERO_DE_BADGE"
+                    header_for_table[4] = 'identifier'
                 else
-                  flash[:alert] = "colonnes non conforme"
+                     flash[:alert] = "colonnes non conforme"
                 end
               end
 
@@ -118,7 +117,7 @@ class AgentsController < ApplicationController
 
                 agent_already_saved = Agent.find_by(identifier: agent_data['identifier'])
               
-                if agent_already_saved #Agent.exists?(identifier: agent_data['identifier']) 
+                if agent_already_saved.present? #Agent.exists?(identifier: agent_data['identifier']) 
 
                     agent_already_saved.update!(agent_data)
                     api_data = agent_already_saved.as_json(root: 'request', only: [:identifier, :last_name, :first_name, :grade])
