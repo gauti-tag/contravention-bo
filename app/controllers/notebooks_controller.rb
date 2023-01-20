@@ -92,8 +92,6 @@ class NotebooksController < ApplicationController
               header_for_notebook_table[2] = 'sheets'
             elsif  header == "CLASSE"
               header_for_notebook_table[3] = 'contravention_group_id'
-           # elsif  header == "AGENT"
-           #   header_for_notebook_table[4] = 'agent_id'
             else
               flash[:alert] = "colonnes non conforme"
             end
