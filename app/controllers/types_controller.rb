@@ -49,6 +49,21 @@ class TypesController < ApplicationController
     end
   end
 
+  def update_status
+        type = ContraventionType.find_by(code: params[:statusCode])
+        type.status = params[:status]
+        if type.save
+            api_data = type.as_json(root: 'request', only: [:code, :status])
+            api_data['request']['model'] = 'ContraventionType'
+            api_data['request']['index'] = type.contravention_group.code
+            CrudApiManager::UpdateData.call(api_data)
+            message = { status: 200, description: "success", typeStatus: type.status}
+        else
+            message = {status: 400, description: "fail" }
+        end
+        render json: message
+  end
+
   def destroy 
     api_data = @type.as_json(root: 'request', only: [:code])
     api_data['request']['model'] = 'ContraventionType'
