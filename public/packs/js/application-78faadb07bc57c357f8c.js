@@ -212,6 +212,8 @@
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(jQuery, global, Rails) {/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -565,11 +567,11 @@ var walletStatus = function walletStatus(status) {
   return wallet;
 };
 
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open').hide();
   jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-first').hide();
   jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-second').hide();
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-password').click(function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-password').on('click', function () {
     if (jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field').attr("type") == "text") {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field').attr("type", "password");
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close').show();
@@ -580,7 +582,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close').hide();
     }
   });
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-reset-password-first').click(function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-reset-password-first').on('click', function () {
     if (jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-first').attr("type") == "text") {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-first').attr("type", "password");
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-first').show();
@@ -591,7 +593,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-first').hide();
     }
   });
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-reset-password-second').click(function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-reset-password-second').on('click', function () {
     if (jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-second').attr("type") == "text") {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-second').attr("type", "password");
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-second').show();
@@ -601,7 +603,79 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-second').show();
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-second').hide();
     }
-  });
+  }); // status dsiplay UI
+
+  var checkboxes = document.getElementsByClassName('type-status');
+
+  var _iterator = _createForOfIteratorHelper(checkboxes),
+      _step;
+
+  try {
+    var _loop = function _loop() {
+      var item = _step.value;
+
+      if (item.value === "1") {
+        item.checked = true;
+      } else {
+        item.checked = false;
+      }
+
+      item.addEventListener('change', function () {
+        updateTypestatus(item);
+      });
+    };
+
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      _loop();
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  var updateTypestatus = function updateTypestatus(element) {
+    var status = element.value === "1" ? 0 : 1;
+    var formdata = new FormData();
+    formdata.append('statusCode', element.dataset.code);
+    formdata.append('status', status);
+    fetch("/contravention/type/status", {
+      method: "post",
+      body: formdata
+    }).then(function (response) {
+      return response.json();
+    }).then(function (result) {
+      //console.log('Success:', result);
+      var message = result.typeStatus === 0 ? "<strong>Type désactivé</strong>" : "<strong>Type activé</strong>";
+
+      if (result.status == 200) {
+        element.value = result.typeStatus;
+        window.Swal.fire({
+          width: 600,
+          icon: 'success',
+          title: "Type",
+          html: message,
+          timer: 7000,
+          showCloseButton: true,
+          allowOutsideClick: true,
+          backdrop: true
+        });
+      } else {
+        window.Swal.fire({
+          width: 600,
+          icon: 'warning',
+          title: "Type",
+          html: "Opération échouée",
+          timer: 7000,
+          showCloseButton: true,
+          allowOutsideClick: true,
+          backdrop: true
+        });
+      }
+    })["catch"](function (error) {
+      console.error('Error:', error);
+    });
+  };
 }); // Compare password 
 
 var password = document.getElementById('password-field-first');
@@ -615,8 +689,22 @@ var valid_password = function valid_password() {
   }
 };
 
-password.onchange = valid_password;
-confirm_password.onkeyup = valid_password;
+if (password !== null && password !== null) {
+  password.addEventListener('change', valid_password);
+  confirm_password.addEventListener('keyup', valid_password);
+} //password.onchange = valid_password;
+//confirm_password.onkeyup = valid_password
+
+/*const contraventionType = document.getElementsByClassName("type-activate-toggle");
+const testLog = () => {
+   console.log(contraventionType.value)
+}
+confirm_password.onchange = testLog;*/
+//For test
+//window.addEventListener("DOMContentLoaded", () => (alert("Viens vérifier stp !")));
+
+/*const switchType = document.getElementsByName('type-status');
+switchType.addEventListener('change', (e) => alert(e));*/
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! @rails/ujs */ "./node_modules/@rails/ujs/lib/assets/compiled/rails-ujs.js")))
 
 /***/ }),
@@ -96110,4 +96198,4 @@ module.exports = function (module) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=application-a6369ddc7482c972e9fc.js.map
+//# sourceMappingURL=application-78faadb07bc57c357f8c.js.map

@@ -14,7 +14,8 @@ class ContraventionType < ApplicationRecord
     {
       'code' => nil,
       'label' => nil,
-      'amount' => nil
+      'amount' => nil,
+      'status' => nil
     }
   end
 

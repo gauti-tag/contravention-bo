@@ -334,11 +334,12 @@ const walletStatus = (status) => {
 }
 
 
-$(document).ready(function(){
+$(() => {
+
     $('.open').hide();
     $('.open-first').hide();
     $('.open-second').hide();
-    $('.toggle-password').click(() => {
+    $('.toggle-password').on('click', () => {
         if ($('#password-field').attr("type") == "text")
         {
             $('#password-field').attr("type", "password");
@@ -351,7 +352,7 @@ $(document).ready(function(){
         }
     })
 
-    $('.toggle-reset-password-first').click(() => {
+    $('.toggle-reset-password-first').on('click', () => {
         if ($('#password-field-first').attr("type") == "text")
         {
             $('#password-field-first').attr("type", "password");
@@ -363,7 +364,7 @@ $(document).ready(function(){
             $('.close-first').hide();
         }
     })
-    $('.toggle-reset-password-second').click(() => {
+    $('.toggle-reset-password-second').on('click', () => {
         if ($('#password-field-second').attr("type") == "text")
         {
             $('#password-field-second').attr("type", "password");
@@ -375,6 +376,60 @@ $(document).ready(function(){
             $('.close-second').hide();
         }
     })
+
+   
+
+    // status dsiplay UI
+    const checkboxes = document.getElementsByClassName('type-status');
+    for (const item of checkboxes)
+    {
+      
+        if (item.value === "1")
+        {
+           item.checked = true
+
+        }else{
+
+           item.checked = false
+        }
+         
+        item.addEventListener('change', () => {
+            
+            updateTypestatus(item)
+        })
+    }
+
+
+    const updateTypestatus = (element) => {
+
+        const status = (element.value === "1" ? 0 : 1)
+
+        const formdata = new FormData();
+        formdata.append('statusCode', element.dataset.code);
+        formdata.append('status', status)
+
+        fetch("/contravention/type/status", {
+        method: "post",
+        body: formdata
+        })
+        .then((response) => response.json())
+        .then((result) => {
+        //console.log('Success:', result);
+        const message = (result.typeStatus === 0 ? "<strong>Type désactivé</strong>" : "<strong>Type activé</strong>")
+            if(result.status == 200){
+                element.value = result.typeStatus
+                window.Swal.fire({width: 600, icon: 'success', title: "Type", html: message, timer: 7000, showCloseButton: true, allowOutsideClick: true, backdrop: true});
+            }else{
+                window.Swal.fire({width: 600, icon: 'warning', title: "Type", html: "Opération échouée", timer: 7000, showCloseButton: true, allowOutsideClick: true, backdrop: true});
+            }
+        })
+        .catch((error) => {
+
+            console.error('Error:', error);
+
+        });
+    }
+
 })
 
 
@@ -389,5 +444,27 @@ const valid_password = () => {
         confirm_password.setCustomValidity('');
     }
 }
-password.onchange = valid_password;
-confirm_password.onkeyup = valid_password
+
+if ((password !== null) && password !== null)
+{
+    password.addEventListener('change', valid_password);
+    confirm_password.addEventListener('keyup', valid_password);    
+}
+
+
+
+//password.onchange = valid_password;
+//confirm_password.onkeyup = valid_password
+
+
+/*const contraventionType = document.getElementsByClassName("type-activate-toggle");
+const testLog = () => {
+   console.log(contraventionType.value)
+}
+confirm_password.onchange = testLog;*/
+
+//For test
+//window.addEventListener("DOMContentLoaded", () => (alert("Viens vérifier stp !")));
+
+/*const switchType = document.getElementsByName('type-status');
+switchType.addEventListener('change', (e) => alert(e));*/
