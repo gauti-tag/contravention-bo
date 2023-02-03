@@ -48,6 +48,7 @@ Rails.application.routes.draw do
   get '/contravention/type/new', to: 'types#new', as: :new_type
   get '/contravention/types/:id', to: 'types#edit', as: :edit_types
   patch '/contravention/type/:id', to: 'types#update', as: :update_type
+  post '/contravention/type/status', to: 'types#update_status'
   resources :types, only: [:destroy] do 
     collection {post :import}
   end
