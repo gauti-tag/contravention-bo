@@ -18,6 +18,7 @@ class User < ApplicationRecord
 
   has_many :users_created, class_name: "User", foreign_key: "author_id"
   belongs_to :author, class_name: "User", foreign_key: "author_id", optional: true
+  has_many :audit_logs, dependent: :destroy
 
   enum account_status: [:pending, :active, :suspended]
 
