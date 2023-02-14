@@ -1,0 +1,7 @@
+<%= fields =  ['CODE', 'LIBELLE', 'DESCRIPTION'].join(";") %>
+<% @goups.each do |group| %>
+<% code = group.code %>
+<% label = group.label %>
+<% description = group.description %>
+<%= [code, label, description].join(";") %>
+<% end %>
