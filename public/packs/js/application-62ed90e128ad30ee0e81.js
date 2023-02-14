@@ -525,7 +525,7 @@ function getDatatableColumns(modelName) {
 
 function showDetailsColumn() {
   var link = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "#";
-  return "<div class=\"d-block\" style=\"margin-top: -1rem\"> <a href=\"".concat(link, "\" class=\"d-flex align-items-center\">\n    <div class=\"icon-shape icon-sm\">\n      <svg class=\"text-gray-400\" fill=\"currentColor\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M10 12a2 2 0 100-4 2 2 0 000 4z\"></path>\n        <path fill-rule=\"evenodd\" d=\"M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z\" clip-rule=\"evenodd\"></path>\n      </svg>\n      \n    </div>\n    <span> Voir<span>\n  </a></div>");
+  return "<div class=\"d-block\" style=\"margin-top: -1rem\"> <a href=\"".concat(link, "\" class=\"d-flex align-items-center\" title=\"Voir D\xE9tails\">\n    <div class=\"icon-shape icon-sm\">\n      <svg class=\"text-gray-400\" fill=\"currentColor\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M10 12a2 2 0 100-4 2 2 0 000 4z\"></path>\n        <path fill-rule=\"evenodd\" d=\"M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z\" clip-rule=\"evenodd\"></path>\n      </svg>\n    </div>\n  </a></div>");
 }
 
 var statusMap = {
@@ -603,16 +603,46 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-second').show();
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-second').hide();
     }
-  }); // status dsiplay UI
+  }); // User checkboxes
 
-  var checkboxes = document.getElementsByClassName('type-status');
+  var userCheckboxes = document.getElementsByClassName('user-type-status');
 
-  var _iterator = _createForOfIteratorHelper(checkboxes),
+  var _iterator = _createForOfIteratorHelper(userCheckboxes),
       _step;
 
   try {
     var _loop = function _loop() {
-      var item = _step.value;
+      var user = _step.value;
+
+      if (user.value === 'active') {
+        user.checked = true;
+      } else {
+        user.checked = false;
+      }
+
+      user.addEventListener('change', function () {
+        switchStatusUser(user); // location.reload()
+      });
+    };
+
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      _loop();
+    } // status dsiplay UI
+
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  var checkboxes = document.getElementsByClassName('type-status');
+
+  var _iterator2 = _createForOfIteratorHelper(checkboxes),
+      _step2;
+
+  try {
+    var _loop2 = function _loop2() {
+      var item = _step2.value;
 
       if (item.value === "1") {
         item.checked = true;
@@ -625,13 +655,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
       });
     };
 
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      _loop();
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      _loop2();
     }
   } catch (err) {
-    _iterator.e(err);
+    _iterator2.e(err);
   } finally {
-    _iterator.f();
+    _iterator2.f();
   }
 
   var updateTypestatus = function updateTypestatus(element) {
@@ -676,6 +706,48 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
       console.error('Error:', error);
     });
   };
+
+  var switchStatusUser = function switchStatusUser(user) {
+    var status = user.value === 'active' ? 'suspend' : 'active';
+    var formData = new FormData();
+    formData.append('id', user.dataset.id);
+    formData.append('status', status);
+    fetch('/users/edit/status', {
+      method: 'post',
+      body: formData
+    }).then(function (response) {
+      return response.json();
+    }).then(function (result) {
+      //console.log(result);
+      if (result.statusCode == 200) {
+        user.value = result.status;
+        window.Swal.fire({
+          width: 600,
+          icon: 'success',
+          title: "Type",
+          html: result.message,
+          timer: 7000,
+          showCloseButton: true,
+          allowOutsideClick: true,
+          backdrop: true
+        });
+        location.reload();
+      } else {
+        window.Swal.fire({
+          width: 600,
+          icon: 'warning',
+          title: "Type",
+          html: result.message,
+          timer: 7000,
+          showCloseButton: true,
+          allowOutsideClick: true,
+          backdrop: true
+        });
+      }
+    })["catch"](function (error) {
+      console.error('Error:', error);
+    });
+  };
 }); // Compare password 
 
 var password = document.getElementById('password-field-first');
@@ -692,7 +764,13 @@ var valid_password = function valid_password() {
 if (password !== null && password !== null) {
   password.addEventListener('change', valid_password);
   confirm_password.addEventListener('keyup', valid_password);
-} //password.onchange = valid_password;
+}
+
+window.onpopstate = function () {
+  window.setTimeout(function () {
+    location.reload();
+  }, 100);
+}; //password.onchange = valid_password;
 //confirm_password.onkeyup = valid_password
 
 /*const contraventionType = document.getElementsByClassName("type-activate-toggle");
@@ -96198,4 +96276,4 @@ module.exports = function (module) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=application-78faadb07bc57c357f8c.js.map
+//# sourceMappingURL=application-62ed90e128ad30ee0e81.js.map

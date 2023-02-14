@@ -290,15 +290,13 @@ function getDatatableColumns(modelName) {
 };
 
 function showDetailsColumn(link = "#") {
-  return `<div class="d-block" style="margin-top: -1rem"> <a href="${link}" class="d-flex align-items-center">
+  return `<div class="d-block" style="margin-top: -1rem"> <a href="${link}" class="d-flex align-items-center" title="Voir Détails">
     <div class="icon-shape icon-sm">
       <svg class="text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
         <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
       </svg>
-      
     </div>
-    <span> Voir<span>
   </a></div>`;
 }
 
@@ -376,7 +374,24 @@ $(() => {
             $('.close-second').hide();
         }
     })
+    
+    // User checkboxes
+    const userCheckboxes = document.getElementsByClassName('user-type-status');
+    for (const user of userCheckboxes)
+    {
+        if (user.value === 'active')
+        {
+            user.checked = true;
+        }else{
 
+            user.checked = false;
+        }
+
+        user.addEventListener('change', () => {
+            switchStatusUser(user);
+           // location.reload()
+        })
+    }
    
 
     // status dsiplay UI
@@ -430,6 +445,37 @@ $(() => {
         });
     }
 
+
+
+    const switchStatusUser = (user) => {
+        let status = user.value === 'active' ? 'suspend' :  'active'
+        let formData = new FormData();
+        formData.append('id', user.dataset.id)
+        formData.append('status', status)
+
+        fetch('/users/edit/status', {
+            method: 'post',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(result => {
+            //console.log(result);
+            if(result.statusCode == 200)
+            {
+                user.value = result.status
+                window.Swal.fire({width: 600, icon: 'success', title: "Type", html: result.message, timer: 7000, showCloseButton: true, allowOutsideClick: true, backdrop: true});
+                location.reload();
+                
+            }else{
+                window.Swal.fire({width: 600, icon: 'warning', title: "Type", html: result.message, timer: 7000, showCloseButton: true, allowOutsideClick: true, backdrop: true});
+                
+            }
+        })
+        .catch( error => {
+            console.error('Error:', error);
+        })
+    }
+
 })
 
 
@@ -451,6 +497,13 @@ if ((password !== null) && password !== null)
     confirm_password.addEventListener('keyup', valid_password);    
 }
 
+
+window.onpopstate = () => {
+    window.setTimeout(() => {
+      location.reload()
+   },100);
+ };
+ 
 
 
 //password.onchange = valid_password;
