@@ -1,0 +1,9 @@
+<%= fields = ['CODE', 'LIBELLE', 'CLASSE', 'MONTANT', 'PUBLIER'].join(";")%>
+<% @types.each do |type| %>
+<% code = type.code %>
+<% label = type.label %>
+<% classe = type.contravention_group.label %>
+<% amount = type.amount %>
+<% published = type.status == 0 ? 'Non' : 'Oui' %>
+<%= [code, label, classe, amount, published].join(";")  %>
+<% end %>
