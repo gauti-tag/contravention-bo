@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   get '/piste-audit', to: 'main#audit', as: :audit
   get '/piste-audit/log/:id', to: 'main#show_log', as: :audit_log
 
-  patch '/users/edit/status/:id', to: 'users#update_account_status', as: :update_account_status
+  post '/users/edit/status', to: 'users#update_account_status', as: :update_account_status
   
   # Notebooks
   get '/contravention/carnets', to: 'notebooks#index', as: :notebooks
