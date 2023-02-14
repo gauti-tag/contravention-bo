@@ -1,0 +1,9 @@
+<%= fields = ['NOM', 'PRENOMS', 'TELEPHONE', 'EMAIL', 'STATUT'].join(";") %>
+<% @users.each do |user| %>
+<% first_name = user.firstname %>
+<% last_name = user.lastname %>
+<% msisdn = user.msisdn %>
+<% email = user.email %>
+<% status = user.account_status %>
+<%= [first_name, last_name, msisdn, email, status].join(";") %>
+<% end %>

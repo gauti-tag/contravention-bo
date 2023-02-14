@@ -48,14 +48,19 @@ class UsersController < ApplicationController
     }.fetch(params[:status], nil)
     if status.present?
       user.update(account_status: status)
-      flash[:notice] = 'Le statut du compte a été modifié.'
+      #flash[:notice] = 'Le statut du compte a été modifié.'
+      message = 'Le statut du compte a été modifié.'
     else
-      flash[:warning] = "Échèc de l'opération"
+      #flash[:warning] = "Échèc de l'opération"
+      message = "Échèc de l'opération"
     end
-    redirect_to users_url
+    #redirect_to users_url
+    render json: {statusCode: 200, message: message, status: user.account_status}
   rescue
-    flash[:error] = "Utilisateur inconnu!"
-    redirect_to users_url
+    #flash[:error] = "Utilisateur inconnu!"
+    message = "Utilisateur inconnu!"
+    #redirect_to users_url
+    render json: {status: 400, message: message}
   end
 
   private
