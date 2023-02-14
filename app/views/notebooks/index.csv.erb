@@ -1,0 +1,8 @@
+<%= fields = ['NUMERO', 'LIBELLE', 'FEUILLETS', 'CLASSE'].join(";") %>
+<% @notebooks.each do |notebook| %>
+<% number = notebook.number %>
+<% label = notebook.label %>
+<% sheets = notebook.sheets %>
+<% classe = notebook.contravention_group.label %>
+<%= [number, label, sheets, classe].join(";") %>
+<% end %>
