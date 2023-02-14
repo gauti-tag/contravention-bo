@@ -58,7 +58,7 @@ class AdminProfilesController < ApplicationController
 
   def destroy
     if ['Administrateur', 'Guest'].include? @profile.title.to_s    
-        flash[:warning] = 'Impossible de supprimer le profile'
+        flash[:warning] = 'Impossible de supprimer le profil'
         redirect_to admin_profiles_url
     else 
         if @profile.users.present?

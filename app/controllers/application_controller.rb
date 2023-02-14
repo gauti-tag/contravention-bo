@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery unless: -> { request.format.json? }
 
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :authenticate_user!, except: [:export_data, :update_status]
+  before_action :authenticate_user!, except: [:export_data, :update_status, :update_account_status]
   before_action :access_to_page?, unless: :devise_controller?, only: [:index, :create, :update, :delete, :audit, :import]
 
   def configure_permitted_parameters
