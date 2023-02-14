@@ -1,5 +1,5 @@
 class AdminProfilesController < ApplicationController
-  before_action :fetch_profile, only: [:new, :show, :update]
+  before_action :fetch_profile, only: [:new, :show, :update, :destroy]
 
   def index
     @profiles = AdminProfile.order(title: :asc)
@@ -52,6 +52,23 @@ class AdminProfilesController < ApplicationController
       @profile_abilities = @profile.admin_abilities.pluck(:id)
       flash[:alert] = @user.errors.full_messages.join(', ')
       render :show
+    end
+  end
+
+
+  def destroy
+    if ['Administrateur', 'Guest'].include? @profile.title.to_s    
+        flash[:warning] = 'Impossible de supprimer le profile'
+        redirect_to admin_profiles_url
+    else 
+        if @profile.users.present?
+            flash[:warning] = 'Veuillez retirer les utilisateurs utilisant ce profil avant de supprimer'
+            redirect_to admin_profiles_url
+        else
+            @profile.destroy
+            flash[:notice] = 'Le profil a été supprimé.'
+            redirect_to admin_profiles_url
+        end
     end
   end
 
