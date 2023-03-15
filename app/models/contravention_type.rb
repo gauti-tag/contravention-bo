@@ -8,6 +8,7 @@ class ContraventionType < ApplicationRecord
 
   before_create do 
     self.code = self.code.upcase
+    self.label = self.label.to_s.strip
   end
 
   def attributes 
