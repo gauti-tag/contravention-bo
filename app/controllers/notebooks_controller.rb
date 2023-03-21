@@ -135,7 +135,7 @@ class NotebooksController < ApplicationController
             #  end
 
               # if the code type exists update the row
-              checking_code = ContraventionNotebook.exists?(number: type_data['number'])
+              checking_code = ContraventionNotebook.exists?(number: type_data['number'], contravention_group_id: type_data['contravention_group_id'])
               if checking_code
                   code = ContraventionNotebook.find_by(number: type_data['number'])
                   code.label = type_data['label']
