@@ -10,7 +10,7 @@ class Agent < ApplicationRecord
 validate :verify_uniq_identifier, on: :create
 
   before_create do
-     self.identifier = self.identifier.upcase
+     self.identifier = self.identifier.upcase.strip
   end
 
   def attributes

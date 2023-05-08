@@ -7,7 +7,7 @@ class ContraventionType < ApplicationRecord
   validates_uniqueness_of :code, on: :create, message: "doit être unique"
 
   before_create do 
-    self.code = self.code.upcase
+    self.code = self.code.upcase.strip
     self.label = self.label.to_s.strip
   end
 

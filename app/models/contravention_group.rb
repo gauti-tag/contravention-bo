@@ -9,7 +9,7 @@ class ContraventionGroup < ApplicationRecord
   has_many :contravention_types, dependent: :destroy
 
   before_create do 
-    self.code = self.code.upcase
+    self.code = self.code.upcase.strip
   end
 
   def attributes

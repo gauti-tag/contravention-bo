@@ -8,7 +8,7 @@ class ContraventionNotebook < ApplicationRecord
   validate :validate_number_and_group_uniq, on: :create
 
   before_create do 
-    self.number = self.number.upcase
+    self.number = self.number.upcase.strip
   end
 
   def attributes 
