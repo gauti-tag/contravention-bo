@@ -284,21 +284,21 @@ __webpack_require__(/*! packs/typed */ "./app/javascript/packs/typed.js"); // Un
 // const imagePath = (name) => images(name, true)
 
 
-moment.locale('fr');
+moment.locale("fr");
 global.$ = jQuery;
 window.Rails = Rails;
 
 window.downloadData = function (data) {
   var headers = new Headers();
-  headers.append('Content-Type', "application/json");
-  fetch('/api/dataset/export', {
+  headers.append("Content-Type", "application/json");
+  fetch("/api/dataset/export", {
     method: "POST",
     headers: headers,
     body: JSON.stringify(data)
   }).then(function (response) {
     return response.json();
   }).then(function (json) {
-    window.open(json.data, '_blank').focus();
+    window.open(json.data, "_blank").focus();
   });
 };
 
@@ -337,11 +337,11 @@ window.fetchDatatable = function (dtId, data) {
     order: [[0, "desc"]],
     serverSide: true,
     ajax: {
-      url: '/api/datatables',
+      url: "/api/datatables",
       type: "GET",
       data: _objectSpread({}, data)
     },
-    columns: getDatatableColumns(data['model'])
+    columns: getDatatableColumns(data["model"])
   });
 };
 
@@ -349,7 +349,7 @@ function getDatatableColumns(modelName) {
   var columns = [];
 
   switch (modelName) {
-    case 'ticket_payments':
+    case "ticket_payments":
       columns = [{
         data: "transaction_id",
         className: "all",
@@ -415,7 +415,7 @@ function getDatatableColumns(modelName) {
       }];
       break;
 
-    case '':
+    case "":
       columns = [{
         data: null,
         className: "all",
@@ -467,7 +467,7 @@ function getDatatableColumns(modelName) {
       }];
       break;
 
-    case '':
+    case "":
       columns = [{
         data: null,
         className: "all",
@@ -506,7 +506,6 @@ function getDatatableColumns(modelName) {
       break;
   }
 
-  ;
   columns.push({
     data: null,
     orderable: false,
@@ -521,21 +520,21 @@ function getDatatableColumns(modelName) {
   return columns;
 }
 
-;
-
 function showDetailsColumn() {
   var link = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "#";
   return "<div class=\"d-block\" style=\"margin-top: -1rem\"> <a href=\"".concat(link, "\" class=\"d-flex align-items-center\" title=\"Voir D\xE9tails\">\n    <div class=\"icon-shape icon-sm\">\n      <svg class=\"text-gray-400\" fill=\"currentColor\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M10 12a2 2 0 100-4 2 2 0 000 4z\"></path>\n        <path fill-rule=\"evenodd\" d=\"M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z\" clip-rule=\"evenodd\"></path>\n      </svg>\n    </div>\n  </a></div>");
 }
 
 var statusMap = {
-  pending: ["En attente", 'text-dark'],
-  success: ["Valide", 'text-primary'],
-  failure: ["Echec", 'text-danger'],
-  winning: ["Gagnant", 'text-success'],
-  losing: ["Perdant", 'text-danger'],
-  unpaid: ["En attente de paiement", 'text-info'],
-  paid: ["Payé", 'text-success']
+  pending: ["En attente", "text-dark"],
+  success: ["Valide", "text-primary"],
+  failure: ["Echec", "text-danger"],
+  winning: ["Gagnant", "text-success"],
+  losing: ["Perdant", "text-danger"],
+  unpaid: ["En attente de paiement", "text-info"],
+  paid: ["Payé", "text-success"],
+  robot_test_success: ["valide test Robot", "text-primary"],
+  robot_test_failure: ["Echec test Robot", "text-danger"]
 };
 
 function showStatus(status) {
@@ -549,15 +548,15 @@ function showStatus(status) {
 }
 
 var walletStatus = function walletStatus(status) {
-  var wallet = '';
+  var wallet = "";
 
   switch (status) {
-    case 'mtn_guinee':
-      wallet = 'Mtn';
+    case "mtn_guinee":
+      wallet = "Mtn";
       break;
 
-    case 'orange_guinee':
-      wallet = 'Orange';
+    case "orange_guinee":
+      wallet = "Orange";
       break;
 
     default:
@@ -568,44 +567,44 @@ var walletStatus = function walletStatus(status) {
 };
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open').hide();
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-first').hide();
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-second').hide();
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-password').on('click', function () {
-    if (jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field').attr("type") == "text") {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field').attr("type", "password");
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close').show();
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open').hide();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".open").hide();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".open-first").hide();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".open-second").hide();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".toggle-password").on("click", function () {
+    if (jquery__WEBPACK_IMPORTED_MODULE_0___default()("#password-field").attr("type") == "text") {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#password-field").attr("type", "password");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".close").show();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".open").hide();
     } else {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field').attr("type", "text");
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open').show();
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close').hide();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#password-field").attr("type", "text");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".open").show();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".close").hide();
     }
   });
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-reset-password-first').on('click', function () {
-    if (jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-first').attr("type") == "text") {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-first').attr("type", "password");
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-first').show();
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-first').hide();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".toggle-reset-password-first").on("click", function () {
+    if (jquery__WEBPACK_IMPORTED_MODULE_0___default()("#password-field-first").attr("type") == "text") {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#password-field-first").attr("type", "password");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".close-first").show();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".open-first").hide();
     } else {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-first').attr("type", "text");
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-first').show();
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-first').hide();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#password-field-first").attr("type", "text");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".open-first").show();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".close-first").hide();
     }
   });
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.toggle-reset-password-second').on('click', function () {
-    if (jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-second').attr("type") == "text") {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-second').attr("type", "password");
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-second').show();
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-second').hide();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".toggle-reset-password-second").on("click", function () {
+    if (jquery__WEBPACK_IMPORTED_MODULE_0___default()("#password-field-second").attr("type") == "text") {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#password-field-second").attr("type", "password");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".close-second").show();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".open-second").hide();
     } else {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#password-field-second').attr("type", "text");
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.open-second').show();
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.close-second').hide();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#password-field-second").attr("type", "text");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".open-second").show();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".close-second").hide();
     }
   }); // User checkboxes
 
-  var userCheckboxes = document.getElementsByClassName('user-type-status');
+  var userCheckboxes = document.getElementsByClassName("user-type-status");
 
   var _iterator = _createForOfIteratorHelper(userCheckboxes),
       _step;
@@ -614,13 +613,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
     var _loop = function _loop() {
       var user = _step.value;
 
-      if (user.value === 'active') {
+      if (user.value === "active") {
         user.checked = true;
       } else {
         user.checked = false;
       }
 
-      user.addEventListener('change', function () {
+      user.addEventListener("change", function () {
         switchStatusUser(user); // location.reload()
       });
     };
@@ -635,7 +634,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
     _iterator.f();
   }
 
-  var checkboxes = document.getElementsByClassName('type-status');
+  var checkboxes = document.getElementsByClassName("type-status");
 
   var _iterator2 = _createForOfIteratorHelper(checkboxes),
       _step2;
@@ -650,7 +649,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
         item.checked = false;
       }
 
-      item.addEventListener('change', function () {
+      item.addEventListener("change", function () {
         updateTypestatus(item);
       });
     };
@@ -667,8 +666,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   var updateTypestatus = function updateTypestatus(element) {
     var status = element.value === "1" ? 0 : 1;
     var formdata = new FormData();
-    formdata.append('statusCode', element.dataset.code);
-    formdata.append('status', status);
+    formdata.append("statusCode", element.dataset.code);
+    formdata.append("status", status);
     fetch("/contravention/type/status", {
       method: "post",
       body: formdata
@@ -682,7 +681,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
         element.value = result.typeStatus;
         window.Swal.fire({
           width: 600,
-          icon: 'success',
+          icon: "success",
           title: "Type",
           html: message,
           timer: 7000,
@@ -693,7 +692,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
       } else {
         window.Swal.fire({
           width: 600,
-          icon: 'warning',
+          icon: "warning",
           title: "Type",
           html: "Opération échouée",
           timer: 7000,
@@ -703,17 +702,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
         });
       }
     })["catch"](function (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     });
   };
 
   var switchStatusUser = function switchStatusUser(user) {
-    var status = user.value === 'active' ? 'suspend' : 'active';
+    var status = user.value === "active" ? "suspend" : "active";
     var formData = new FormData();
-    formData.append('id', user.dataset.id);
-    formData.append('status', status);
-    fetch('/users/edit/status', {
-      method: 'post',
+    formData.append("id", user.dataset.id);
+    formData.append("status", status);
+    fetch("/users/edit/status", {
+      method: "post",
       body: formData
     }).then(function (response) {
       return response.json();
@@ -723,7 +722,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
         user.value = result.status;
         window.Swal.fire({
           width: 600,
-          icon: 'success',
+          icon: "success",
           title: "Type",
           html: result.message,
           timer: 7000,
@@ -735,7 +734,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
       } else {
         window.Swal.fire({
           width: 600,
-          icon: 'warning',
+          icon: "warning",
           title: "Type",
           html: result.message,
           timer: 7000,
@@ -745,25 +744,25 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
         });
       }
     })["catch"](function (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     });
   };
-}); // Compare password 
+}); // Compare password
 
-var password = document.getElementById('password-field-first');
-var confirm_password = document.getElementById('password-field-second');
+var password = document.getElementById("password-field-first");
+var confirm_password = document.getElementById("password-field-second");
 
 var valid_password = function valid_password() {
   if (password.value != confirm_password.value) {
-    confirm_password.setCustomValidity('Les mots de passe ne correspondent pas !');
+    confirm_password.setCustomValidity("Les mots de passe ne correspondent pas !");
   } else {
-    confirm_password.setCustomValidity('');
+    confirm_password.setCustomValidity("");
   }
 };
 
 if (password !== null && password !== null) {
-  password.addEventListener('change', valid_password);
-  confirm_password.addEventListener('keyup', valid_password);
+  password.addEventListener("change", valid_password);
+  confirm_password.addEventListener("keyup", valid_password);
 }
 
 window.onpopstate = function () {
@@ -96276,4 +96275,4 @@ module.exports = function (module) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=application-62ed90e128ad30ee0e81.js.map
+//# sourceMappingURL=application-4a73476f364e3ff96f5c.js.map

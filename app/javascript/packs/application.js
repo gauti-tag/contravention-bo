@@ -4,29 +4,29 @@
 // that code so it'll be compiled.
 
 import $ from "jquery";
-require('@popperjs/core')
-var bootstrap = require('bootstrap')
-require('onscreen')
-require('nouislider')
-var Swal = require('sweetalert2')
-var moment = require('moment')
-var vanillajsDatepicker = require('vanillajs-datepicker')
-require('notyf')
-require('simplebar')
-require('datatables.net')
-require('datatables.net-responsive')
-var simpleDatatables = require('simple-datatables')
-require('dropzone')
-require('block-ui')
-var Choices = require('choices.js')
+require("@popperjs/core");
+var bootstrap = require("bootstrap");
+require("onscreen");
+require("nouislider");
+var Swal = require("sweetalert2");
+var moment = require("moment");
+var vanillajsDatepicker = require("vanillajs-datepicker");
+require("notyf");
+require("simplebar");
+require("datatables.net");
+require("datatables.net-responsive");
+var simpleDatatables = require("simple-datatables");
+require("dropzone");
+require("block-ui");
+var Choices = require("choices.js");
 
 window.bootstrap = bootstrap;
 window.Swal = Swal;
 window.simpleDatatables = simpleDatatables;
 window.vanillajsDatepicker = vanillajsDatepicker;
 window.Choices = Choices;
-require('packs/volt')
-require('packs/typed')
+require("packs/volt");
+require("packs/typed");
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
@@ -34,24 +34,24 @@ require('packs/typed')
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
-moment.locale('fr');
-
+moment.locale("fr");
 
 global.$ = jQuery;
 window.Rails = Rails;
 
 window.downloadData = function (data) {
   const headers = new Headers();
-  headers.append('Content-Type', "application/json");
-  fetch('/api/dataset/export', {
+  headers.append("Content-Type", "application/json");
+  fetch("/api/dataset/export", {
     method: "POST",
     headers: headers,
     body: JSON.stringify(data),
-  }).then(response => response.json())
-  .then(json => {
-    window.open(json.data, '_blank').focus();
   })
-}
+    .then((response) => response.json())
+    .then((json) => {
+      window.open(json.data, "_blank").focus();
+    });
+};
 
 window.fetchDatatable = function (dtId, data) {
   $(dtId).DataTable({
@@ -60,12 +60,10 @@ window.fetchDatatable = function (dtId, data) {
       processing: "Traitement en cours...",
       search: "Rechercher&nbsp;:",
       lengthMenu: "Afficher _MENU_ &eacute;l&eacute;ments",
-      info:
-        "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+      info: "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
       infoEmpty:
         "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
-      infoFiltered:
-        "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+      infoFiltered: "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
       infoPostFix: "",
       loadingRecords: "Chargement en cours...",
       zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
@@ -79,8 +77,7 @@ window.fetchDatatable = function (dtId, data) {
         last: "Dernier",
       },
       aria: {
-        sortAscending:
-          ": activer pour trier la colonne par ordre croissant",
+        sortAscending: ": activer pour trier la colonne par ordre croissant",
         sortDescending:
           ": activer pour trier la colonne par ordre d&eacute;croissant",
       },
@@ -93,188 +90,193 @@ window.fetchDatatable = function (dtId, data) {
     order: [[0, "desc"]],
     serverSide: true,
     ajax: {
-      url: '/api/datatables',
+      url: "/api/datatables",
       type: "GET",
-      data: {...data},
+      data: { ...data },
     },
-    columns: getDatatableColumns(data['model']),
+    columns: getDatatableColumns(data["model"]),
   });
-}
+};
 function getDatatableColumns(modelName) {
   let columns = [];
   switch (modelName) {
-      case 'ticket_payments':
-          columns = [
-            {
-              data: "transaction_id",
-              className: "all",
-              orderable: false,
-              searchable: true,
-              width: "10%"
-            },
-            {
-              data: "ticket_number",
-              orderable: false,
-              searchable: true,
-            },
-            {
-              data: null,
-              orderable: false,
-              searchable: false,
-              className: "all",
-              width: "10%",
-              render(data, type, row, meta) {
-                return new Intl.NumberFormat().format(row.amount);
-              },
-            },
-            {
-              data: null,
-              className: "all",
-              orderable: false,
-              searchable: false,
-              width: "5%",
-              render(data, type, row, meta){
-                return new Intl.NumberFormat().format(row.transaction_fees)
-              }
-            },
-            {
-              data: "msisdn",
-              orderable: false,
-              searchable: true,
-              className: "all",
-              width: "5%"
-            },
-            {
-              data: null,
-              orderable: false,
-              searchable: false,
-              className: "all",
-              width: "5%",
-              render(data, type, row, meta){
-                return walletStatus(row.wallet)
-              },
-            },
-            {
-              data: null,
-              orderable: false,
-              searchable: false,
-              className: "all",
-              width: "5%",
-              render(data, type, row, meta) {
-                return showStatus(row.status);
-              },
-            },
-            {
-              data: "payment_trnx_ref",
-              orderable: true,
-              searchable: false,
-              className: "all"
-            },
-            {
-                data: "record_date",
-                orderable: true,
-                searchable: false,
-                className: "all"
-        }];
-          break;
-      case '':
-        columns = [
-          {
-            data: null,
-            className: "all",
-            width: "10%",
+    case "ticket_payments":
+      columns = [
+        {
+          data: "transaction_id",
+          className: "all",
+          orderable: false,
+          searchable: true,
+          width: "10%",
+        },
+        {
+          data: "ticket_number",
+          orderable: false,
+          searchable: true,
+        },
+        {
+          data: null,
+          orderable: false,
+          searchable: false,
+          className: "all",
+          width: "10%",
+          render(data, type, row, meta) {
+            return new Intl.NumberFormat().format(row.amount);
           },
-          {
-            data: null,
-            orderable: false,
-            searchable: false,
-            className: "all",
-            width: "10%",
-            render(data, type, row, meta) {
-              return row.draws.map(num => `<span class="badge bg-primary"> ${num} </span>`);
-            },
+        },
+        {
+          data: null,
+          className: "all",
+          orderable: false,
+          searchable: false,
+          width: "5%",
+          render(data, type, row, meta) {
+            return new Intl.NumberFormat().format(row.transaction_fees);
           },
-          {
-            data: null,
-            className: "all",
-            orderable: true,
-            searchable: false,
-            width: "5%",
+        },
+        {
+          data: "msisdn",
+          orderable: false,
+          searchable: true,
+          className: "all",
+          width: "5%",
+        },
+        {
+          data: null,
+          orderable: false,
+          searchable: false,
+          className: "all",
+          width: "5%",
+          render(data, type, row, meta) {
+            return walletStatus(row.wallet);
           },
-          {
-            data: null,
-            orderable: true,
-            searchable: false,
-            className: "all",
-            width: "5%",
-            render(data, type, row, meta) {
-              return new Intl.NumberFormat().format(row.bet_amount);
-            },
+        },
+        {
+          data: null,
+          orderable: false,
+          searchable: false,
+          className: "all",
+          width: "5%",
+          render(data, type, row, meta) {
+            return showStatus(row.status);
           },
-          {
-            data: null,
-            orderable: true,
-            searchable: false,
-            className: "all",
-            width: "5%",
-            render(data, type, row, meta) {
-              return new Intl.NumberFormat().format(row.winning_amount);
-            },
+        },
+        {
+          data: "payment_trnx_ref",
+          orderable: true,
+          searchable: false,
+          className: "all",
+        },
+        {
+          data: "record_date",
+          orderable: true,
+          searchable: false,
+          className: "all",
+        },
+      ];
+      break;
+    case "":
+      columns = [
+        {
+          data: null,
+          className: "all",
+          width: "10%",
+        },
+        {
+          data: null,
+          orderable: false,
+          searchable: false,
+          className: "all",
+          width: "10%",
+          render(data, type, row, meta) {
+            return row.draws.map(
+              (num) => `<span class="badge bg-primary"> ${num} </span>`
+            );
           },
-          {
-            data: null,
-            orderable: true,
-            searchable: false,
-            className: "all",
-            width: "5%",
-            render(data, type, row, meta) {
-              return showStatus(row.paid_bet_status);
-            },
-          }];
-        break;
-      case '':
-          columns = [
-            {
-              data: null,
-              className: "all",
-              width: "10%",
-            },
-            {
-              data: null,
-              orderable: false,
-              searchable: true,
-            },
-            {
-              data: null,
-              orderable: true,
-              searchable: false,
-              className: "all",
-              width: "5%",
-              render(data, type, row, meta) {
-                return new Intl.NumberFormat().format(row.amount);
-              },
-            },
-            {
-              data: null,
-              orderable: false,
-              searchable: true,
-            },
-            {
-              data: null,
-              className: "all",
-              orderable: true,
-              searchable: false,
-              width: "5%",
-            },
-            {
-              data: null,
-              orderable: false,
-              searchable: true,
-            }];
-          break;
-      default:
-          break;
-  };
+        },
+        {
+          data: null,
+          className: "all",
+          orderable: true,
+          searchable: false,
+          width: "5%",
+        },
+        {
+          data: null,
+          orderable: true,
+          searchable: false,
+          className: "all",
+          width: "5%",
+          render(data, type, row, meta) {
+            return new Intl.NumberFormat().format(row.bet_amount);
+          },
+        },
+        {
+          data: null,
+          orderable: true,
+          searchable: false,
+          className: "all",
+          width: "5%",
+          render(data, type, row, meta) {
+            return new Intl.NumberFormat().format(row.winning_amount);
+          },
+        },
+        {
+          data: null,
+          orderable: true,
+          searchable: false,
+          className: "all",
+          width: "5%",
+          render(data, type, row, meta) {
+            return showStatus(row.paid_bet_status);
+          },
+        },
+      ];
+      break;
+    case "":
+      columns = [
+        {
+          data: null,
+          className: "all",
+          width: "10%",
+        },
+        {
+          data: null,
+          orderable: false,
+          searchable: true,
+        },
+        {
+          data: null,
+          orderable: true,
+          searchable: false,
+          className: "all",
+          width: "5%",
+          render(data, type, row, meta) {
+            return new Intl.NumberFormat().format(row.amount);
+          },
+        },
+        {
+          data: null,
+          orderable: false,
+          searchable: true,
+        },
+        {
+          data: null,
+          className: "all",
+          orderable: true,
+          searchable: false,
+          width: "5%",
+        },
+        {
+          data: null,
+          orderable: false,
+          searchable: true,
+        },
+      ];
+      break;
+    default:
+      break;
+  }
   columns.push({
     data: null,
     orderable: false,
@@ -287,7 +289,7 @@ function getDatatableColumns(modelName) {
     },
   });
   return columns;
-};
+}
 
 function showDetailsColumn(link = "#") {
   return `<div class="d-block" style="margin-top: -1rem"> <a href="${link}" class="d-flex align-items-center" title="Voir Détails">
@@ -301,14 +303,16 @@ function showDetailsColumn(link = "#") {
 }
 
 const statusMap = {
-  pending: ["En attente", 'text-dark'],
-  success: ["Valide", 'text-primary'],
-  failure: ["Echec", 'text-danger'],
-  winning: ["Gagnant", 'text-success'],
-  losing: ["Perdant", 'text-danger'],
-  unpaid: ["En attente de paiement", 'text-info'],
-  paid: ["Payé", 'text-success']
-}
+  pending: ["En attente", "text-dark"],
+  success: ["Valide", "text-primary"],
+  failure: ["Echec", "text-danger"],
+  winning: ["Gagnant", "text-success"],
+  losing: ["Perdant", "text-danger"],
+  unpaid: ["En attente de paiement", "text-info"],
+  paid: ["Payé", "text-success"],
+  robot_test_success: ["valide test Robot", "text-primary"],
+  robot_test_failure: ["Echec test Robot", "text-danger"],
+};
 
 function showStatus(status) {
   if (!status) return `<span class="fw-bold text-primary">En attente</span>`;
@@ -317,198 +321,208 @@ function showStatus(status) {
 }
 
 const walletStatus = (status) => {
-    let wallet = ''
-    switch (status){
-        case 'mtn_guinee':
-           wallet = 'Mtn'
-         break;
-        case 'orange_guinee':
-           wallet = 'Orange'
-         break;
-        default:
-         break;
-    }
-    return wallet;
-}
-
+  let wallet = "";
+  switch (status) {
+    case "mtn_guinee":
+      wallet = "Mtn";
+      break;
+    case "orange_guinee":
+      wallet = "Orange";
+      break;
+    default:
+      break;
+  }
+  return wallet;
+};
 
 $(() => {
-
-    $('.open').hide();
-    $('.open-first').hide();
-    $('.open-second').hide();
-    $('.toggle-password').on('click', () => {
-        if ($('#password-field').attr("type") == "text")
-        {
-            $('#password-field').attr("type", "password");
-            $('.close').show();
-            $('.open').hide();
-        }else{
-            $('#password-field').attr("type", "text");
-            $('.open').show();
-            $('.close').hide();
-        }
-    })
-
-    $('.toggle-reset-password-first').on('click', () => {
-        if ($('#password-field-first').attr("type") == "text")
-        {
-            $('#password-field-first').attr("type", "password");
-            $('.close-first').show();
-            $('.open-first').hide();
-        }else{
-            $('#password-field-first').attr("type", "text");
-            $('.open-first').show();
-            $('.close-first').hide();
-        }
-    })
-    $('.toggle-reset-password-second').on('click', () => {
-        if ($('#password-field-second').attr("type") == "text")
-        {
-            $('#password-field-second').attr("type", "password");
-            $('.close-second').show();
-            $('.open-second').hide();
-        }else{
-            $('#password-field-second').attr("type", "text");
-            $('.open-second').show();
-            $('.close-second').hide();
-        }
-    })
-    
-    // User checkboxes
-    const userCheckboxes = document.getElementsByClassName('user-type-status');
-    for (const user of userCheckboxes)
-    {
-        if (user.value === 'active')
-        {
-            user.checked = true;
-        }else{
-
-            user.checked = false;
-        }
-
-        user.addEventListener('change', () => {
-            switchStatusUser(user);
-           // location.reload()
-        })
+  $(".open").hide();
+  $(".open-first").hide();
+  $(".open-second").hide();
+  $(".toggle-password").on("click", () => {
+    if ($("#password-field").attr("type") == "text") {
+      $("#password-field").attr("type", "password");
+      $(".close").show();
+      $(".open").hide();
+    } else {
+      $("#password-field").attr("type", "text");
+      $(".open").show();
+      $(".close").hide();
     }
-   
+  });
 
-    // status dsiplay UI
-    const checkboxes = document.getElementsByClassName('type-status');
-    for (const item of checkboxes)
-    {
-      
-        if (item.value === "1")
-        {
-           item.checked = true
+  $(".toggle-reset-password-first").on("click", () => {
+    if ($("#password-field-first").attr("type") == "text") {
+      $("#password-field-first").attr("type", "password");
+      $(".close-first").show();
+      $(".open-first").hide();
+    } else {
+      $("#password-field-first").attr("type", "text");
+      $(".open-first").show();
+      $(".close-first").hide();
+    }
+  });
+  $(".toggle-reset-password-second").on("click", () => {
+    if ($("#password-field-second").attr("type") == "text") {
+      $("#password-field-second").attr("type", "password");
+      $(".close-second").show();
+      $(".open-second").hide();
+    } else {
+      $("#password-field-second").attr("type", "text");
+      $(".open-second").show();
+      $(".close-second").hide();
+    }
+  });
 
-        }else{
-
-           item.checked = false
-        }
-         
-        item.addEventListener('change', () => {
-            
-            updateTypestatus(item)
-        })
+  // User checkboxes
+  const userCheckboxes = document.getElementsByClassName("user-type-status");
+  for (const user of userCheckboxes) {
+    if (user.value === "active") {
+      user.checked = true;
+    } else {
+      user.checked = false;
     }
 
+    user.addEventListener("change", () => {
+      switchStatusUser(user);
+      // location.reload()
+    });
+  }
 
-    const updateTypestatus = (element) => {
+  // status dsiplay UI
+  const checkboxes = document.getElementsByClassName("type-status");
+  for (const item of checkboxes) {
+    if (item.value === "1") {
+      item.checked = true;
+    } else {
+      item.checked = false;
+    }
 
-        const status = (element.value === "1" ? 0 : 1)
+    item.addEventListener("change", () => {
+      updateTypestatus(item);
+    });
+  }
 
-        const formdata = new FormData();
-        formdata.append('statusCode', element.dataset.code);
-        formdata.append('status', status)
+  const updateTypestatus = (element) => {
+    const status = element.value === "1" ? 0 : 1;
 
-        fetch("/contravention/type/status", {
-        method: "post",
-        body: formdata
-        })
-        .then((response) => response.json())
-        .then((result) => {
+    const formdata = new FormData();
+    formdata.append("statusCode", element.dataset.code);
+    formdata.append("status", status);
+
+    fetch("/contravention/type/status", {
+      method: "post",
+      body: formdata,
+    })
+      .then((response) => response.json())
+      .then((result) => {
         //console.log('Success:', result);
-        const message = (result.typeStatus === 0 ? "<strong>Type désactivé</strong>" : "<strong>Type activé</strong>")
-            if(result.status == 200){
-                element.value = result.typeStatus
-                window.Swal.fire({width: 600, icon: 'success', title: "Type", html: message, timer: 7000, showCloseButton: true, allowOutsideClick: true, backdrop: true});
-            }else{
-                window.Swal.fire({width: 600, icon: 'warning', title: "Type", html: "Opération échouée", timer: 7000, showCloseButton: true, allowOutsideClick: true, backdrop: true});
-            }
-        })
-        .catch((error) => {
+        const message =
+          result.typeStatus === 0
+            ? "<strong>Type désactivé</strong>"
+            : "<strong>Type activé</strong>";
+        if (result.status == 200) {
+          element.value = result.typeStatus;
+          window.Swal.fire({
+            width: 600,
+            icon: "success",
+            title: "Type",
+            html: message,
+            timer: 7000,
+            showCloseButton: true,
+            allowOutsideClick: true,
+            backdrop: true,
+          });
+        } else {
+          window.Swal.fire({
+            width: 600,
+            icon: "warning",
+            title: "Type",
+            html: "Opération échouée",
+            timer: 7000,
+            showCloseButton: true,
+            allowOutsideClick: true,
+            backdrop: true,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
 
-            console.error('Error:', error);
+  const switchStatusUser = (user) => {
+    let status = user.value === "active" ? "suspend" : "active";
+    let formData = new FormData();
+    formData.append("id", user.dataset.id);
+    formData.append("status", status);
 
-        });
-    }
+    fetch("/users/edit/status", {
+      method: "post",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        //console.log(result);
+        if (result.statusCode == 200) {
+          user.value = result.status;
+          window.Swal.fire({
+            width: 600,
+            icon: "success",
+            title: "Type",
+            html: result.message,
+            timer: 7000,
+            showCloseButton: true,
+            allowOutsideClick: true,
+            backdrop: true,
+          });
+          location.reload();
+        } else {
+          window.Swal.fire({
+            width: 600,
+            icon: "warning",
+            title: "Type",
+            html: result.message,
+            timer: 7000,
+            showCloseButton: true,
+            allowOutsideClick: true,
+            backdrop: true,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+});
 
-
-
-    const switchStatusUser = (user) => {
-        let status = user.value === 'active' ? 'suspend' :  'active'
-        let formData = new FormData();
-        formData.append('id', user.dataset.id)
-        formData.append('status', status)
-
-        fetch('/users/edit/status', {
-            method: 'post',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(result => {
-            //console.log(result);
-            if(result.statusCode == 200)
-            {
-                user.value = result.status
-                window.Swal.fire({width: 600, icon: 'success', title: "Type", html: result.message, timer: 7000, showCloseButton: true, allowOutsideClick: true, backdrop: true});
-                location.reload();
-                
-            }else{
-                window.Swal.fire({width: 600, icon: 'warning', title: "Type", html: result.message, timer: 7000, showCloseButton: true, allowOutsideClick: true, backdrop: true});
-                
-            }
-        })
-        .catch( error => {
-            console.error('Error:', error);
-        })
-    }
-
-})
-
-
-// Compare password 
-const password = document.getElementById('password-field-first')
-const confirm_password = document.getElementById('password-field-second')
+// Compare password
+const password = document.getElementById("password-field-first");
+const confirm_password = document.getElementById("password-field-second");
 
 const valid_password = () => {
-    if(password.value != confirm_password.value){
-        confirm_password.setCustomValidity('Les mots de passe ne correspondent pas !');
-    }else{
-        confirm_password.setCustomValidity('');
-    }
-}
+  if (password.value != confirm_password.value) {
+    confirm_password.setCustomValidity(
+      "Les mots de passe ne correspondent pas !"
+    );
+  } else {
+    confirm_password.setCustomValidity("");
+  }
+};
 
-if ((password !== null) && password !== null)
-{
-    password.addEventListener('change', valid_password);
-    confirm_password.addEventListener('keyup', valid_password);    
+if (password !== null && password !== null) {
+  password.addEventListener("change", valid_password);
+  confirm_password.addEventListener("keyup", valid_password);
 }
-
 
 window.onpopstate = () => {
-    window.setTimeout(() => {
-      location.reload()
-   },100);
- };
- 
-
+  window.setTimeout(() => {
+    location.reload();
+  }, 100);
+};
 
 //password.onchange = valid_password;
 //confirm_password.onkeyup = valid_password
-
 
 /*const contraventionType = document.getElementsByClassName("type-activate-toggle");
 const testLog = () => {

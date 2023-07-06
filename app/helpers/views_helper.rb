@@ -65,9 +65,9 @@ module ViewsHelper
       status_class ="badge bg-info"
     when "winning"
       status_class ="badge bg-warning"
-    when 'success'
+    when 'success', 'robot_test_success'
       status_class ="badge bg-success"
-    when 'failure', 'losing'
+    when 'failure', 'losing', 'robot_test_failure'
       status_class ="badge bg-danger"
     end
     %Q[<span class="#{status_class}">#{user_status_label(status)}</span>]
@@ -81,7 +81,9 @@ module ViewsHelper
       'winning' => 'Gagnant',
       'losing' => 'Perdant',
       'success' => 'Validé',
-      'failure' => 'Échèc'
+      'failure' => 'Échèc',
+      'robot_test_success' => 'valide test Robot',
+      'robot_test_failure' => 'Echec test Robot'
     }.fetch(status, '')
   end 
 
