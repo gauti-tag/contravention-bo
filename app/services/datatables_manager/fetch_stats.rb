@@ -10,7 +10,7 @@ module DatatablesManager
         end
         # Method that execute the request to send params to core to be saved
         def call 
-            url = ENV['CORE_API_ENDPOINT'].to_s + FETCH_URI
+            url = ENV['CORE_API_ENDPOINT'].to_s + FETCH_URI + '/' + params[:model_name].to_s
             request = Typhoeus::Request.new(
                 url,
                 method: :get,

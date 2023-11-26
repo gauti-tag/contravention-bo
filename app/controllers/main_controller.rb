@@ -6,7 +6,7 @@ class MainController < ApplicationController
     @groups = ContraventionGroup.count
     @types = ContraventionType.count
 
-    @data = DatatablesManager::FetchStats.call(target: 'statistics')['data']
+    @data = DatatablesManager::FetchStats.call({model_name: 'ticket_payments'})['data']
   end
 
   def audit
